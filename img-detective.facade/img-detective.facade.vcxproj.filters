@@ -15,18 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\HistogramFeat.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\HistogramFE.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\HistogramIM.h">
+    <ClInclude Include="..\include\ImgDetectiveApi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\HistogramFeat.cpp">
+    <ClCompile Include="..\src\ImgDetectiveApi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

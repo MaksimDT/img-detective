@@ -1,11 +1,27 @@
 #include "ImgDetectiveApi.h"
+#include <SearchSystem.h>
 
-ImgIdArray SearchByExample(ImgQuery query) {
-	ImgIdArray* result = new ImgIdArray();
-	result->opStatus = OPSTATUS_INTERNAL_ERROR;
-	return *result;
+using namespace ImgDetective;
+
+SearchResult SearchByExample(ImgQuery query) {
+	try {
+		Core::IFeatureRepository* featureRepo = NULL;
+		Core::FeatureExtractor::col_p_t featureExtractors;
+
+		Core::SearchSystem ss(featureRepo, featureExtractors);
+
+		imgid_col_t result = ss.GetSimilarImgs(query);
+
+		//result->opStatus = OPSTATUS_INTERNAL_ERROR;
+		//return result;
+	}
+	catch (std::exception ex) {
+		
+	}
 }
 
-opstatus_t UploadImg(ImgShortInfo imgInfo) {
-	return OPSTATUS_INTERNAL_ERROR;
+UploadImgResult UploadImg(ImgShortInfo imgInfo) {
+	UploadImgResult result;
+	result.opStatus = OPSTATUS_INTERNAL_ERROR;
+	return result;
 }

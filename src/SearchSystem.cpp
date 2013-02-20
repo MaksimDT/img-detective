@@ -1,10 +1,19 @@
 #include "SearchSystem.h"
 #include "MemoryUtils.h"
+#include "ContractUtils.h"
 
 using namespace std;
 
 namespace ImgDetective {
 namespace Core {
+
+	SearchSystem::SearchSystem(FeatureRepositoryBase* featureRepo, FeatureExtractor::col_p_t featureExtractors) {
+		Utils::Contract::AssertNotNull(featureRepo);
+		Utils::Contract::AssertNotEmpty(featureExtractors);
+
+		this->featureRepo = featureRepo;
+		this->featureExtractors = featureExtractors;
+	}
 
 	imgid_col_t SearchSystem::GetSimilarImgs(ImgQuery query) {
 		ImgInfo* imgInfo;
@@ -13,21 +22,12 @@ namespace Core {
 			//constuct internal representation of example image
 			imgInfo = ImgInfo::Create(query.example);
 
-			//find out if the example image already exists in our storage
-			bool indexed = SearchForImageInIndex(*imgInfo);
-
-			imgid_col_t result;
-
-			if (indexed) {
-				result = featureRepo->FindSimilarImgs(imgInfo->GetInternalId(), query);
-			}
-			else {
-				//extract features from example image
-				Feature::col_p_t extractedFeatures = ExtractFeatures(*imgInfo, query);
-				result = featureRepo->FindSimilarImgs(extractedFeatures, query);
-			}
+			Feature::col_p_t extractedFeatures = ExtractFeatures(*imgInfo, query);
+			imgid_col_t result = featureRepo->GetSimilarImgs(extractedFeatures, query);
 
 			Utils::Memory::SafeDelete(imgInfo);
+
+			return result;
 		}
 		catch (...) {
 			Utils::Memory::SafeDelete(imgInfo);
@@ -35,16 +35,17 @@ namespace Core {
 		}
 	}
 
-	bool SearchSystem::SearchForImageInIndex(ImgInfo& imgInfo) {
-		imgid_t existingId;
-		bool indexed = false;
-		if (contentsRepo->SearchForImage(imgInfo, OUT existingId, OUT indexed)) {
-			if (!imgInfo.HasInternalId()) {
-				imgInfo.SetInternalId(existingId);
-			}
+	Feature::col_p_t SearchSystem::ExtractFeatures(ImgInfo& imgInfo, ImgQuery query) {
+		FeatureExtractor::col_p_t::iterator it;
+		Feature::col_p_t result;
+
+		for (it = featureExtractors.begin(); it != featureExtractors.end(); ++it) {
+			Feature* f = (*it)->ExtractFrom(imgInfo);
+			result.push_back(f);
 		}
 
-		return indexed;
+		return result;
 	}
+
 }
 }

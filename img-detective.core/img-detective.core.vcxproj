@@ -13,18 +13,17 @@
   <ItemGroup>
     <ClInclude Include="..\include\CommonInternal.h" />
     <ClInclude Include="..\include\Feature.h" />
+    <ClInclude Include="..\include\FeatureDistance.h" />
     <ClInclude Include="..\include\FeatureExtractor.h" />
     <ClInclude Include="..\include\FeatureRepository.h" />
+    <ClInclude Include="..\include\IFeatureRepository.h" />
+    <ClInclude Include="..\include\IndexManager.h" />
     <ClInclude Include="..\include\ImgContentsRepository.h" />
-    <ClInclude Include="..\include\ImgDetectiveApi.h" />
     <ClInclude Include="..\include\ImgInfo.h" />
-    <ClInclude Include="..\include\ImgSignature.h" />
-    <ClInclude Include="..\include\ImgSignatureExtractor.h" />
-    <ClInclude Include="..\include\ImgSignatureRepository.h" />
     <ClInclude Include="..\include\SearchSystem.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\ImgDetectiveApi.cpp" />
+    <ClCompile Include="..\src\FeatureRepository.cpp" />
     <ClCompile Include="..\src\SearchSystem.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -34,7 +33,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -70,7 +69,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;IMGDETECTIVECORE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

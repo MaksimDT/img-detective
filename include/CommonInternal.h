@@ -10,5 +10,14 @@ Contains definitions for internal parts of dll, not its interface. Interface is 
 
 #define IN
 #define OUT
+#define REF
 
-typedef std::vector<imgid_t> imgid_col_t;
+namespace ImgDetective {
+namespace Core {
+
+	typedef std::vector<imgid_t> imgid_col_t;
+	typedef std::vector<char> blob_t;
+	typedef std::vector<char>* blob_p_t;
+
+}
+}

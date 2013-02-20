@@ -13,14 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\Signatures">
-      <UniqueIdentifier>{203cbb6a-db5e-4a7d-86a9-21f1980bfae0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\ImgDetectiveApi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\SearchSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -33,30 +27,30 @@
     <ClInclude Include="..\include\FeatureExtractor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\FeatureRepository.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\CommonInternal.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\ImgSignature.h">
-      <Filter>Header Files\Signatures</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\ImgSignatureExtractor.h">
-      <Filter>Header Files\Signatures</Filter>
     </ClInclude>
     <ClInclude Include="..\include\ImgContentsRepository.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\ImgSignatureRepository.h">
-      <Filter>Header Files\Signatures</Filter>
+    <ClInclude Include="..\include\FeatureDistance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\FeatureRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IFeatureRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\IndexManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\ImgDetectiveApi.cpp">
+    <ClCompile Include="..\src\SearchSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SearchSystem.cpp">
+    <ClCompile Include="..\src\FeatureRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
