@@ -9,7 +9,7 @@ namespace Core {
 		IndexNode::col_p_t curPacket;
 		unsigned int curPacketNumber = 1;
 
-		while ((curPacket = GetNextPacket(packetSize, curPacketNumber)).size() != 0) {
+		while ((curPacket = storage->GetNextPacket(packetSize, curPacketNumber)).size() != 0) {
 			ProcessPacket(REF f, REF curPacket, REF *result);
 			++curPacketNumber;
 		}
