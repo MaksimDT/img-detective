@@ -1,16 +1,13 @@
 #pragma once
 
 #include <vector>
-#include <memory>
-#include <boost/shared_ptr.hpp>
-
 #include "FeatureDistance.h"
 #include "CommonInternal.h"
 
 namespace ImgDetective {
 namespace Core {
 
-	class Feature {
+	ABSTRACT class Feature {
 	public:
 		typedef int type_id_t;
 

@@ -7,9 +7,11 @@
 namespace ImgDetective {
 namespace Core {
 
-	class IFeatureRepository {
+	INTERFACE class IFeatureRepository {
 	public:
-		virtual imgid_col_t GetSimilarImgs(Feature::col_p_t exampleFeatSet, ImgQuery initialQuery) const = 0;
+		virtual imgid_col_t GetSimilarImgs(const REF Feature::col_p_t& exampleFeatSet, const REF ImgQuery& initialQuery) const = 0;
+	protected:
+		virtual ~IFeatureRepository() {};
 	};
 
 }

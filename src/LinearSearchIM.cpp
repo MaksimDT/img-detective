@@ -1,4 +1,5 @@
 #include "LinearSearchIM.h"
+#include "MemoryUtils.h"
 
 namespace ImgDetective {
 namespace Core {
@@ -6,12 +7,25 @@ namespace Core {
 	IndexSeekResult* LinearSearchIM::Search(REF Feature& f, const REF ImgQuery& query) const {
 		IndexSeekResult* result = new IndexSeekResult(this->GetFeatureTypeId());
 
-		IndexNode::col_p_t curPacket;
-		unsigned int curPacketNumber = 1;
+		IIndexStorage::ILookupSession* lookupSession = storage->StartLookup();
 
-		while ((curPacket = storage->GetNextPacket(packetSize, curPacketNumber)).size() != 0) {
-			ProcessPacket(REF f, REF curPacket, REF *result);
-			++curPacketNumber;
+		try {
+			IndexNode::col_p_t curPacket;
+
+			while (lookupSession->GetNextPacket(REF curPacket)) {
+				ProcessPacket(REF f, REF curPacket, REF *result);
+			}
+
+			Utils::Memory::SafeDelete(lookupSession);
+		}
+		catch (...) {
+			try {
+				Utils::Memory::SafeDelete(lookupSession);
+			}
+			catch (...) {
+				//TODO: logging
+			}
+			throw;
 		}
 
 		return result;

@@ -8,16 +8,20 @@ namespace Utils {
 	class Memory {
 	public:
 		template <typename T>
-		static void AssertIsNotNull(T* ptr) {
-			assert(ptr != NULL);
-		}
-
-		template <typename T>
 		static void SafeDelete(T* ptr) {
 			if (ptr != NULL) {
 				delete ptr;
 			}
 			ptr = NULL;
+		}
+
+		template <typename TCollection>
+		static void SafeDeleteCollectionOfPointers(TCollection col) {
+			col::iterator it;
+
+			for (it = col.begin(); it != col.end(); ++it) {
+				SafeDelete((*it));
+			}
 		}
 	};
 

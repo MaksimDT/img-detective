@@ -8,11 +8,12 @@
 namespace ImgDetective {
 namespace Core {
 
-	class FeatureExtractor {
+	ABSTRACT class FeatureExtractor {
 	public:
 		typedef std::vector<FeatureExtractor*> col_p_t;
-
 		virtual Feature* ExtractFrom(ImgInfo& imgInfo) = 0;
+	protected:
+		virtual ~FeatureExtractor() {};
 	};
 }
 }

@@ -1,10 +1,12 @@
 #pragma once
 
+#include "CommonInternal.h"
+
 namespace ImgDetective {
 namespace Core {
 
 	//represents a distance between two features of image
-	class FeatureDistance {
+	CONCRETE SEALED class FeatureDistance {
 	public:
 		FeatureDistance(double val);
 		double GetValue() const;

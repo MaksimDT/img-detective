@@ -7,12 +7,17 @@ using namespace std;
 namespace ImgDetective {
 namespace Core {
 
-	SearchSystem::SearchSystem(FeatureRepositoryBase* featureRepo, FeatureExtractor::col_p_t featureExtractors) {
+	SearchSystem::SearchSystem(IFeatureRepository* featureRepo, FeatureExtractor::col_p_t featureExtractors) {
 		Utils::Contract::AssertNotNull(featureRepo);
 		Utils::Contract::AssertNotEmpty(featureExtractors);
 
 		this->featureRepo = featureRepo;
 		this->featureExtractors = featureExtractors;
+	}
+
+	SearchSystem::~SearchSystem() {
+		Utils::Memory::SafeDelete(featureRepo);
+		Utils::Memory::SafeDeleteCollectionOfPointers(featureExtractors);
 	}
 
 	imgid_col_t SearchSystem::GetSimilarImgs(ImgQuery query) {
@@ -30,7 +35,12 @@ namespace Core {
 			return result;
 		}
 		catch (...) {
-			Utils::Memory::SafeDelete(imgInfo);
+			try {
+				Utils::Memory::SafeDelete(imgInfo);
+			}
+			catch (...) {
+				//TODO: logging
+			}
 			throw;
 		}
 	}

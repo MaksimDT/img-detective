@@ -16,14 +16,21 @@
     <ClInclude Include="..\include\FeatureDistance.h" />
     <ClInclude Include="..\include\FeatureExtractor.h" />
     <ClInclude Include="..\include\FeatureRepository.h" />
+    <ClInclude Include="..\include\IFeatureDeserializer.h" />
     <ClInclude Include="..\include\IFeatureRepository.h" />
+    <ClInclude Include="..\include\IndexStorage.h" />
     <ClInclude Include="..\include\IndexManager.h" />
-    <ClInclude Include="..\include\ImgContentsRepository.h" />
     <ClInclude Include="..\include\ImgInfo.h" />
+    <ClInclude Include="..\include\IndexNode.h" />
+    <ClInclude Include="..\include\IndexSeekResult.h" />
+    <ClInclude Include="..\include\LinearSearchIM.h" />
+    <ClInclude Include="..\include\MySqlIndexStorage.h" />
     <ClInclude Include="..\include\SearchSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\FeatureRepository.cpp" />
+    <ClCompile Include="..\src\LinearSearchIM.cpp" />
+    <ClCompile Include="..\src\MySqlIndexStorage.cpp" />
     <ClCompile Include="..\src\SearchSystem.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

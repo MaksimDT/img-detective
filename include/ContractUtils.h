@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <stdexcept>
+#include <string>
 
 namespace ImgDetective {
 namespace Utils {
@@ -45,6 +46,18 @@ namespace Utils {
 				assert(condition);
 			#else
 				if (condition) {
+					throw AssertFailedException(msg != NULL ? msg : "");
+				}
+			#endif
+		}
+
+		static void AssertNotEmpty(const std::string& str, char* msg = NULL) {
+			bool isEmpty = (str.length() == 0);
+
+			#ifdef _DEBUG
+				assert(isEmpty);
+			#else
+				if (isEmpty) {
 					throw AssertFailedException(msg != NULL ? msg : "");
 				}
 			#endif
