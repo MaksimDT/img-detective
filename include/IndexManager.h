@@ -10,18 +10,21 @@ namespace ImgDetective {
 namespace Core {
 
 	//contains logic of sorting features by similarity to feature of query image
-	ABSTRACT class IndexManager {
+	ABSTRACT NONCOPYABLE class IndexManager {
 	public:
 		typedef std::vector<IndexManager*> col_p_t;
+
+		virtual ~IndexManager();
 
 		virtual IndexSeekResult* Search(REF Feature& f, const REF ImgQuery& query) const = 0;
 		Feature::type_id_t GetFeatureTypeId() const;
 	protected:
-		IndexManager(IndexStorage* storage, Feature::type_id_t featureTypeId);
-		virtual ~IndexManager();
-
-		IndexStorage* storage;
+		CTOR IndexManager(EXCLUSIVE IndexStorage* storage, Feature::type_id_t featureTypeId);
+		
+		EXCLUSIVE IndexStorage* storage;
 	private:
+		COPYCTOR IndexManager(const REF IndexManager& other);
+
 		Feature::type_id_t featureTypeId;
 	};
 

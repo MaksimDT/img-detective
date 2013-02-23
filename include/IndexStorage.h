@@ -6,24 +6,34 @@
 namespace ImgDetective {
 namespace Core {
 
-	ABSTRACT class IndexStorage {
+	ABSTRACT NONCOPYABLE class IndexStorage {
 	public:
-		ABSTRACT NESTED class LookupSessionBase {
+		#pragma region NESTED
+
+		ABSTRACT NONCOPYABLE NESTED class LookupSessionBase {
 		public:
+			virtual ~LookupSessionBase() {};
+
 			virtual bool GetNextPacket(REF IndexNode::col_p_t& packet) = 0;
 		protected:
-			LookupSessionBase(const REF IFeatureDeserializer& featureDeserializer);
-			virtual ~LookupSessionBase();
-
+			CTOR LookupSessionBase(const REF IFeatureDeserializer& featureDeserializer);
+			
 			const REF IFeatureDeserializer& featureDeserializer;
+		private:
+			COPYCTOR LookupSessionBase(const REF LookupSessionBase& other);
 		};
+
+		#pragma endregion
+
+		virtual ~IndexStorage();
 
 		virtual LookupSessionBase* StartLookup() const = 0;
 	protected:
-		IndexStorage(IFeatureDeserializer* featureDeserializer);
-		virtual ~IndexStorage();
+		CTOR IndexStorage(EXCLUSIVE IFeatureDeserializer* featureDeserializer);
 
-		IFeatureDeserializer* featureDeserializer;
+		EXCLUSIVE IFeatureDeserializer* featureDeserializer;
+	private:
+		COPYCTOR IndexStorage(const REF IndexStorage& other);
 	};
 
 }

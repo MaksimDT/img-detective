@@ -17,7 +17,7 @@ namespace Utils {
 
 		template <typename TCollection>
 		static void SafeDeleteCollectionOfPointers(TCollection col) {
-			col::iterator it;
+			TCollection::iterator it;
 
 			for (it = col.begin(); it != col.end(); ++it) {
 				SafeDelete((*it));

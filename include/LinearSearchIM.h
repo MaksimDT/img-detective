@@ -10,10 +10,10 @@ namespace Core {
 	//reads features packet by packet from some data source
 	CONCRETE SEALED class LinearSearchIM : public IndexManager {
 	public:
-		LinearSearchIM(IndexStorage* storage, Feature::type_id_t featureTypeId);
+		CTOR LinearSearchIM(EXCLUSIVE IndexStorage* storage, Feature::type_id_t featureTypeId);
 
 		virtual IndexSeekResult* Search(REF Feature& f, const REF ImgQuery& query) const;
-	protected:
+	private:
 		void ProcessPacket(REF Feature& exampleFeature, REF IndexNode::col_p_t& packet, REF IndexSeekResult& result) const;
 	};
 

@@ -28,7 +28,13 @@
     <ClInclude Include="..\include\SearchSystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Feature.cpp" />
+    <ClCompile Include="..\src\FeatureDistance.cpp" />
     <ClCompile Include="..\src\FeatureRepository.cpp" />
+    <ClCompile Include="..\src\ImgInfo.cpp" />
+    <ClCompile Include="..\src\IndexManager.cpp" />
+    <ClCompile Include="..\src\IndexSeekResult.cpp" />
+    <ClCompile Include="..\src\IndexStorage.cpp" />
     <ClCompile Include="..\src\LinearSearchIM.cpp" />
     <ClCompile Include="..\src\MySqlIndexStorage.cpp" />
     <ClCompile Include="..\src\SearchSystem.cpp" />

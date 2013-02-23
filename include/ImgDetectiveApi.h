@@ -24,7 +24,7 @@ typedef struct {
 
 typedef struct {
 	long unsigned int contentSize;
-	unsigned char* content;
+	char* content;
 	char* mimeType;
 	imgid_t imgId;
 } ImgShortInfo;

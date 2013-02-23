@@ -4,10 +4,13 @@
 namespace ImgDetective {
 namespace Core {
 
+	CTOR LinearSearchIM::LinearSearchIM(EXCLUSIVE IndexStorage* storage, Feature::type_id_t featureTypeId)
+		: IndexManager(storage, featureTypeId) { }
+	
 	IndexSeekResult* LinearSearchIM::Search(REF Feature& f, const REF ImgQuery& query) const {
 		IndexSeekResult* result = new IndexSeekResult(this->GetFeatureTypeId());
 
-		IIndexStorage::ILookupSession* lookupSession = storage->StartLookup();
+		IndexStorage::LookupSessionBase* lookupSession = storage->StartLookup();
 
 		try {
 			IndexNode::col_p_t curPacket;

@@ -5,11 +5,11 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Program Files\ImageMagick-6.8.2-Q16\include; H:\boost_1_53_0; $(SolutionDir)\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>H:\boost_1_53_0; $(SolutionDir)\include; H:\GraphicsMagick-1.3.17;H:\GraphicsMagick-1.3.17\Magick++\lib;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Program Files\ImageMagick-6.8.2-Q16\lib; H:\boost_1_53_0\built_libs\$(Configuration);</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>H:\boost_1_53_0\built_libs\$(Configuration); H:\GraphicsMagick-1.3.17\VisualMagick\lib;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

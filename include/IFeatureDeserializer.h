@@ -8,9 +8,9 @@ namespace Core {
 
 	INTERFACE class IFeatureDeserializer {
 	public:
-		virtual Feature* DeserializeFeature(const REF blob_t blob) const = 0;
-	protected:
 		virtual ~IFeatureDeserializer();
+
+		virtual Feature* DeserializeFeature(const REF blob_t blob) const = 0;
 	};
 
 }

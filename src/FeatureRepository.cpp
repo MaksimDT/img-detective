@@ -45,7 +45,7 @@ namespace Core {
 		}
 
 		imgid_col_t result;
-		IndexSeekResult::entry_col::const_iterator it;
+		IndexSeekResult::entry_col_t::const_iterator it;
 
 		for (it = indexResults[0]->GetEntries().cbegin(); it != indexResults[0]->GetEntries().cend(); ++it) {
 			result.push_back(it->imgId);

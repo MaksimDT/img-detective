@@ -18,11 +18,13 @@ namespace Core {
 
 		type_id_t GetTypeId() const;
 		//computes a distance between two features
-		FeatureDistance ComputeDistanceTo(Feature& feature) const;
+		FeatureDistance ComputeDistanceTo(const REF Feature& feature) const;
 
 		virtual blob_p_t Serialize() const = 0;
 	protected:
-		FeatureDistance ComputeDistanceInternal(Feature& feature) const;
+		CTOR Feature(type_id_t typeId);
+
+		virtual FeatureDistance ComputeDistanceInternal(const REF Feature& feature) const = 0;
 	private:
 		type_id_t typeId;
 	};

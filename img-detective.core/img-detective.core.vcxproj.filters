@@ -80,5 +80,23 @@
     <ClCompile Include="..\src\MySqlIndexStorage.cpp">
       <Filter>Source Files\FeatureIndexing</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\IndexStorage.cpp">
+      <Filter>Source Files\FeatureIndexing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\IndexManager.cpp">
+      <Filter>Source Files\FeatureIndexing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\IndexSeekResult.cpp">
+      <Filter>Source Files\FeatureIndexing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ImgInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Feature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\FeatureDistance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
