@@ -3,6 +3,7 @@
 #include "Common.h"
 
 #include <vector>
+#include <boost/shared_ptr.hpp>
 
 /*
 Contains definitions for internal parts of system, not its API. API is a set of pure C functions, 
@@ -35,13 +36,18 @@ while this file may contain C++ definitions.
 of all class' resources that it exclusively owns in a class' destructor*/
 #define EXCLUSIVE
 
+#define BITS_PER_PIXEL sizeof(char)
+
 namespace ImgDetective {
 namespace Core {
 
+    typedef char pixel_tone_t;
+    typedef char byte_t;
 	typedef std::vector<imgid_t> imgid_col_t;
-	typedef std::vector<char> blob_t;
-	typedef std::vector<char>* blob_p_t;
+	typedef std::vector<byte_t> blob_t;
+	typedef boost::shared_ptr<std::vector<byte_t>> blob_p_t;
 
 	void ConvertToSearchResult(const REF imgid_col_t& imgIds, REF SearchResult& result);
+    blob_p_t CreateBlobOfSize(size_t blobSize);
 }
 }

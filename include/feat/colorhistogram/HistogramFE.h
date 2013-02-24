@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FeatureExtractor.h"
+#include "core/FeatureExtractor.h"
 
 namespace ImgDetective {
 namespace FeatureExtractor {

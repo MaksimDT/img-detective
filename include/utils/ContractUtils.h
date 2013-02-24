@@ -64,6 +64,10 @@ namespace Utils {
 			#endif
 		}
 
+        static void Ensure(bool condition, char* msg = NULL) {
+            Assert(condition, msg);
+        }
+
 		static void AssertNotEmpty(const std::string& str, char* msg = NULL) {
 			bool isEmpty = (str.length() == 0);
 
