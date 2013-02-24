@@ -10,10 +10,17 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\common\Common.h" />
+    <ClInclude Include="..\include\common\CommonInternal.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\common\CommonInternal.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{32140F8F-34B0-456D-BD6F-3D2DCD21C707}</ProjectGuid>
+    <ProjectGuid>{D5BCD8F9-9178-4FC5-B70C-D5DB4DE7E868}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>imgdetectiveutils</RootNamespace>
+    <RootNamespace>imgdetectivecommon</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -71,10 +78,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\include\utils\ContractUtils.h" />
-    <ClInclude Include="..\include\utils\MemoryUtils.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

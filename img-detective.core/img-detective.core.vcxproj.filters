@@ -21,81 +21,78 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\SearchSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\ImgInfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Feature.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\FeatureExtractor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\CommonInternal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\FeatureDistance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\FeatureRepository.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\IFeatureRepository.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\IndexManager.h">
+    <ClInclude Include="..\include\core\IFeatureDeserializer.h">
       <Filter>Header Files\FeatureIndexing</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\IndexSeekResult.h">
+    <ClInclude Include="..\include\core\IndexManager.h">
       <Filter>Header Files\FeatureIndexing</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\LinearSearchIM.h">
+    <ClInclude Include="..\include\core\IndexNode.h">
       <Filter>Header Files\FeatureIndexing</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\IndexNode.h">
+    <ClInclude Include="..\include\core\IndexSeekResult.h">
       <Filter>Header Files\FeatureIndexing</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MySqlIndexStorage.h">
+    <ClInclude Include="..\include\core\IndexStorage.h">
       <Filter>Header Files\FeatureIndexing</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\IndexStorage.h">
+    <ClInclude Include="..\include\core\LinearSearchIM.h">
       <Filter>Header Files\FeatureIndexing</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\IFeatureDeserializer.h">
+    <ClInclude Include="..\include\core\MySqlIndexStorage.h">
+      <Filter>Header Files\FeatureIndexing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\Feature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\FeatureDistance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\FeatureExtractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\FeatureRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\IFeatureRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\ImgInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\SearchSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\SearchSystem.cpp">
+    <ClCompile Include="..\src\core\IndexManager.cpp">
+      <Filter>Source Files\FeatureIndexing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\IndexSeekResult.cpp">
+      <Filter>Source Files\FeatureIndexing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\IndexStorage.cpp">
+      <Filter>Source Files\FeatureIndexing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\LinearSearchIM.cpp">
+      <Filter>Source Files\FeatureIndexing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\MySqlIndexStorage.cpp">
+      <Filter>Source Files\FeatureIndexing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\Feature.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\FeatureRepository.cpp">
+    <ClCompile Include="..\src\core\FeatureDistance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\LinearSearchIM.cpp">
-      <Filter>Source Files\FeatureIndexing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\MySqlIndexStorage.cpp">
-      <Filter>Source Files\FeatureIndexing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\IndexStorage.cpp">
-      <Filter>Source Files\FeatureIndexing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\IndexManager.cpp">
-      <Filter>Source Files\FeatureIndexing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\IndexSeekResult.cpp">
-      <Filter>Source Files\FeatureIndexing</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ImgInfo.cpp">
+    <ClCompile Include="..\src\core\FeatureRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Feature.cpp">
+    <ClCompile Include="..\src\core\ImgInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\FeatureDistance.cpp">
+    <ClCompile Include="..\src\core\SearchSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

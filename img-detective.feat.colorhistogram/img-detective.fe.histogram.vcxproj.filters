@@ -15,11 +15,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\utils\ContractUtils.h">
+    <ClInclude Include="..\include\feat\colorhistogram\HistogramFE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\utils\MemoryUtils.h">
+    <ClInclude Include="..\include\feat\colorhistogram\HistogramFeat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\feat\colorhistogram\HistogramIM.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\feat\colorhistogram\HistogramFeat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

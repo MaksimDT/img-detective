@@ -11,33 +11,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\CommonInternal.h" />
-    <ClInclude Include="..\include\Feature.h" />
-    <ClInclude Include="..\include\FeatureDistance.h" />
-    <ClInclude Include="..\include\FeatureExtractor.h" />
-    <ClInclude Include="..\include\FeatureRepository.h" />
-    <ClInclude Include="..\include\IFeatureDeserializer.h" />
-    <ClInclude Include="..\include\IFeatureRepository.h" />
-    <ClInclude Include="..\include\IndexStorage.h" />
-    <ClInclude Include="..\include\IndexManager.h" />
-    <ClInclude Include="..\include\ImgInfo.h" />
-    <ClInclude Include="..\include\IndexNode.h" />
-    <ClInclude Include="..\include\IndexSeekResult.h" />
-    <ClInclude Include="..\include\LinearSearchIM.h" />
-    <ClInclude Include="..\include\MySqlIndexStorage.h" />
-    <ClInclude Include="..\include\SearchSystem.h" />
+    <ClInclude Include="..\include\core\Feature.h" />
+    <ClInclude Include="..\include\core\FeatureDistance.h" />
+    <ClInclude Include="..\include\core\FeatureExtractor.h" />
+    <ClInclude Include="..\include\core\FeatureRepository.h" />
+    <ClInclude Include="..\include\core\IFeatureDeserializer.h" />
+    <ClInclude Include="..\include\core\IFeatureRepository.h" />
+    <ClInclude Include="..\include\core\ImgInfo.h" />
+    <ClInclude Include="..\include\core\IndexManager.h" />
+    <ClInclude Include="..\include\core\IndexNode.h" />
+    <ClInclude Include="..\include\core\IndexSeekResult.h" />
+    <ClInclude Include="..\include\core\IndexStorage.h" />
+    <ClInclude Include="..\include\core\LinearSearchIM.h" />
+    <ClInclude Include="..\include\core\MySqlIndexStorage.h" />
+    <ClInclude Include="..\include\core\SearchSystem.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Feature.cpp" />
-    <ClCompile Include="..\src\FeatureDistance.cpp" />
-    <ClCompile Include="..\src\FeatureRepository.cpp" />
-    <ClCompile Include="..\src\ImgInfo.cpp" />
-    <ClCompile Include="..\src\IndexManager.cpp" />
-    <ClCompile Include="..\src\IndexSeekResult.cpp" />
-    <ClCompile Include="..\src\IndexStorage.cpp" />
-    <ClCompile Include="..\src\LinearSearchIM.cpp" />
-    <ClCompile Include="..\src\MySqlIndexStorage.cpp" />
-    <ClCompile Include="..\src\SearchSystem.cpp" />
+    <ClCompile Include="..\src\core\Feature.cpp" />
+    <ClCompile Include="..\src\core\FeatureDistance.cpp" />
+    <ClCompile Include="..\src\core\FeatureRepository.cpp" />
+    <ClCompile Include="..\src\core\ImgInfo.cpp" />
+    <ClCompile Include="..\src\core\IndexManager.cpp" />
+    <ClCompile Include="..\src\core\IndexSeekResult.cpp" />
+    <ClCompile Include="..\src\core\IndexStorage.cpp" />
+    <ClCompile Include="..\src\core\LinearSearchIM.cpp" />
+    <ClCompile Include="..\src\core\MySqlIndexStorage.cpp" />
+    <ClCompile Include="..\src\core\SearchSystem.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E3092FB6-4F3D-4C22-8AB8-32808330F221}</ProjectGuid>

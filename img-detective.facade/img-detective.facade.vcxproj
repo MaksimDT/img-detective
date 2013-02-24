@@ -77,15 +77,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\ImgDetectiveApi.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\ImgDetectiveApi.cpp" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\img-detective.common\img-detective.common.vcxproj">
+      <Project>{d5bcd8f9-9178-4fc5-b70c-d5db4de7e868}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\img-detective.core\img-detective.core.vcxproj">
       <Project>{e3092fb6-4f3d-4c22-8ab8-32808330f221}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\facade\ImgDetectiveApi.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\facade\ImgDetectiveApi.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
