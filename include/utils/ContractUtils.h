@@ -17,12 +17,12 @@ namespace Utils {
 	public:
 		template <typename T>
 		static void AssertNotNull(T* ptr, char* msg = NULL) {
-			bool isNull = (ptr == NULL);
+			bool isNotNull = (ptr != NULL);
 
 			#ifdef _DEBUG
-				assert(isNull);
+				assert(isNotNull);
 			#else
-				if (isNull) {
+				if (isNotNull) {
 					throw AssertFailedException(msg != NULL ? msg : "");
 				}
 			#endif
@@ -30,12 +30,12 @@ namespace Utils {
 
 		template <typename T>
 		static void AssertIsNull(T* ptr, char* msg = NULL) {
-			bool isNotNull = (ptr != NULL);
+			bool isNull = (ptr == NULL);
 
 			#ifdef _DEBUG
-				assert(isNotNull);
+				assert(isNull);
 			#else
-				if (isNotNull) {
+				if (isNull) {
 					throw AssertFailedException(msg != NULL ? msg : "");
 				}
 			#endif

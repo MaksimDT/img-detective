@@ -11,9 +11,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\tests\core\common_tests.cpp" />
     <ClCompile Include="..\src\tests\core\index_seek_result_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\img-detective.common\img-detective.common.vcxproj">
+      <Project>{d5bcd8f9-9178-4fc5-b70c-d5db4de7e868}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\img-detective.core\img-detective.core.vcxproj">
       <Project>{e3092fb6-4f3d-4c22-8ab8-32808330f221}</Project>
     </ProjectReference>
