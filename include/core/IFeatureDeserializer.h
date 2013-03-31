@@ -6,11 +6,9 @@
 namespace ImgDetective {
 namespace Core {
 
-	INTERFACE class IFeatureDeserializer {
+    INTERFACE class IFeatureDeserializer : NONCOPYABLE, HAS_VIRTUAL_DESCTUCTOR {
 	public:
-		virtual ~IFeatureDeserializer();
-
-		virtual Feature* DeserializeFeature(const REF blob_t blob) const = 0;
+		virtual IFeature* DeserializeFeature(const REF blob_t blob) const = 0;
 	};
 
 }

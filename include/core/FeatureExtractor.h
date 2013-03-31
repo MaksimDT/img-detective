@@ -8,15 +8,21 @@
 namespace ImgDetective {
 namespace Core {
 
-	ABSTRACT class FeatureExtractor {
-	public:
-		typedef std::vector<FeatureExtractor*> col_p_t;
+    INTERFACE class IFeatureExtractor : NONCOPYABLE, HAS_VIRTUAL_DESCTUCTOR {
+    public:
+        typedef std::vector<IFeatureExtractor*> col_p_t;
 
-		virtual ~FeatureExtractor() {};
+        virtual IFeature* ExtractFrom(const REF ImgInfo& imgInfo) = 0;
+    private:
+        COPYCTOR IFeatureExtractor(const REF IFeatureExtractor& other);
+    };
 
-		virtual Feature* ExtractFrom(ImgInfo& imgInfo) = 0;
+    ABSTRACT class FeatureExtractor : public IFeatureExtractor {
 	protected:
-		
+        CTOR FeatureExtractor(IFeature::type_id_t featureTypeId);
+        IFeature::type_id_t GetFeatureTypeId() const;
+    private:
+        IFeature::type_id_t featureTypeId;
 	};
 }
 }

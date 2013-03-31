@@ -8,7 +8,7 @@ namespace Core {
 		return typeId;
 	}
 
-	FeatureDistance Feature::ComputeDistanceTo(const REF Feature& feature) const {
+	FeatureDistance Feature::ComputeDistanceTo(const REF IFeature& feature) const {
 		Utils::Contract::Assert(this->GetTypeId() == feature.GetTypeId());
 
 		return ComputeDistanceInternal(REF feature);

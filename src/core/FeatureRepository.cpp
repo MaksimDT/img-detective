@@ -26,11 +26,11 @@ namespace Core {
 		std::vector<IndexSeekResult*> indexResults;
 		indexResults.reserve(exampleFeatSet.size());
 
-		Feature::col_p_t::const_iterator it;
+		IFeature::col_p_t::const_iterator it;
 		for (it = exampleFeatSet.begin(); it != exampleFeatSet.end(); ++it) {
-			Feature* pFeature = *it;
+			IFeature* pFeature = *it;
 			Feature::type_id_t featTypeId = pFeature->GetTypeId();
-			IndexManager* im = GetIndexManager(featTypeId);
+			IIndexManager* im = GetIndexManager(featTypeId);
 
 			if (im != NULL) {
 				IndexSeekResult* seekResult = im->Search(*pFeature, initialQuery);
@@ -42,11 +42,11 @@ namespace Core {
 		return FuseResults(REF indexResults, REF initialQuery);
 	}
 
-	IndexManager* FeatureRepository::GetIndexManager(Feature::type_id_t featureTypeId) const {
-		IndexManager::col_p_t::const_iterator it;
+	IIndexManager* FeatureRepository::GetIndexManager(Feature::type_id_t featureTypeId) const {
+		IIndexManager::col_p_t::const_iterator it;
 
 		for (it = indexManagers.cbegin(); it != indexManagers.cend(); ++it) {
-			IndexManager* im = *it;
+			IIndexManager* im = *it;
 			if (im->GetFeatureTypeId() == featureTypeId) {
 				return im;
 			}

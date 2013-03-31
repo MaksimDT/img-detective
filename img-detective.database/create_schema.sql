@@ -8,6 +8,7 @@ USE `img_detective`;
 
 CREATE TABLE `Images` (
     `Id` BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `Path` VARCHAR(1024) NULL,
     `CreationDate` DATETIME,
     `Description` TEXT NULL
 ) ENGINE = InnoDB;

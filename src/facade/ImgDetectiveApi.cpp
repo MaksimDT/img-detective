@@ -3,6 +3,9 @@
 #include "core/SearchSystem.h"
 #include "core/FeatureRepository.h"
 #include "utils/MemoryUtils.h"
+#include "core/Indexer.h"
+#include "core/FsImgStorage.h"
+#include "core/RDBMSImgMetadataStorage.h"
 
 using namespace ImgDetective;
 
@@ -29,7 +32,13 @@ SearchResult SearchByExample(ImgQuery query) {
 }
 
 UploadImgResult UploadImg(ImgShortInfo imgInfo) {
-	UploadImgResult result;
+    Core::FsImgStorage imgContentStorage("img_detective_test");
+    Core::RDBMSImgMetadataStorage imgMetadataStorage;
+    Core::FeatureExtractor::col_p_t featureExtractors;
+
+    Core::Indexer indexer(REF imgContentStorage, REF imgMetadataStorage, featureExtractors);
+
+	UploadImgResult result = indexer.UploadImg(imgInfo);
 	result.opStatus = OPSTATUS_INTERNAL_ERROR;
 	return result;
 }

@@ -12,7 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\tests\core\common_tests.cpp" />
+    <ClCompile Include="..\src\tests\core\filesystem_utils_tests.cpp" />
+    <ClCompile Include="..\src\tests\core\image_parsing_tests.cpp" />
     <ClCompile Include="..\src\tests\core\index_seek_result_tests.cpp" />
+    <ClCompile Include="..\src\tests\core\memory_utils_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\img-detective.common\img-detective.common.vcxproj">
@@ -20,6 +23,9 @@
     </ProjectReference>
     <ProjectReference Include="..\img-detective.core\img-detective.core.vcxproj">
       <Project>{e3092fb6-4f3d-4c22-8ab8-32808330f221}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\img-detective.utils\img-detective.utils.vcxproj">
+      <Project>{32140f8f-34b0-456d-bd6f-3d2dcd21c707}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">

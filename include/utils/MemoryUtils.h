@@ -1,6 +1,7 @@
 #pragma once
 
 #include <assert.h>
+#include "common/CommonInternal.h"
 
 namespace ImgDetective {
 namespace Utils {
@@ -8,7 +9,7 @@ namespace Utils {
 	class Memory {
 	public:
 		template <typename T>
-		static void SafeDelete(T* ptr) {
+		static void SafeDelete(REF T*& ptr) {
 			if (ptr != NULL) {
 				delete ptr;
 			}
@@ -16,13 +17,26 @@ namespace Utils {
 		}
 
 		template <typename TCollection>
-		static void SafeDeleteCollectionOfPointers(TCollection col) {
+		static void SafeDeleteCollectionOfPointers(REF TCollection& col) {
 			TCollection::iterator it;
 
 			for (it = col.begin(); it != col.end(); ++it) {
-				SafeDelete((*it));
+                if (*it != NULL) {
+				    delete *it;
+                    *it = NULL;
+                }
 			}
+
+            col.clear();
 		}
+
+        template <typename T>
+        static void SafeDeleteArray(REF T*& ptr) {
+            if (ptr != NULL) {
+                delete[] ptr;
+                ptr = NULL;
+            }
+        }
 	};
 
 }

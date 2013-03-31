@@ -1,12 +1,9 @@
 #include "common/CommonInternal.h"
-#include "utils/ContractUtils.h"
 
 namespace ImgDetective  {
 namespace Core {
 
 	void ConvertToSearchResult(const REF imgid_col_t& imgIds, REF SearchResult& result) {
-		Utils::Contract::AssertIsNull(result.items);
-
 		result.arraySize = imgIds.size();
 		if (imgIds.size() != 0) {
 			result.items = new imgid_t[imgIds.size()];
@@ -20,5 +17,30 @@ namespace Core {
 		}
 	}
 
+    blob_p_t CreateBlobOfSize(size_t blobSize) {
+        blob_p_t blob = new blob_t();
+        blob->resize(blobSize);
+
+        return blob;
+    }
+    
+    void SafeFreeBlob(REF blob_p_t& blob) {
+        if (blob != NULL) {
+            delete blob;
+        }
+    }
+
+    char* BlobToCharArray(blob_p_t blob) {
+        if (blob != NULL) {
+            return blob->data();
+        }
+        else {
+            return NULL;
+        }
+    }
+
+    bool IsValidImgId(imgid_t imgId) {
+        return imgId > 0;
+    }
 }
 }

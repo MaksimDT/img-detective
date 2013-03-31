@@ -73,7 +73,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\utils\ContractUtils.h" />
+    <ClInclude Include="..\include\utils\FileSystemUtils.h" />
+    <ClInclude Include="..\include\utils\MathUtils.h" />
     <ClInclude Include="..\include\utils\MemoryUtils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\utils\FileSystemUtils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

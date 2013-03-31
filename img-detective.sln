@@ -2,24 +2,47 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "img-detective.core", "img-detective.core\img-detective.core.vcxproj", "{E3092FB6-4F3D-4C22-8AB8-32808330F221}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B4F00DCF-1719-430C-A847-1031D8B678F8} = {B4F00DCF-1719-430C-A847-1031D8B678F8}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "img-detective.ui", "img-detective.ui\img-detective.ui.csproj", "{1F3ADAA8-8CB7-4E4E-937E-D0F597347835}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B4F00DCF-1719-430C-A847-1031D8B678F8} = {B4F00DCF-1719-430C-A847-1031D8B678F8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "img-detective.utils", "img-detective.utils\img-detective.utils.vcxproj", "{32140F8F-34B0-456D-BD6F-3D2DCD21C707}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B4F00DCF-1719-430C-A847-1031D8B678F8} = {B4F00DCF-1719-430C-A847-1031D8B678F8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "img-detective.facade", "img-detective.facade\img-detective.facade.vcxproj", "{37A4F2A1-C4F7-4AF4-A5E4-28A3A091F8AE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B4F00DCF-1719-430C-A847-1031D8B678F8} = {B4F00DCF-1719-430C-A847-1031D8B678F8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "img-detective.core.tests", "img-detective.core.tests\img-detective.core.tests.vcxproj", "{62DDAD5F-AA2E-446C-829A-1C91E9A21D8D}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "img-detective.feat.colorhistogram", "img-detective.feat.colorhistogram\img-detective.fe.histogram.vcxproj", "{E41B94C6-F528-43CA-AB00-275E20FBDEF8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B4F00DCF-1719-430C-A847-1031D8B678F8} = {B4F00DCF-1719-430C-A847-1031D8B678F8}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "img-detective.common", "img-detective.common\img-detective.common.vcxproj", "{D5BCD8F9-9178-4FC5-B70C-D5DB4DE7E868}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B4F00DCF-1719-430C-A847-1031D8B678F8} = {B4F00DCF-1719-430C-A847-1031D8B678F8}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "img-detective.database", "img-detective.database", "{C3F23EFC-A325-43D6-A492-B3D0677BFAE3}"
 	ProjectSection(SolutionItems) = preProject
 		img-detective.database\create_schema.sql = img-detective.database\create_schema.sql
 		img-detective.database\initial_data.sql = img-detective.database\initial_data.sql
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "img-detective.modules.colorhistogram", "img-detective.modules.colorhistogram\img-detective.modules.colorhistogram.vcxproj", "{E41B94C6-F528-43CA-AB00-275E20FBDEF8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B4F00DCF-1719-430C-A847-1031D8B678F8} = {B4F00DCF-1719-430C-A847-1031D8B678F8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "img-detective.prebuild", "img-detective.prebuild\img-detective.prebuild.vcxproj", "{B4F00DCF-1719-430C-A847-1031D8B678F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,16 +104,6 @@ Global
 		{62DDAD5F-AA2E-446C-829A-1C91E9A21D8D}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{62DDAD5F-AA2E-446C-829A-1C91E9A21D8D}.Release|Win32.ActiveCfg = Release|Win32
 		{62DDAD5F-AA2E-446C-829A-1C91E9A21D8D}.Release|Win32.Build.0 = Release|Win32
-		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Debug|Win32.ActiveCfg = Debug|Win32
-		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Debug|Win32.Build.0 = Debug|Win32
-		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Release|Any CPU.ActiveCfg = Release|Win32
-		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Release|Win32.ActiveCfg = Release|Win32
-		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Release|Win32.Build.0 = Release|Win32
 		{D5BCD8F9-9178-4FC5-B70C-D5DB4DE7E868}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{D5BCD8F9-9178-4FC5-B70C-D5DB4DE7E868}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
 		{D5BCD8F9-9178-4FC5-B70C-D5DB4DE7E868}.Debug|Mixed Platforms.Build.0 = Debug|Win32
@@ -101,6 +114,26 @@ Global
 		{D5BCD8F9-9178-4FC5-B70C-D5DB4DE7E868}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{D5BCD8F9-9178-4FC5-B70C-D5DB4DE7E868}.Release|Win32.ActiveCfg = Release|Win32
 		{D5BCD8F9-9178-4FC5-B70C-D5DB4DE7E868}.Release|Win32.Build.0 = Release|Win32
+		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Debug|Win32.Build.0 = Debug|Win32
+		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Release|Any CPU.ActiveCfg = Release|Win32
+		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Release|Win32.ActiveCfg = Release|Win32
+		{E41B94C6-F528-43CA-AB00-275E20FBDEF8}.Release|Win32.Build.0 = Release|Win32
+		{B4F00DCF-1719-430C-A847-1031D8B678F8}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{B4F00DCF-1719-430C-A847-1031D8B678F8}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{B4F00DCF-1719-430C-A847-1031D8B678F8}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{B4F00DCF-1719-430C-A847-1031D8B678F8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B4F00DCF-1719-430C-A847-1031D8B678F8}.Debug|Win32.Build.0 = Debug|Win32
+		{B4F00DCF-1719-430C-A847-1031D8B678F8}.Release|Any CPU.ActiveCfg = Release|Win32
+		{B4F00DCF-1719-430C-A847-1031D8B678F8}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{B4F00DCF-1719-430C-A847-1031D8B678F8}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{B4F00DCF-1719-430C-A847-1031D8B678F8}.Release|Win32.ActiveCfg = Release|Win32
+		{B4F00DCF-1719-430C-A847-1031D8B678F8}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

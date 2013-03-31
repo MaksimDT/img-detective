@@ -10,7 +10,7 @@ namespace Core {
 	struct IndexNode {
 		typedef std::vector<IndexNode*> col_p_t;
 		imgid_t imgId;
-		Feature* feature;
+		IFeature* feature;
 	};
 
 }

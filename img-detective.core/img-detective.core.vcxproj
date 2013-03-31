@@ -11,19 +11,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\core\DbWrapper.h" />
     <ClInclude Include="..\include\core\Feature.h" />
     <ClInclude Include="..\include\core\FeatureDistance.h" />
     <ClInclude Include="..\include\core\FeatureExtractor.h" />
     <ClInclude Include="..\include\core\FeatureRepository.h" />
+    <ClInclude Include="..\include\core\FsImgStorage.h" />
     <ClInclude Include="..\include\core\IFeatureDeserializer.h" />
-    <ClInclude Include="..\include\core\IFeatureRepository.h" />
+    <ClInclude Include="..\include\core\ImgContentStorage.h" />
     <ClInclude Include="..\include\core\ImgInfo.h" />
+    <ClInclude Include="..\include\core\ImgMetadataStorage.h" />
+    <ClInclude Include="..\include\core\Indexer.h" />
     <ClInclude Include="..\include\core\IndexManager.h" />
     <ClInclude Include="..\include\core\IndexNode.h" />
     <ClInclude Include="..\include\core\IndexSeekResult.h" />
     <ClInclude Include="..\include\core\IndexStorage.h" />
     <ClInclude Include="..\include\core\LinearSearchIM.h" />
-    <ClInclude Include="..\include\core\MySqlIndexStorage.h" />
+    <ClInclude Include="..\include\core\MySqlDbWrapper.h" />
+    <ClInclude Include="..\include\core\mysqlheaders.h" />
+    <ClInclude Include="..\include\core\RDBMSImgMetadataStorage.h" />
+    <ClInclude Include="..\include\core\RDBMSIndexStorage.h" />
     <ClInclude Include="..\include\core\SearchSystem.h" />
   </ItemGroup>
   <ItemGroup>
@@ -31,11 +38,13 @@
     <ClCompile Include="..\src\core\FeatureDistance.cpp" />
     <ClCompile Include="..\src\core\FeatureRepository.cpp" />
     <ClCompile Include="..\src\core\ImgInfo.cpp" />
+    <ClCompile Include="..\src\core\Indexer.cpp" />
     <ClCompile Include="..\src\core\IndexManager.cpp" />
     <ClCompile Include="..\src\core\IndexSeekResult.cpp" />
     <ClCompile Include="..\src\core\IndexStorage.cpp" />
     <ClCompile Include="..\src\core\LinearSearchIM.cpp" />
-    <ClCompile Include="..\src\core\MySqlIndexStorage.cpp" />
+    <ClCompile Include="..\src\core\MySqlDbWrapper.cpp" />
+    <ClCompile Include="..\src\core\RDBMSIndexStorage.cpp" />
     <ClCompile Include="..\src\core\SearchSystem.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -82,11 +91,18 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(BoostDir); $(SolutionDir)\include; $(GraphicsMagickDir);$(GraphicsMagickDir)\Magick++\lib; $(MySqlConnectorDir)\include; $(ThirdPartyLibsDir)\glog\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>libglog.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(ThirdPartyLibsDir)\glog\bin\$(Configuration);</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

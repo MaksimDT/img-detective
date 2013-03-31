@@ -19,11 +19,24 @@ namespace Core {
 		}
 		catch (std::exception ex) {
 			//TODO: logging
-			throw std::exception("Error occured while parsing provided image data");
+			throw;
 		}
 
 		return parsedImg;
 	}
+
+    imgid_t ImgInfo::GetId() const {
+        return this->imgId;
+    }
+
+    void ImgInfo::SetId(imgid_t imgId) {
+        Utils::Contract::Assert(imgId > 0);
+        this->imgId = imgId;
+    }
+
+    Magick::Image& ImgInfo::GetMagickImage() {
+        return magickImg;
+    }
 
 	CTOR ImgInfo::ImgInfo(const REF Magick::Image& magickImg) {
 		this->magickImg = magickImg;

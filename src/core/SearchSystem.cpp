@@ -7,7 +7,7 @@ using namespace std;
 namespace ImgDetective {
 namespace Core {
 
-	SearchSystem::SearchSystem(IFeatureRepository* featureRepo, FeatureExtractor::col_p_t featureExtractors) {
+    SearchSystem::SearchSystem(EXCLUSIVE IFeatureRepository* featureRepo, FeatureExtractor::col_p_t featureExtractors) {
 		Utils::Contract::AssertNotNull(featureRepo);
 		Utils::Contract::AssertNotEmpty(featureExtractors);
 
@@ -45,12 +45,12 @@ namespace Core {
 		}
 	}
 
-	Feature::col_p_t SearchSystem::ExtractFeatures(ImgInfo& imgInfo, ImgQuery query) {
+	IFeature::col_p_t SearchSystem::ExtractFeatures(ImgInfo& imgInfo, ImgQuery query) {
 		FeatureExtractor::col_p_t::iterator it;
-		Feature::col_p_t result;
+		IFeature::col_p_t result;
 
 		for (it = featureExtractors.begin(); it != featureExtractors.end(); ++it) {
-			Feature* f = (*it)->ExtractFrom(imgInfo);
+			IFeature* f = (*it)->ExtractFrom(imgInfo);
 			result.push_back(f);
 		}
 

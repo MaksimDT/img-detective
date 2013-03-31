@@ -21,8 +21,8 @@ namespace Core {
 
 		typedef std::list<entry_t> entry_col_t;
 
-		CTOR IndexSeekResult(Feature::type_id_t featureTypeId);
-		Feature::type_id_t GetFeatureTypeId() const;
+		CTOR IndexSeekResult(IFeature::type_id_t featureTypeId);
+		IFeature::type_id_t GetFeatureTypeId() const;
 
 		//inserts the specified entry in the underlying sorted collection
 		void Insert(imgid_t imgId, const REF FeatureDistance& distance);
@@ -31,7 +31,7 @@ namespace Core {
 		const REF entry_col_t& GetEntries() const;
 		void ApplyWeightCoeff(double coeff);
 	private:
-		Feature::type_id_t featureTypeId;
+		IFeature::type_id_t featureTypeId;
 		entry_col_t entries;
 	};
 
