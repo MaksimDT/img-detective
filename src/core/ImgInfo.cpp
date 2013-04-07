@@ -40,6 +40,7 @@ namespace Core {
 
 	CTOR ImgInfo::ImgInfo(const REF Magick::Image& magickImg) {
 		this->magickImg = magickImg;
+        this->imgId = IMGID_UNDEFINED;
 	}
 }
 }

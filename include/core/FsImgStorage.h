@@ -19,7 +19,7 @@ namespace Core {
 
         FsImgStorage(const REF std::string& baseDirPath);
         
-        virtual std::string Write(ImgShortInfo imgInfo, imgid_t imgId);
+        virtual void Write(REF ImgInfo& img);
     private:
         std::string baseDirPath;
     };

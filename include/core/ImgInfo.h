@@ -2,7 +2,9 @@
 
 #include "common/CommonInternal.h"
 #include <string>
+#pragma warning(push, 0)        
 #include <Magick++.h>
+#pragma warning(pop)
 
 namespace ImgDetective {
 namespace Core {

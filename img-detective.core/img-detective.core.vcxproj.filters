@@ -19,6 +19,9 @@
     <Filter Include="Source Files\FeatureIndexing">
       <UniqueIdentifier>{19864e70-fd76-4867-91fe-8742d91db9ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Db">
+      <UniqueIdentifier>{0322328c-f254-4bbb-aa7b-96f9c9aaef0e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\core\IndexManager.h">
@@ -60,16 +63,7 @@
     <ClInclude Include="..\include\core\RDBMSIndexStorage.h">
       <Filter>Header Files\FeatureIndexing</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\core\mysqlheaders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\core\DbWrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\core\FsImgStorage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\core\MySqlDbWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\core\Indexer.h">
@@ -83,6 +77,15 @@
     </ClInclude>
     <ClInclude Include="..\include\core\RDBMSImgMetadataStorage.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\DbWrapper.h">
+      <Filter>Header Files\Db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\MySqlDbWrapper.h">
+      <Filter>Header Files\Db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\mysqlheaders.h">
+      <Filter>Header Files\Db</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +123,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\core\Indexer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\RDBMSImgMetadataStorage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

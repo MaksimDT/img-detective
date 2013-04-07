@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include "common/CommonInternal.h"
+#include "utils/ContractUtils.h"
 
 namespace ImgDetective {
 namespace Utils {
