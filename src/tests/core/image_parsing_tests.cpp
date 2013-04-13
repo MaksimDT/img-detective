@@ -20,9 +20,13 @@ BOOST_AUTO_TEST_CASE(parse_jpeg_test) {
 
     parsedImg = Core::ImgInfo::Create(imgShortInfo);
     BOOST_ASSERT(parsedImg != NULL);
+    off_t fileSize = parsedImg->GetMagickImage().fileSize();
 
-    BOOST_CHECK(parsedImg->GetMagickImage().size().width() == 1600);
-    BOOST_CHECK(parsedImg->GetMagickImage().size().height() == 1200);
+    unsigned int actualWidth = parsedImg->GetMagickImage().size().width();
+    unsigned int actualHeight = parsedImg->GetMagickImage().size().height();
+
+    BOOST_CHECK(actualWidth == 1600);
+    BOOST_CHECK(actualHeight == 1200);
 
     Core::SafeFreeBlob(blob);
     Utils::Memory::SafeDelete(parsedImg);

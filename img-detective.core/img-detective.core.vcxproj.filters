@@ -22,6 +22,12 @@
     <Filter Include="Header Files\Db">
       <UniqueIdentifier>{0322328c-f254-4bbb-aa7b-96f9c9aaef0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Db\mysql">
+      <UniqueIdentifier>{b23d909d-bc92-45a6-b076-2ca89b783ace}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Db">
+      <UniqueIdentifier>{839ea9da-abbc-4714-bd6f-89073d9e72c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\core\IndexManager.h">
@@ -81,11 +87,35 @@
     <ClInclude Include="..\include\core\DbWrapper.h">
       <Filter>Header Files\Db</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\core\MySqlDbWrapper.h">
-      <Filter>Header Files\Db</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\core\mysqlheaders.h">
       <Filter>Header Files\Db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\DbType.h">
+      <Filter>Header Files\Db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\BindInfo.h">
+      <Filter>Header Files\Db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\DbResultReader.h">
+      <Filter>Header Files\Db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\MySqlDbWrapper.h">
+      <Filter>Header Files\Db\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\MySqlResultReader.h">
+      <Filter>Header Files\Db\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\MySqlConnectionSettings.h">
+      <Filter>Header Files\Db\mysql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\FieldValue.h">
+      <Filter>Header Files\Db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\FieldsDictionary.h">
+      <Filter>Header Files\Db</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\MySqlTypesHelper.h">
+      <Filter>Header Files\Db\mysql</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -119,14 +149,23 @@
     <ClCompile Include="..\src\core\RDBMSIndexStorage.cpp">
       <Filter>Source Files\FeatureIndexing</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\MySqlDbWrapper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\core\Indexer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\core\RDBMSImgMetadataStorage.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\MySqlDbWrapper.cpp">
+      <Filter>Source Files\Db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\BindInfo.cpp">
+      <Filter>Source Files\Db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\MySqlTypesHelper.cpp">
+      <Filter>Source Files\Db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\MySqlResultReader.cpp">
+      <Filter>Source Files\Db</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

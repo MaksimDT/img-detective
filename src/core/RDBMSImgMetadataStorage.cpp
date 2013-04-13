@@ -3,13 +3,13 @@
 namespace ImgDetective {
 namespace Core {
 
-    CTOR RDBMSImgMetadataStorage::RDBMSImgMetadataStorage(REF DbWrapper& dbWrapper) 
+    CTOR RDBMSImgMetadataStorage::RDBMSImgMetadataStorage(REF Db::DbWrapper& dbWrapper) 
         : dbWrapper(dbWrapper) {
     }
 
     void RDBMSImgMetadataStorage::InitImgRecord(REF ImgInfo& imgInfo) const {
-        DbWrapper::params_list_t params;
-        DbWrapper::ParamInfo imgId;
+        /*Db::params_list_t params;
+        Db::DbParamBuffer imgId;*/
 
         
     }

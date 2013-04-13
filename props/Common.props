@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros">
     <BoostDir>H:\boost_1_53_0</BoostDir>
     <GraphicsMagickDir>H:\GraphicsMagick-1.3.17</GraphicsMagickDir>
-    <MySqlConnectorDir>C:\Program Files\MySQL\MySQL Connector C 6.0.2</MySqlConnectorDir>
+    <MySqlConnectorDir>C:\Program Files (x86)\MySQL\MySQL Connector C 6.0.2</MySqlConnectorDir>
     <ThirdPartyLibsDir>$(SolutionDir)\..\libs</ThirdPartyLibsDir>
     <ResourcesDir>$(SolutionDir)\resources</ResourcesDir>
   </PropertyGroup>

@@ -61,7 +61,7 @@ namespace Core {
 
     class RDBMSIndexStorage::Impl {
     public:
-        Impl(const REF IFeatureDeserializer& featureDeserializer, const REF DbWrapper& dbWrapper, unsigned int packetSize);
+        Impl(const REF IFeatureDeserializer& featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize);
         IIndexStorage::ILookupSession* StartLookup() const;
         void AddFeature(const REF IFeature& feature, imgid_t imgId);
     private:
@@ -69,11 +69,11 @@ namespace Core {
         void CloseConnectionToDb(MYSQL* connection);
 
         const REF IFeatureDeserializer& featureDeserializer;
-        const REF DbWrapper& dbWrapper;
+        const REF Db::DbWrapper& dbWrapper;
         unsigned int packetSize;
     };
 
-    RDBMSIndexStorage::Impl::Impl(const REF IFeatureDeserializer& featureDeserializer, const REF DbWrapper& dbWrapper, unsigned int packetSize)
+    RDBMSIndexStorage::Impl::Impl(const REF IFeatureDeserializer& featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize)
         : featureDeserializer(featureDeserializer), dbWrapper(dbWrapper) {
         Utils::Contract::Assert(packetSize > 0);
 
@@ -86,30 +86,31 @@ namespace Core {
     }
 
     void RDBMSIndexStorage::Impl::AddFeature(const REF IFeature& feature, imgid_t imgId) {
-        blob_p_t serializedFeature = feature.Serialize();
+        blob_p_t serializedFeature = NULL;
 
-        DbWrapper::params_list_t params;
+        try {
+            serializedFeature = feature.Serialize();
+
+            Db::params_list_t params;
         
-        DbWrapper::ParamInfo imageIdParam;
-        imageIdParam.data = &imgId;
-        imageIdParam.dataLength = sizeof(imgid_t);
-        imageIdParam.typeId = DbWrapper::DbType::LONGLONG;
-        params.push_back(imageIdParam);
+            Db::DbParamBuffer imageIdParam(&imgId, sizeof(imgId), Db::DbType::LONGLONG);
+            params.push_back(imageIdParam);
         
-        DbWrapper::ParamInfo dataParam;
-        dataParam.data = serializedFeature->data();
-        dataParam.dataLength = serializedFeature->size();
-        dataParam.typeId = DbWrapper::DbType::BLOB;
-        params.push_back(dataParam);
+            Db::DbParamBuffer dataParam(serializedFeature->data(), serializedFeature->size(), Db::DbType::BLOB);
+            params.push_back(dataParam);
         
-        dbWrapper.ExecuteNonQuery("INSERT INTO colorhistograms (ImageId, data) VALUES (?, ?)", params);
+            dbWrapper.ExecuteNonQuery("INSERT INTO colorhistograms (ImageId, data) VALUES (?, ?)", params);
+        }
+        catch (...) {
+            Core::SafeFreeBlob(serializedFeature);
+        }
     }
 
     #pragma endregion
 
     #pragma region RDBMSIndexStorage
 
-    RDBMSIndexStorage::RDBMSIndexStorage(IFeatureDeserializer* featureDeserializer, const REF DbWrapper& dbWrapper, unsigned int packetSize) 
+    RDBMSIndexStorage::RDBMSIndexStorage(IFeatureDeserializer* featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize) 
         : IndexStorage(featureDeserializer) {
 
         pimpl = new Impl(*featureDeserializer, dbWrapper, packetSize);

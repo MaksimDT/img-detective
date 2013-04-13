@@ -55,8 +55,6 @@ namespace Db {
     DbResultReader* MySqlDbWrapper::ExecuteReader(const std::string& sqlStatement, const params_list_t& params) const {
         MYSQL* connection = NULL;
         MYSQL_STMT* stmt = NULL;
-        MYSQL_BIND* resultBind = NULL;
-        fields_vector_t* fieldBuffers = NULL;
         MYSQL_RES* resultMetadata = NULL;
         try {
             ExecuteStatement(sqlStatement, params, OUT connection, OUT stmt);
@@ -69,32 +67,28 @@ namespace Db {
 
             if (fieldsCount > 0) {
                 resultMetadata = mysql_stmt_result_metadata(stmt);
-                PrepareFieldBuffers(resultMetadata, fieldBuffers, resultBind);
 
-                if (mysql_stmt_bind_result(stmt, resultBind)) {
-                    throw std::exception("mysql_stmt_bind_result failed");
+                if (resultMetadata == NULL) {
+                    throw std::exception("no result metadata exists for the query");
                 }
 
-                return new MySqlResultReader(fieldBuffers, resultBind, stmt);
+                return MySqlResultReader::Create(connection, stmt, resultMetadata);
             }
-
-            //mysql_stmt_bind_result(stmt, 
+            else {
+                throw std::exception("no result metadata exists for the query");
+            }
         }
         catch (...) {
-            Utils::Memory::SafeDeleteArray(resultBind);
+            if (resultMetadata != NULL) {
+                mysql_free_result(resultMetadata);
+                resultMetadata = NULL;
+            }
             mysql_stmt_close(stmt);
             stmt = NULL;
             Disconnect(connection);
             connection = NULL;
-            if (resultMetadata != NULL) {
-                mysql_free_result(resultMetadata);
-            }
+            
             throw;
-        }
-
-        Utils::Memory::SafeDeleteArray(resultBind);
-        if (resultMetadata != NULL) {
-            mysql_free_result(resultMetadata);
         }
     }
 
@@ -103,7 +97,7 @@ namespace Db {
         connection = Connect();
         
         //allocate some memory for stmt struct
-        MYSQL_STMT* stmt = mysql_stmt_init(connection);
+        stmt = mysql_stmt_init(connection);
 
         if (stmt == NULL) {
             throw std::exception("couldn't allocate MYSQL_STMT structure");
@@ -178,36 +172,6 @@ namespace Db {
         return bind;
     }
 
-    void MySqlDbWrapper::PrepareFieldBuffers(MYSQL_RES* resultMetadata, OUT fields_vector_t*& fieldBuffers, OUT MYSQL_BIND*& bindArray) {
-        Utils::Contract::AssertNotNull(resultMetadata);
-        Utils::Contract::AssertIsNull(fieldBuffers);
-        Utils::Contract::AssertIsNull(bindArray);
-
-        unsigned int fieldCount = resultMetadata->field_count;
-
-        try {
-            fieldBuffers = new fields_vector_t();
-            fieldBuffers->resize(fieldCount);
-            bindArray = new MYSQL_BIND[fieldCount];
-
-            MYSQL_FIELD* fields = mysql_fetch_fields(resultMetadata);
-
-            //for each field in the result metadata we associate MYSQL_BIND struct and 
-            //FieldBuffer struct pointing to the same memory location
-            for (int i = 0; i < fieldCount; ++i) {
-                MYSQL_FIELD fieldMetadata = fields[i];
-                DbFieldBuffer& uniBuffer = (*fieldBuffers)[i];
-                InitUniFieldBufferFromMySqlFieldMetadata(fieldMetadata, REF uniBuffer);
-                bindArray[i] = CreateMySqlBindFromUniFieldBuffer(uniBuffer, fieldMetadata);
-            }
-        }
-        catch (...) {
-            Utils::Memory::SafeDelete(fieldBuffers);
-            Utils::Memory::SafeDeleteArray(bindArray);
-            throw;
-        }
-    }
-
     MYSQL_BIND MySqlDbWrapper::PrepareParamInfo(const REF DbParamBuffer& paramInfo) {
         MYSQL_BIND bind;
         memset(&bind, 0, sizeof(MYSQL_BIND));
@@ -227,41 +191,6 @@ namespace Db {
         bind.buffer = paramInfo.GetDataPtr();
 
         return bind;
-    }
-
-    void MySqlDbWrapper::InitUniFieldBufferFromMySqlFieldMetadata(const MYSQL_FIELD& fieldMetadata, REF DbFieldBuffer& uniBuf) {
-        uniBuf.SetFieldName(fieldMetadata.name);
-
-        //get universal type
-        DbType::Enum dbType = MySqlTypesHelper::GetDbTypeFromMySqlType(fieldMetadata.type);
-        uniBuf.SetType(dbType);
-
-        unsigned int fieldLength = MySqlTypesHelper::GetMySqlTypeLength(fieldMetadata.type);
-
-        if (fieldLength != 0) {
-            //if length of the field is constant we allocate it beforehand
-            uniBuf.Allocate(fieldLength);
-            uniBuf.SetIsOfVariableLength(false);
-        }
-        else {
-            uniBuf.SetIsOfVariableLength(true);
-        }
-    }
-
-    MYSQL_BIND MySqlDbWrapper::CreateMySqlBindFromUniFieldBuffer(const DbFieldBuffer& uniBuf, const MYSQL_FIELD& fieldMetadata) {
-        MYSQL_BIND mysqlBuf;
-        memset(&mysqlBuf, 0, sizeof(mysqlBuf));
-
-        if (uniBuf.IsOfVariableLength()) {
-            mysqlBuf.buffer = NULL;
-            mysqlBuf.buffer_length = 0;
-        }
-        else {
-            mysqlBuf.buffer = uniBuf.GetDataPtr();
-            mysqlBuf.buffer_length = uniBuf.GetDataLength();
-        }
-
-        mysqlBuf.buffer_type = fieldMetadata.type;
     }
 }
 }

@@ -26,14 +26,10 @@ namespace Db {
 
         //universal params format => mysql params format (for collection of params)
         static MYSQL_BIND* PrepareParams(const params_list_t& params);
-        //mysql result metadata => (universal fields format + mysql result set format, sharing the same memory buffers)
-        static void PrepareFieldBuffers(MYSQL_RES* resultMetadata, OUT fields_vector_t*& fieldBuffers, OUT MYSQL_BIND*& bindArray);
+        //mysql result metadata => mysql result set buffers + fields metadata
+        static MYSQL_BIND* PrepareFieldBuffers(MYSQL_RES* resultMetadata, OUT MYSQL_FIELD*& fieldsMetadata);
         //universal param format => mysql param format
         static MYSQL_BIND PrepareParamInfo(const REF DbParamBuffer& param);
-        //mysql field metadata => universal field format
-        static void InitUniFieldBufferFromMySqlFieldMetadata(const MYSQL_FIELD& fieldMetadata, REF DbFieldBuffer& uniBuf);
-        //universal field format + mysq field metadata => mysql field format
-        static MYSQL_BIND CreateMySqlBindFromUniFieldBuffer(const DbFieldBuffer& uniBuf, const MYSQL_FIELD& fieldMetadata);
 
         MySqlConnectionSettings conSettings;
     };

@@ -25,7 +25,7 @@ namespace Core {
 
         #pragma endregion
 
-		CTOR RDBMSIndexStorage(EXCLUSIVE IFeatureDeserializer* featureDeserializer, const REF DbWrapper& dbWrapper, unsigned int packetSize);
+		CTOR RDBMSIndexStorage(EXCLUSIVE IFeatureDeserializer* featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize);
         ~RDBMSIndexStorage();
         virtual ILookupSession* StartLookup() const;
         virtual void AddFeature(const REF IFeature& feature, imgid_t imgId);

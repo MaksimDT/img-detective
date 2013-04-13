@@ -19,11 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\core\BindInfo.h" />
+    <ClInclude Include="..\include\core\DbResultReader.h" />
+    <ClInclude Include="..\include\core\DbType.h" />
     <ClInclude Include="..\include\core\DbWrapper.h" />
     <ClInclude Include="..\include\core\Feature.h" />
     <ClInclude Include="..\include\core\FeatureDistance.h" />
     <ClInclude Include="..\include\core\FeatureExtractor.h" />
     <ClInclude Include="..\include\core\FeatureRepository.h" />
+    <ClInclude Include="..\include\core\FieldsDictionary.h" />
+    <ClInclude Include="..\include\core\FieldValue.h" />
     <ClInclude Include="..\include\core\FsImgStorage.h" />
     <ClInclude Include="..\include\core\IFeatureDeserializer.h" />
     <ClInclude Include="..\include\core\ImgContentStorage.h" />
@@ -35,13 +40,17 @@
     <ClInclude Include="..\include\core\IndexSeekResult.h" />
     <ClInclude Include="..\include\core\IndexStorage.h" />
     <ClInclude Include="..\include\core\LinearSearchIM.h" />
+    <ClInclude Include="..\include\core\MySqlConnectionSettings.h" />
     <ClInclude Include="..\include\core\MySqlDbWrapper.h" />
     <ClInclude Include="..\include\core\mysqlheaders.h" />
+    <ClInclude Include="..\include\core\MySqlResultReader.h" />
+    <ClInclude Include="..\include\core\MySqlTypesHelper.h" />
     <ClInclude Include="..\include\core\RDBMSImgMetadataStorage.h" />
     <ClInclude Include="..\include\core\RDBMSIndexStorage.h" />
     <ClInclude Include="..\include\core\SearchSystem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\core\BindInfo.cpp" />
     <ClCompile Include="..\src\core\Feature.cpp" />
     <ClCompile Include="..\src\core\FeatureDistance.cpp" />
     <ClCompile Include="..\src\core\FeatureRepository.cpp" />
@@ -52,6 +61,8 @@
     <ClCompile Include="..\src\core\IndexStorage.cpp" />
     <ClCompile Include="..\src\core\LinearSearchIM.cpp" />
     <ClCompile Include="..\src\core\MySqlDbWrapper.cpp" />
+    <ClCompile Include="..\src\core\MySqlResultReader.cpp" />
+    <ClCompile Include="..\src\core\MySqlTypesHelper.cpp" />
     <ClCompile Include="..\src\core\RDBMSImgMetadataStorage.cpp" />
     <ClCompile Include="..\src\core\RDBMSIndexStorage.cpp" />
     <ClCompile Include="..\src\core\SearchSystem.cpp" />

@@ -11,15 +11,20 @@ namespace Db {
 
     class FieldValue {
     public:
-        FieldValue(void* dataPtr, size_t dataLength);
+        static FieldValue Create(void* dataPtr, size_t dataLength);
+        static FieldValue CreateNull();
 
         template <typename T>
         T As() const;
 
         blob_p_t CopyToByteArray() const;
+        bool IsNull() const;
     private:
+        FieldValue(void* dataPtr, size_t dataLength, bool isNull);
+
         void* dataPtr;
         size_t dataLength;
+        bool isNull;
     };
 
     template <typename T>

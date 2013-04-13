@@ -10,20 +10,38 @@ namespace Db {
 
     CONCRETE SEALED class MySqlResultReader : public DbResultReader {
     public:
-        CTOR MySqlResultReader(fields_vector_t* fieldBuffers, MYSQL* connection, MYSQL_BIND* rawFieldBuffers, MYSQL_STMT* stmt);
+        static MySqlResultReader* Create(MYSQL* connection, MYSQL_STMT* stmt, MYSQL_RES* resultMetadata);
         ~MySqlResultReader();
 
         virtual FieldsDictionary* Next();
     private:
-        void PrepareVariableLengthBuffers();
-        void FetchVariableLengthFields();
+        NESTED class VariableLengthBuffer {
+        public:
+            CTOR VariableLengthBuffer();
+            ~VariableLengthBuffer();
+            void* Acquire(size_t requiredSize);
+        private:
+            void DeallocateCurrent();
 
-        fields_vector_t* fieldBuffers;
+            void* buffer;
+            size_t usedSize;
+            size_t maxSize;
+        };
+
+        CTOR MySqlResultReader(MYSQL* connection, MYSQL_STMT* stmt, MYSQL_RES* resultMetadata);
+
+        void SetupFieldBuffers();
+        void FreeFieldBuffers();
+        void AdjustVariableLengthBuffers();
+
         MYSQL* connection;
-        MYSQL_BIND* rawFieldBuffers;
         MYSQL_STMT* stmt;
+        MYSQL_RES* resultMetadata;
+        MYSQL_FIELD* fieldsMetadata;
+        MYSQL_BIND* fieldBuffers;
+        
         bool finished;
-        std::vector<int> variableLengthFieldsIndexes;
+        std::vector<VariableLengthBuffer> varLengthBufs;
     };
 
 }
