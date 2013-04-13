@@ -49,6 +49,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{43647DCA
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "img-detective.m.colorhistogram.tests", "img-detective.m.colorhistogram.tests\img-detective.m.colorhistogram.tests.vcxproj", "{CCDBF52A-EC42-421F-BA41-FD3ACC8D76CA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{7500AEB0-C014-4F1D-B949-E6C08FE5D9C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -179,5 +181,6 @@ Global
 		{90209AE3-6EC0-4B6A-801A-F8E3F64E54DA} = {C3F23EFC-A325-43D6-A492-B3D0677BFAE3}
 		{62DDAD5F-AA2E-446C-829A-1C91E9A21D8D} = {43647DCA-E619-400C-AC27-4A16B7557905}
 		{CCDBF52A-EC42-421F-BA41-FD3ACC8D76CA} = {43647DCA-E619-400C-AC27-4A16B7557905}
+		{E41B94C6-F528-43CA-AB00-275E20FBDEF8} = {7500AEB0-C014-4F1D-B949-E6C08FE5D9C1}
 	EndGlobalSection
 EndGlobal

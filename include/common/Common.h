@@ -8,7 +8,7 @@ Contains definitions that can be used both by internal logic and in system's API
 #define OPSTATUS_INTERNAL_ERROR 1
 #define IMGID_UNDEFINED 0
 #define IMGID_IS_SIGNED false
-typedef long unsigned int imgid_t;
+typedef long long unsigned int imgid_t;
 typedef int opstatus_t;
 
 typedef struct SearchResult {

@@ -53,14 +53,21 @@ namespace Core {
 
     typedef char pixel_tone_t;
     typedef char byte_t;
-	typedef std::vector<imgid_t> imgid_col_t;
-	typedef std::vector<byte_t> blob_t;
-	typedef std::vector<byte_t>* blob_p_t;
+    typedef std::vector<imgid_t> imgid_col_t;
+    typedef std::vector<byte_t> blob_t;
+    typedef std::vector<byte_t>* blob_p_t;
 
-	void ConvertToSearchResult(const REF imgid_col_t& imgIds, REF SearchResult& result);
+    void ConvertToSearchResult(const REF imgid_col_t& imgIds, REF SearchResult& result);
+
+    #pragma region working with BLOBs
+
     blob_p_t CreateBlobOfSize(size_t blobSize);
     void SafeFreeBlob(REF blob_p_t& blob);
     char* BlobToCharArray(blob_p_t blob);
+    void CopyToBlob(void* data, blob_p_t blob);
+
+    #pragma endregion
+
     bool IsValidImgId(imgid_t imgId);
 }
 }

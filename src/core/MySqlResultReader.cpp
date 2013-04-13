@@ -31,6 +31,8 @@ namespace Db {
 
     void MySqlResultReader::VariableLengthBuffer::DeallocateCurrent() {
         Utils::Memory::SafeDeleteArray(buffer);
+        maxSize = 0;
+        usedSize = 0;
     }
 
     #pragma endregion
@@ -42,7 +44,7 @@ namespace Db {
             return resultReader;
         }
         catch (...) {
-            delete resultReader;
+            Utils::Memory::SafeDelete(resultReader);
             throw;
         }
     }
@@ -99,51 +101,70 @@ namespace Db {
         }
 
         varLengthBufs.resize(resultMetadata->field_count);
+
+        if (mysql_stmt_bind_result(stmt, fieldBuffers)) {
+            throw std::exception("mysql_stmt_bind_result failed");
+        }
     }
 
-    FieldsDictionary* MySqlResultReader::Next() {
+    void MySqlResultReader::FreeFieldBuffers() {
+        for (size_t i = 0; i < resultMetadata->field_count; ++i) {
+            MYSQL_BIND& fBuf = fieldBuffers[i];
+
+            Utils::Memory::SafeDeleteArray(fBuf.buffer);
+        }
+
+        delete [] fieldBuffers;
+    }
+
+    bool MySqlResultReader::Next() {
         if (finished) {
-            return NULL;
+            return false;
         }
 
         int status = mysql_stmt_fetch(stmt);
 
         if (status == 1 || status == MYSQL_NO_DATA) {
             finished = true;
-            return NULL;
+            return false;
         }
+
+        currentResult.Clear();
 
         unsigned int fieldCount = resultMetadata->field_count;
 
-        FieldsDictionary* result = new FieldsDictionary();
-        for (int i = 0; i < fieldCount; ++i) {
-            MYSQL_BIND& f = fieldBuffers[i];
-            std::string fieldName = fieldsMetadata[i].name;
+        for (int fieldIndex = 0; fieldIndex < fieldCount; ++fieldIndex) {
+            MYSQL_BIND& f = fieldBuffers[fieldIndex];
+            std::string fieldName = fieldsMetadata[fieldIndex].name;
 
             bool isVariableLength = (f.buffer_length == 0 && f.length_value > 0);
             bool isConstantLength = (f.buffer != NULL && f.buffer_length > 0);
 
             if (f.is_null_value) {
-                result->Add(fieldName, FieldValue::CreateNull());
+                currentResult.Add(fieldName, FieldValue::CreateNull());
             }
             else if (isVariableLength) {
                 //if the field being fetched has variable length data let's use the variable length buffer
-                f.buffer = varLengthBufs[i].Acquire(f.length_value);
+                f.buffer = varLengthBufs[fieldIndex].Acquire(f.length_value);
                 f.buffer_length = f.length_value;
 
-                if (mysql_stmt_fetch_column(stmt, fieldBuffers, i, 0)) {
+                if (mysql_stmt_fetch_column(stmt, fieldBuffers, fieldIndex, 0)) {
                     throw std::exception("mysql_stmt_fetch_column failed");
                 }
 
                 if (f.is_null_value) {
-                    result->Add(fieldName, FieldValue::CreateNull());
+                    currentResult.Add(fieldName, FieldValue::CreateNull());
                 }
                 else {
-                    result->Add(fieldName, FieldValue::Create(f.buffer, f.buffer_length));
+                    currentResult.Add(fieldName, FieldValue::Create(f.buffer, f.buffer_length));
                 }
+
+                //for this field to be considered as a variable length field by mysql when it will read the next row
+                f.buffer = NULL;
+                f.buffer_length = 0;
             }
             else if (isConstantLength) {
-                result->Add(fieldName, FieldValue::Create(f.buffer, f.buffer_length));
+                currentResult.Add(fieldName, FieldValue::Create(f.buffer, f.buffer_length));
             }
             else {
                 std::string msg = "cannot read value of the column ";
@@ -152,7 +173,15 @@ namespace Db {
             }
         }
 
-        return result;
+        return true;
+    }
+
+    bool MySqlResultReader::HasField(const std::string& fieldName) const {
+        return currentResult.HasField(fieldName);
+    }
+
+    const FieldValue& MySqlResultReader::operator[] (const std::string& fieldName) const {
+        return currentResult.Get(fieldName);
     }
 }
 }

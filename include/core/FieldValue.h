@@ -14,17 +14,20 @@ namespace Db {
         static FieldValue Create(void* dataPtr, size_t dataLength);
         static FieldValue CreateNull();
 
+        //default ctor for using this class' instances in stl containers
+        CTOR FieldValue();
+
+        //must be used only for simple types like int, double, float, etc. CANNOT be used for array or strings
         template <typename T>
         T As() const;
 
         blob_p_t CopyToByteArray() const;
         bool IsNull() const;
     private:
-        FieldValue(void* dataPtr, size_t dataLength, bool isNull);
+        CTOR FieldValue(void* dataPtr, size_t dataLength);
 
         void* dataPtr;
         size_t dataLength;
-        bool isNull;
     };
 
     template <typename T>

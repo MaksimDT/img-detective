@@ -54,6 +54,8 @@
     <ClCompile Include="..\src\core\Feature.cpp" />
     <ClCompile Include="..\src\core\FeatureDistance.cpp" />
     <ClCompile Include="..\src\core\FeatureRepository.cpp" />
+    <ClCompile Include="..\src\core\FieldsDictionary.cpp" />
+    <ClCompile Include="..\src\core\FieldValue.cpp" />
     <ClCompile Include="..\src\core\ImgInfo.cpp" />
     <ClCompile Include="..\src\core\Indexer.cpp" />
     <ClCompile Include="..\src\core\IndexManager.cpp" />
@@ -144,12 +146,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <Lib>
-      <AdditionalDependencies>libglog.lib</AdditionalDependencies>
-    </Lib>
-    <Lib>
-      <AdditionalLibraryDirectories>$(ThirdPartyLibsDir)\glog\bin\$(Configuration);</AdditionalLibraryDirectories>
-    </Lib>
+    <Lib />
+    <Lib />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

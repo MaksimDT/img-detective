@@ -39,6 +39,12 @@ namespace Core {
         }
     }
 
+    void CopyToBlob(void* data, blob_p_t blob) {
+        if (data != NULL && blob != NULL) {
+            memcpy(blob->data(), data, blob->size());
+        }
+    }
+
     bool IsValidImgId(imgid_t imgId) {
         return imgId > 0;
     }

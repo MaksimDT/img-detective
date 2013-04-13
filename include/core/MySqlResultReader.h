@@ -3,6 +3,7 @@
 #include "common/CommonInternal.h"
 #include "core/mysqlheaders.h"
 #include "core/DbResultReader.h"
+#include "core/FieldsDictionary.h"
 
 namespace ImgDetective {
 namespace Core {
@@ -13,12 +14,16 @@ namespace Db {
         static MySqlResultReader* Create(MYSQL* connection, MYSQL_STMT* stmt, MYSQL_RES* resultMetadata);
         ~MySqlResultReader();
 
-        virtual FieldsDictionary* Next();
+        virtual bool Next();
+        virtual bool HasField(const std::string& fieldName) const;
+        virtual const FieldValue& operator[] (const std::string& fieldName) const;
     private:
         NESTED class VariableLengthBuffer {
         public:
             CTOR VariableLengthBuffer();
             ~VariableLengthBuffer();
+            //allocates or reuses already allocated chunk of memory. 
+            //NOTE: there is a guarantee that by the time the new chunk is requested the old chunk can be disposed
             void* Acquire(size_t requiredSize);
         private:
             void DeallocateCurrent();
@@ -42,6 +47,7 @@ namespace Db {
         
         bool finished;
         std::vector<VariableLengthBuffer> varLengthBufs;
+        FieldsDictionary currentResult;
     };
 
 }

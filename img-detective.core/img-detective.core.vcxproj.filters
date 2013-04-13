@@ -28,6 +28,9 @@
     <Filter Include="Source Files\Db">
       <UniqueIdentifier>{839ea9da-abbc-4714-bd6f-89073d9e72c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Db\mysql">
+      <UniqueIdentifier>{c9dc70fe-fd7e-45a6-90c0-a3a23d76eaa1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\core\IndexManager.h">
@@ -155,16 +158,22 @@
     <ClCompile Include="..\src\core\RDBMSImgMetadataStorage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\MySqlDbWrapper.cpp">
-      <Filter>Source Files\Db</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\core\BindInfo.cpp">
       <Filter>Source Files\Db</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\core\MySqlTypesHelper.cpp">
+    <ClCompile Include="..\src\core\FieldValue.cpp">
       <Filter>Source Files\Db</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\core\MySqlDbWrapper.cpp">
+      <Filter>Source Files\Db\mysql</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\core\MySqlResultReader.cpp">
+      <Filter>Source Files\Db\mysql</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\MySqlTypesHelper.cpp">
+      <Filter>Source Files\Db\mysql</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\FieldsDictionary.cpp">
       <Filter>Source Files\Db</Filter>
     </ClCompile>
   </ItemGroup>
