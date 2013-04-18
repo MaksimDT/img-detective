@@ -13,7 +13,7 @@ namespace Db {
         CTOR MySqlDbWrapper(const MySqlConnectionSettings& conSettings);
 
         //used for the execution of insert, update, delete statements
-        virtual void ExecuteNonQuery(const std::string& sqlStatement, const REF params_list_t& params) const;
+        virtual NonQueryExecResult ExecuteNonQuery(const std::string& sqlStatement, const REF params_list_t& params) const;
         //used for the execution of select statements
         virtual DbResultReader* ExecuteReader(const std::string& sqlStatement, const params_list_t& params) const;
     private:

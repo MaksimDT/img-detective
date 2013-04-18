@@ -17,12 +17,17 @@ namespace Core {
         imgid_t GetId() const;
         void SetId(imgid_t imgId);
         Magick::Image& GetMagickImage();
+
+        std::string GetPath() const;
+        void SetPath(const std::string& path);
 	private:
 		CTOR ImgInfo(const REF Magick::Image& magickImg);
 		COPYCTOR ImgInfo(const REF ImgInfo& other);
 		
 		EXCLUSIVE Magick::Image magickImg;
         imgid_t imgId;
+
+        //in utf-8
         std::string path;
 	};
 

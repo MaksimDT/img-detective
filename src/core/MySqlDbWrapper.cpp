@@ -14,42 +14,27 @@ namespace Db {
         this->conSettings = conSettings;
     }
 
-    void MySqlDbWrapper::ExecuteNonQuery(const REF std::string& sqlStatement, const REF params_list_t& params) const {
-        MYSQL* con = Connect();
-        
-        MYSQL_STMT* stmt = mysql_stmt_init(con);
-
-        if (stmt == NULL) {
-            throw std::exception("couldn't allocate MYSQL_STMT structure");
-        }
-
-        MYSQL_BIND* bind = NULL;
+    NonQueryExecResult MySqlDbWrapper::ExecuteNonQuery(const REF std::string& sqlStatement, const REF params_list_t& params) const {
+        MYSQL* connection = NULL;
+        MYSQL_STMT* stmt = NULL;
 
         try {
-            if (mysql_stmt_prepare(stmt, sqlStatement.c_str(), sqlStatement.length())) {
-                throw std::exception("mysql_stmt_prepare failed");
-            }
-
-            bind = PrepareParams(params);
-
-            if (mysql_stmt_bind_param(stmt, bind)) {
-                throw std::exception("mysql_stmt_bind_param failed");
-            }
-
-            if (mysql_stmt_execute(stmt)) {
-                throw std::exception("mysql_stmt_execute failed");
-            }
+            NonQueryExecResult result;
+            ExecuteStatement(sqlStatement, params, OUT connection, OUT stmt);
+            result.SetLastInsertId(mysql_stmt_insert_id(stmt));
+            mysql_stmt_close(stmt);
+            mysql_close(connection);
+            return result;
         }
         catch (...) {
-            mysql_stmt_close(stmt);
-            Utils::Memory::SafeDeleteArray(bind);
-            Disconnect(con);
+            if (stmt != NULL) {
+                mysql_stmt_close(stmt);
+            }
+            if (connection != NULL) {
+                mysql_close(connection);
+            }
             throw;
         }
-
-        mysql_stmt_close(stmt);
-        Utils::Memory::SafeDeleteArray(bind);
-        Disconnect(con);
     }
 
     DbResultReader* MySqlDbWrapper::ExecuteReader(const std::string& sqlStatement, const params_list_t& params) const {
@@ -165,7 +150,7 @@ namespace Db {
         
         params_list_t::const_iterator it;
         size_t paramIndex = 0;
-        for (it = params.cbegin(); it != params.cend(); ++it) {
+        for (it = params.cbegin(); it != params.cend(); ++it, ++paramIndex) {
             bind[paramIndex] = PrepareParamInfo(*it);
         }
 

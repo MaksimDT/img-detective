@@ -3,3 +3,4 @@ Debug
 *.suo
 *.opensdf
 packages
+ipch

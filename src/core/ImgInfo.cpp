@@ -38,6 +38,14 @@ namespace Core {
         return magickImg;
     }
 
+    std::string ImgInfo::GetPath() const {
+        return path;
+    }
+
+    void ImgInfo::SetPath(const std::string& path) {
+        this->path = path;
+    }
+
 	CTOR ImgInfo::ImgInfo(const REF Magick::Image& magickImg) {
 		this->magickImg = magickImg;
         this->imgId = IMGID_UNDEFINED;

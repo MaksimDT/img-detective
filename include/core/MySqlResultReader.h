@@ -17,6 +17,7 @@ namespace Db {
         virtual bool Next();
         virtual bool HasField(const std::string& fieldName) const;
         virtual const FieldValue& operator[] (const std::string& fieldName) const;
+        virtual const FieldValue& GetField(const std::string& fieldName) const;
     private:
         NESTED class VariableLengthBuffer {
         public:

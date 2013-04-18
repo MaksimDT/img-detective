@@ -13,5 +13,7 @@ ImgInfo* TestUtils::ReadImgFromFile(const std::string& path) {
 
     ImgInfo* img = ImgInfo::Create(shortInfo);
 
+    SafeFreeBlob(blob);
+
     return img;
 }

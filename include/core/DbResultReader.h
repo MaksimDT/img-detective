@@ -16,6 +16,8 @@ namespace Db {
         virtual bool HasField(const std::string& fieldName) const = 0;
         //returns value of the field with the specified name
         virtual const FieldValue& operator[] (const std::string& fieldName) const = 0;
+        //returns value of the field with the specified name
+        virtual const FieldValue& GetField(const std::string& fieldName) const = 0;
     };
 
 }

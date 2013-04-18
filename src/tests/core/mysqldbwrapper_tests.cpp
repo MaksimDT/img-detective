@@ -8,10 +8,10 @@ using namespace ImgDetective::Core::Db;
 
 BOOST_AUTO_TEST_SUITE(mysqldbwrapper_tests)
 
-BOOST_AUTO_TEST_CASE(select_from_images) {
+BOOST_AUTO_TEST_CASE(insert_then_select_from_images) {
 
     MySqlConnectionSettings settings;
-    settings.dbName = "img_detective";
+    settings.dbName = "img_detective_test";
     settings.host = "localhost";
     settings.login = "root";
     settings.password = "";
@@ -19,15 +19,23 @@ BOOST_AUTO_TEST_CASE(select_from_images) {
 
     DbWrapper* dbWrapper = new MySqlDbWrapper(settings);
 
-    DbResultReader* reader = dbWrapper->ExecuteReader("select Id from Images", params_list_t());
+    NonQueryExecResult insertResult = dbWrapper->ExecuteNonQuery(
+        "insert into Images (`Path`, `CreationDate`, `Description`) \
+         values \
+         (NULL, NOW(), NULL)");
+    imgid_t insertedImgId = insertResult.GetLastInsertId();
+    BOOST_ASSERT(insertedImgId != 0);
+
+    DbResultReader* reader = dbWrapper->ExecuteReader("select Id from Images order by Id desc");
+    BOOST_ASSERT(reader != NULL);
     DbResultReader& readerRef = *reader;
 
-    imgid_t imgId;
+    BOOST_ASSERT(reader->Next() == true);
+    BOOST_ASSERT(reader->HasField("Id"));
 
-    while (reader->Next()) {
-        BOOST_CHECK(reader->HasField("Id"));
-        imgId = readerRef["Id"].As<imgid_t>();
-    }
+    imgid_t imgId = readerRef["Id"].As<imgid_t>();
+
+    BOOST_CHECK(imgId == insertedImgId);
 
     Utils::Memory::SafeDelete(dbWrapper);
     Utils::Memory::SafeDelete(reader);

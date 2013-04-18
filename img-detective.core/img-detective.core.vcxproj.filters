@@ -176,5 +176,13 @@
     <ClCompile Include="..\src\core\FieldsDictionary.cpp">
       <Filter>Source Files\Db</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\core\DbWrapper.cpp">
+      <Filter>Source Files\Db</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\include\core\NonQueryExecResult.h">
+      <Filter>Header Files\Db</Filter>
+    </None>
   </ItemGroup>
 </Project>

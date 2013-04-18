@@ -85,7 +85,7 @@ namespace Db {
         //for each field in the result metadata we create MYSQL_BIND struct with memory buffer in it
         for (int i = 0; i < resultMetadata->field_count; ++i) {
             MYSQL_FIELD f = fieldsMetadata[i];
-            unsigned int typeLength = MySqlTypesHelper::GetMySqlTypeLength(f.type);
+            unsigned int typeLength = MySqlTypesHelper::GetMySqlTypeLength(f.type, &f);
 
             if (typeLength != 0) {
                 fieldBuffers[i].buffer = new char[typeLength];
@@ -95,6 +95,7 @@ namespace Db {
                 //here the variable length buffer is needed, let's handle this in the Next() routine
                 fieldBuffers[i].buffer = NULL;
                 fieldBuffers[i].buffer_length = 0;
+                fieldBuffers[i].length = &(fieldBuffers[i].length_value);
             }
 
             fieldBuffers[0].buffer_type = f.type;
@@ -127,6 +128,10 @@ namespace Db {
         if (status == 1 || status == MYSQL_NO_DATA) {
             finished = true;
             return false;
+        }
+
+        if (status == MYSQL_DATA_TRUNCATED) {
+            throw std::exception("data truncated");
         }
 
         currentResult.Clear();
@@ -181,6 +186,10 @@ namespace Db {
     }
 
     const FieldValue& MySqlResultReader::operator[] (const std::string& fieldName) const {
+        return currentResult.Get(fieldName);
+    }
+
+    const FieldValue& MySqlResultReader::GetField(const std::string& fieldName) const {
         return currentResult.Get(fieldName);
     }
 }

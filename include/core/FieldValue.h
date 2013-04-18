@@ -20,6 +20,8 @@ namespace Db {
         //must be used only for simple types like int, double, float, etc. CANNOT be used for array or strings
         template <typename T>
         T As() const;
+        template <>
+        std::string As<std::string>() const;
 
         blob_p_t CopyToByteArray() const;
         bool IsNull() const;
@@ -40,6 +42,19 @@ namespace Db {
             throw std::exception("cannot convert value of the db field to the specified type (sizes mismatch)");
         }
     }
+
+    template <>
+    std::string FieldValue::As<std::string>() const {
+        std::string result;
+        
+        if (this->dataLength > 0) {
+            size_t realLength = strnlen_s((char*)dataPtr, dataLength);
+            result.assign((char*)dataPtr, realLength);
+        }
+
+        return result;
+    }
+    
 }
 }
 }

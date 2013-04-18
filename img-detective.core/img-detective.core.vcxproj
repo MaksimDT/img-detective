@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\BindInfo.cpp" />
+    <ClCompile Include="..\src\core\DbWrapper.cpp" />
     <ClCompile Include="..\src\core\Feature.cpp" />
     <ClCompile Include="..\src\core\FeatureDistance.cpp" />
     <ClCompile Include="..\src\core\FeatureRepository.cpp" />
@@ -68,6 +69,9 @@
     <ClCompile Include="..\src\core\RDBMSImgMetadataStorage.cpp" />
     <ClCompile Include="..\src\core\RDBMSIndexStorage.cpp" />
     <ClCompile Include="..\src\core\SearchSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\include\core\NonQueryExecResult.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E3092FB6-4F3D-4C22-8AB8-32808330F221}</ProjectGuid>

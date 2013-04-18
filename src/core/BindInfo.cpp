@@ -10,11 +10,7 @@ namespace Db {
         Utils::Contract::Assert(data != NULL || length == 0, "DbParamBuffer ctor: if the data is null the length must be 0 as well");
         Utils::Contract::Assert(length >= 0, "DbParamBuffer ctor: length must be greater or equal 0");
 
-        if (data != NULL) {
-            this->data = new char[length];
-            memcpy(this->data, data, length);
-        }
-
+        this->data = data;
         this->dataLength = length;
         this->dbType = dbType;
     }
