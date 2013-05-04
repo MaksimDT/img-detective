@@ -136,6 +136,11 @@ namespace Db {
             throw std::exception("couldn't connect to mysql database");
         }
 
+        if (mysql_set_character_set(con, "utf8")) {
+            mysql_close(con);
+            throw std::exception("couldn't set the utf8 charset for the new connection");
+        }
+
         return con;
     }
 
@@ -160,6 +165,12 @@ namespace Db {
     MYSQL_BIND MySqlDbWrapper::PrepareParamInfo(const REF DbParamBuffer& paramInfo) {
         MYSQL_BIND bind;
         memset(&bind, 0, sizeof(MYSQL_BIND));
+
+        if (paramInfo.IsNull()) {
+            //bind.is_null_value = true;
+            bind.buffer_type = MYSQL_TYPE_NULL;
+            return bind;
+        }
 
         enum_field_types mysqlType = MySqlTypesHelper::GetMySqlType(paramInfo.GetType());
         bind.buffer_type = mysqlType;

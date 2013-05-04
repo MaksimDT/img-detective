@@ -8,7 +8,7 @@
 namespace ImgDetective {
 namespace Core {
 
-    INTERFACE class IIndexManager : NONCOPYABLE, HAS_VIRTUAL_DESCTUCTOR {
+    class IIndexManager : NONCOPYABLE, HAS_VIRTUAL_DESCTUCTOR {
     public:
         typedef std::vector<IIndexManager*> col_p_t;
 

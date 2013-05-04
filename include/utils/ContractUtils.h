@@ -46,7 +46,7 @@ namespace Utils {
 			bool isEmpty = col.empty();
 
 			#ifdef _DEBUG
-				assert(isEmpty);
+				assert(!isEmpty);
 			#else
 				if (isEmpty) {
 					throw AssertFailedException(msg != NULL ? msg : "");

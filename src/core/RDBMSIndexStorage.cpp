@@ -61,7 +61,7 @@ namespace Core {
 
     class RDBMSIndexStorage::Impl {
     public:
-        Impl(const REF IFeatureDeserializer& featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize);
+        Impl(const REF IFeatureDeserializer& featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize, const std::string& tableName);
         IIndexStorage::ILookupSession* StartLookup() const;
         void AddFeature(const REF IFeature& feature, imgid_t imgId);
     private:
@@ -71,13 +71,21 @@ namespace Core {
         const REF IFeatureDeserializer& featureDeserializer;
         const REF Db::DbWrapper& dbWrapper;
         unsigned int packetSize;
+        std::string tableName;
+        std::string addFeatureQuery;
     };
 
-    RDBMSIndexStorage::Impl::Impl(const REF IFeatureDeserializer& featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize)
+    RDBMSIndexStorage::Impl::Impl(const REF IFeatureDeserializer& featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize, const std::string& tableName)
         : featureDeserializer(featureDeserializer), dbWrapper(dbWrapper) {
         Utils::Contract::Assert(packetSize > 0);
+        Utils::Contract::Assert(!tableName.empty());
 
         this->packetSize = packetSize;
+        this->tableName = tableName;
+
+        addFeatureQuery = "INSERT INTO ";
+        addFeatureQuery.append(tableName);
+        addFeatureQuery.append("(ImageId, data) VALUES (?, ?)");
     }
 
     IIndexStorage::ILookupSession* RDBMSIndexStorage::Impl::StartLookup() const {
@@ -98,11 +106,14 @@ namespace Core {
         
             Db::DbParamBuffer dataParam(serializedFeature->data(), serializedFeature->size(), Db::DbType::BLOB);
             params.push_back(dataParam);
-        
-            dbWrapper.ExecuteNonQuery("INSERT INTO colorhistograms (ImageId, data) VALUES (?, ?)", params);
+
+            dbWrapper.ExecuteNonQuery(this->addFeatureQuery, params);
+
+            Core::SafeFreeBlob(serializedFeature);
         }
         catch (...) {
             Core::SafeFreeBlob(serializedFeature);
+            throw;
         }
     }
 
@@ -110,10 +121,10 @@ namespace Core {
 
     #pragma region RDBMSIndexStorage
 
-    RDBMSIndexStorage::RDBMSIndexStorage(IFeatureDeserializer* featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize) 
+    RDBMSIndexStorage::RDBMSIndexStorage(IFeatureDeserializer* featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize, const std::string& tableName) 
         : IndexStorage(featureDeserializer) {
 
-        pimpl = new Impl(*featureDeserializer, dbWrapper, packetSize);
+        pimpl = new Impl(*featureDeserializer, dbWrapper, packetSize, tableName);
 	}
 
     RDBMSIndexStorage::~RDBMSIndexStorage() {
@@ -123,6 +134,10 @@ namespace Core {
     IIndexStorage::ILookupSession* RDBMSIndexStorage::StartLookup() const {
         return pimpl->StartLookup();
 	}
+
+    void RDBMSIndexStorage::AddFeature(const REF IFeature& feature, imgid_t imgId) const {
+        pimpl->AddFeature(feature, imgId);
+    }
 
     #pragma endregion
 }

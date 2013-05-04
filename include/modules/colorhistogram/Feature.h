@@ -9,7 +9,8 @@
 #define COLOR_HISTOGRAM_FTYPE_ID 1 /*Feature type ID of color histogram feature*/
 
 namespace ImgDetective {
-namespace Features {
+namespace Modules {
+namespace ColorHistogram {
 
     CONCRETE class ColorHistogramFeat : NONCOPYABLE, public Core::Feature {
     public:
@@ -36,7 +37,7 @@ namespace Features {
 
         CTOR ColorHistogramFeat(ChannelHistogram* r, ChannelHistogram* g, ChannelHistogram* b);
         ~ColorHistogramFeat();
-        static ColorHistogramFeat* Deserialize(const Core::blob_p_t blob);
+        static ColorHistogramFeat* Deserialize(const Core::blob_t& blob);
 
         virtual Core::blob_p_t Serialize() const;
     protected:
@@ -47,5 +48,6 @@ namespace Features {
         ChannelHistogram* b;
 	};
 
+}
 }
 }

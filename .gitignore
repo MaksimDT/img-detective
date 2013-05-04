@@ -4,3 +4,5 @@ Debug
 *.opensdf
 packages
 ipch
+upload_test
+upload

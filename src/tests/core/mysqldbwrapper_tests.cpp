@@ -1,6 +1,7 @@
 #include <boost/test/unit_test.hpp>
 #include "core/MySqlDbWrapper.h"
 #include "utils/MemoryUtils.h"
+#include "testutils/TestUtils.h"
 
 using namespace ImgDetective;
 using namespace ImgDetective::Core;
@@ -9,15 +10,7 @@ using namespace ImgDetective::Core::Db;
 BOOST_AUTO_TEST_SUITE(mysqldbwrapper_tests)
 
 BOOST_AUTO_TEST_CASE(insert_then_select_from_images) {
-
-    MySqlConnectionSettings settings;
-    settings.dbName = "img_detective_test";
-    settings.host = "localhost";
-    settings.login = "root";
-    settings.password = "";
-    settings.port = 3306;
-
-    DbWrapper* dbWrapper = new MySqlDbWrapper(settings);
+    DbWrapper* dbWrapper = TestUtils::CreateMySqlDbWrapper();
 
     NonQueryExecResult insertResult = dbWrapper->ExecuteNonQuery(
         "insert into Images (`Path`, `CreationDate`, `Description`) \

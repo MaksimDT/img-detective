@@ -1,15 +1,23 @@
 #pragma once
 
+#include "modules/colorhistogram/Feature.h"
 #include "core/FeatureExtractor.h"
+#include <vector>
 
 namespace ImgDetective {
-namespace FeatureExtractor {
+namespace Modules {
+namespace ColorHistogram {
 
 	//Feature extractor for color histogram
-	class HistogramFE : public Core::FeatureExtractor {
+	class ColorHistogramFE : public Core::FeatureExtractor {
 	public:
-		virtual Core::Feature* ExtractFrom(Core::ImgInfo& imgInfo);
+        CTOR ColorHistogramFE();
+
+		virtual Core::IFeature* ExtractFrom(const Core::ImgInfo& imgInfo) const;
+    private:
+        ColorHistogramFeat::ChannelHistogram* ConvertToChannelHist(const std::vector<unsigned long>& histAbsVals, unsigned long totalPixelCount) const;
 	};
 
+}
 }
 }

@@ -9,6 +9,7 @@ namespace Db {
             UNKNOWN = 0,
             VARCHAR,
             LONGLONG,
+            LONG,
             BLOB
         };
     };

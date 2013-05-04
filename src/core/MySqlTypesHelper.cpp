@@ -9,6 +9,8 @@ namespace Db {
         switch (mysqlType) {
         case MYSQL_TYPE_LONGLONG:
             return 8;
+        case MYSQL_TYPE_LONG:
+            return 4;
         case MYSQL_TYPE_BLOB:
             //variable length
             return 0;
@@ -27,6 +29,8 @@ namespace Db {
         switch (dbType) {
         case DbType::LONGLONG:
             return MYSQL_TYPE_LONGLONG;
+        case DbType::LONG:
+            return MYSQL_TYPE_LONG;
         case DbType::BLOB:
             return MYSQL_TYPE_BLOB;
         case DbType::VARCHAR:
@@ -42,6 +46,8 @@ namespace Db {
         {
         case MYSQL_TYPE_LONGLONG:
             return DbType::LONGLONG;
+        case MYSQL_TYPE_LONG:
+            return DbType::LONG;
         case MYSQL_TYPE_BLOB:
             return DbType::BLOB;
         case MYSQL_TYPE_VARCHAR:

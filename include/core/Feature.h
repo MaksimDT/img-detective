@@ -7,7 +7,7 @@
 namespace ImgDetective {
 namespace Core {
 
-    INTERFACE class IFeature : HAS_VIRTUAL_DESCTUCTOR {
+    class IFeature : HAS_VIRTUAL_DESCTUCTOR {
     public:
         typedef int type_id_t;
 

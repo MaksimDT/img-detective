@@ -22,8 +22,10 @@ namespace Db {
         T As() const;
         template <>
         std::string As<std::string>() const;
+        std::wstring FromUtf8() const;
 
         blob_p_t CopyToByteArray() const;
+
         bool IsNull() const;
     private:
         CTOR FieldValue(void* dataPtr, size_t dataLength);
@@ -48,6 +50,8 @@ namespace Db {
         std::string result;
         
         if (this->dataLength > 0) {
+            //HACK: we assume that string received from db is null terminated
+
             size_t realLength = strnlen_s((char*)dataPtr, dataLength);
             result.assign((char*)dataPtr, realLength);
         }

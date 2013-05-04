@@ -1,17 +1,30 @@
-DROP DATABASE IF EXISTS `img_detective`;
+DROP DATABASE IF EXISTS `img_detective_test`;
 
-CREATE DATABASE `img_detective`
+CREATE DATABASE `img_detective_test`
     DEFAULT CHARACTER SET utf8
     DEFAULT COLLATE utf8_general_ci;
 
-USE `img_detective`;
+USE `img_detective_test`;
 
 CREATE TABLE `Images` (
     `Id` BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `RepositoryId` INT NULL,
     `Path` VARCHAR(1024) NULL,
+    `Extension` VARCHAR(20) NULL,
     `CreationDate` DATETIME,
     `Description` TEXT NULL
 ) ENGINE = InnoDB;
+
+CREATE TABLE `Repositories` (
+    `Id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    `Path` VARCHAR(1024) NOT NULL
+) ENGINE = InnoDB;
+
+ALTER TABLE `Images`
+ADD FOREIGN KEY (`RepositoryId`)
+REFERENCES `Repositories` (`Id`)
+ON UPDATE CASCADE
+ON DELETE CASCADE;
 
 CREATE TABLE `ColorHistograms` (
     `ImageId` BIGINT NOT NULL PRIMARY KEY,
@@ -22,9 +35,3 @@ ADD FOREIGN KEY (`ImageId`)
 REFERENCES `Images` (`Id`)
 ON UPDATE CASCADE
 ON DELETE CASCADE;
-
-CREATE TABLE `FeatureTypes` (
-    `Id` INT NOT NULL PRIMARY KEY,
-    `Name` TINYTEXT NOT NULL,
-    `Description` TEXT
-) ENGINE = InnoDB;

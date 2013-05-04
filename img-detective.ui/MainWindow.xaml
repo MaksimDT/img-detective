@@ -41,5 +41,11 @@
                 </Button>
             </Grid>
         </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="8*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+        </Grid>
     </Grid>
 </Window>

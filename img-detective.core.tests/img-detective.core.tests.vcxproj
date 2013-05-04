@@ -26,7 +26,6 @@
     <ClCompile Include="..\src\tests\core\rdbmsimgmetatadastorage_tests.cpp" />
     <ClCompile Include="..\src\tests\core\index_seek_result_tests.cpp" />
     <ClCompile Include="..\src\tests\core\memory_utils_tests.cpp" />
-    <ClCompile Include="..\src\tests\core\TestsUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\img-detective.common\img-detective.common.vcxproj">
@@ -35,12 +34,12 @@
     <ProjectReference Include="..\img-detective.core\img-detective.core.vcxproj">
       <Project>{e3092fb6-4f3d-4c22-8ab8-32808330f221}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\img-detective.testutils\img-detective.testutils.vcxproj">
+      <Project>{0535ec67-1ad8-4955-a3da-801de6fb9e7a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\img-detective.utils\img-detective.utils.vcxproj">
       <Project>{32140f8f-34b0-456d-bd6f-3d2dcd21c707}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\include\tests\core\TestUtils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{62DDAD5F-AA2E-446C-829A-1C91E9A21D8D}</ProjectGuid>

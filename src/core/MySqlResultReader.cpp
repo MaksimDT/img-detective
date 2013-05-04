@@ -98,7 +98,8 @@ namespace Db {
                 fieldBuffers[i].length = &(fieldBuffers[i].length_value);
             }
 
-            fieldBuffers[0].buffer_type = f.type;
+            fieldBuffers[i].buffer_type = f.type;
+            fieldBuffers[i].is_null = &(fieldBuffers[i].is_null_value);
         }
 
         varLengthBufs.resize(resultMetadata->field_count);
@@ -130,9 +131,9 @@ namespace Db {
             return false;
         }
 
-        if (status == MYSQL_DATA_TRUNCATED) {
+        /*if (status == MYSQL_DATA_TRUNCATED) {
             throw std::exception("data truncated");
-        }
+        }*/
 
         currentResult.Clear();
 

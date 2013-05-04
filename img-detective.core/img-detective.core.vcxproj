@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\core\BindInfo.h" />
+    <ClInclude Include="..\include\core\CheckDirResult.h" />
     <ClInclude Include="..\include\core\DbResultReader.h" />
     <ClInclude Include="..\include\core\DbType.h" />
     <ClInclude Include="..\include\core\DbWrapper.h" />
@@ -47,6 +48,7 @@
     <ClInclude Include="..\include\core\MySqlTypesHelper.h" />
     <ClInclude Include="..\include\core\RDBMSImgMetadataStorage.h" />
     <ClInclude Include="..\include\core\RDBMSIndexStorage.h" />
+    <ClInclude Include="..\include\core\FsRepositoryInfo.h" />
     <ClInclude Include="..\include\core\SearchSystem.h" />
   </ItemGroup>
   <ItemGroup>
@@ -54,9 +56,11 @@
     <ClCompile Include="..\src\core\DbWrapper.cpp" />
     <ClCompile Include="..\src\core\Feature.cpp" />
     <ClCompile Include="..\src\core\FeatureDistance.cpp" />
+    <ClCompile Include="..\src\core\FeatureExtractor.cpp" />
     <ClCompile Include="..\src\core\FeatureRepository.cpp" />
     <ClCompile Include="..\src\core\FieldsDictionary.cpp" />
     <ClCompile Include="..\src\core\FieldValue.cpp" />
+    <ClCompile Include="..\src\core\FsImgStorage.cpp" />
     <ClCompile Include="..\src\core\ImgInfo.cpp" />
     <ClCompile Include="..\src\core\Indexer.cpp" />
     <ClCompile Include="..\src\core\IndexManager.cpp" />
@@ -68,6 +72,7 @@
     <ClCompile Include="..\src\core\MySqlTypesHelper.cpp" />
     <ClCompile Include="..\src\core\RDBMSImgMetadataStorage.cpp" />
     <ClCompile Include="..\src\core\RDBMSIndexStorage.cpp" />
+    <ClCompile Include="..\src\core\FsRepositoryInfo.cpp" />
     <ClCompile Include="..\src\core\SearchSystem.cpp" />
   </ItemGroup>
   <ItemGroup>

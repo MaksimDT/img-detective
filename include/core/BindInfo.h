@@ -11,6 +11,8 @@ namespace Db {
     //buffer used by a RDBMS engine either for input or output
     class DbParamBuffer {
     public:
+        static DbParamBuffer CreateNull(DbType::Enum dbType);
+
         CTOR DbParamBuffer(void* data, size_t length, DbType::Enum dbType);
 
         //returns the pointer to the memory location where the buffer starts

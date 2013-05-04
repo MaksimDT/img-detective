@@ -147,6 +147,12 @@
     <ProjectReference Include="..\img-detective.core\img-detective.core.vcxproj">
       <Project>{e3092fb6-4f3d-4c22-8ab8-32808330f221}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\img-detective.modules.colorhistogram\img-detective.modules.colorhistogram.vcxproj">
+      <Project>{e41b94c6-f528-43ca-ab00-275e20fbdef8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\img-detective.utils\img-detective.utils.vcxproj">
+      <Project>{32140f8f-34b0-456d-bd6f-3d2dcd21c707}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\facade\ImgDetectiveApi.h" />

@@ -11,7 +11,9 @@ namespace Core {
         CTOR RDBMSImgMetadataStorage(REF Db::DbWrapper& dbWrapper);
 
         virtual void InitImgRecord(REF ImgInfo& imgInfo) const;
-        virtual void SaveImgRecord(const REF ImgInfo& imgInfo) const;
+
+        virtual FsRepositoryInfo CreateFsRepositoryRecord(const boost::filesystem::path& dirPath) const;
+        virtual FsRepositoryInfo::col_t GetAllRepositories() const;
     private:
         REF Db::DbWrapper& dbWrapper;
     };

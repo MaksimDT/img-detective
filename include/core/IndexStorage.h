@@ -7,11 +7,11 @@ namespace ImgDetective {
 namespace Core {
 
     //acts as a driver for exhanging info with a persistent medium where features of images are stored
-    INTERFACE class IIndexStorage : NONCOPYABLE, HAS_VIRTUAL_DESCTUCTOR {
+    class IIndexStorage : NONCOPYABLE, HAS_VIRTUAL_DESCTUCTOR {
     public:
         #pragma region NESTED
         
-        INTERFACE class ILookupSession : NONCOPYABLE, HAS_VIRTUAL_DESCTUCTOR {
+        class ILookupSession : NONCOPYABLE, HAS_VIRTUAL_DESCTUCTOR {
         public:
             CTOR ILookupSession() {};
             virtual bool GetNextPacket(REF IndexNode::col_p_t& packet) = 0;
@@ -21,7 +21,7 @@ namespace Core {
 
         CTOR IIndexStorage() {};
         virtual EXCLUSIVE ILookupSession* StartLookup() const = 0;
-        virtual void AddFeature(const REF IFeature& feature, imgid_t imgId);
+        virtual void AddFeature(const REF IFeature& feature, imgid_t imgId) const = 0;
     };
 
 	ABSTRACT class IndexStorage : public IIndexStorage {

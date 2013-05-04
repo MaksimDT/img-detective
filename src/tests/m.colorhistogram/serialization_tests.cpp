@@ -5,7 +5,7 @@
 #include <cmath>
 #include <ctime>
 
-using namespace ImgDetective::Features;
+using namespace ImgDetective::Modules::ColorHistogram;
 using namespace ImgDetective::Core;
 using namespace std;
 
@@ -34,7 +34,6 @@ ColorHistogramFeat* CreateRandomHistogram() {
 BOOST_AUTO_TEST_SUITE(colorhistogram_serialization)
 
 BOOST_AUTO_TEST_CASE(colorhistogram_serializes_to_something) {
-    const size_t maxBinValue = 256;
     const size_t binSize = sizeof(ColorHistogramFeat::ChannelHistogram::bin_value_t);
     const size_t numberOfChannels = 3;
 
@@ -57,7 +56,7 @@ BOOST_AUTO_TEST_CASE(deserialized_histogram_is_identical_to_initial) {
 
     BOOST_ASSERT(blob != NULL);
 
-    ColorHistogramFeat* deserializedHist = ColorHistogramFeat::Deserialize(blob);
+    ColorHistogramFeat* deserializedHist = ColorHistogramFeat::Deserialize(*blob);
 
     BOOST_ASSERT(deserializedHist != NULL);
 

@@ -120,6 +120,12 @@
     <ClInclude Include="..\include\core\MySqlTypesHelper.h">
       <Filter>Header Files\Db\mysql</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\core\FsRepositoryInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\core\CheckDirResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\IndexManager.cpp">
@@ -178,6 +184,15 @@
     </ClCompile>
     <ClCompile Include="..\src\core\DbWrapper.cpp">
       <Filter>Source Files\Db</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\FsImgStorage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\FeatureExtractor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\FsRepositoryInfo.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

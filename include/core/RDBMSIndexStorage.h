@@ -25,10 +25,10 @@ namespace Core {
 
         #pragma endregion
 
-		CTOR RDBMSIndexStorage(EXCLUSIVE IFeatureDeserializer* featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize);
+		CTOR RDBMSIndexStorage(EXCLUSIVE IFeatureDeserializer* featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize, const std::string& tableName);
         ~RDBMSIndexStorage();
         virtual ILookupSession* StartLookup() const;
-        virtual void AddFeature(const REF IFeature& feature, imgid_t imgId);
+        virtual void AddFeature(const REF IFeature& feature, imgid_t imgId) const;
 	private:
         class Impl;
         Impl* pimpl;

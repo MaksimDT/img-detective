@@ -21,12 +21,24 @@
     <ClInclude Include="..\include\modules\colorhistogram\FeatureExtractor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\modules\colorhistogram\IndexManager.h">
+    <ClInclude Include="..\include\modules\colorhistogram\ModuleFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\modules\colorhistogram\FeatureDeserializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\modules\colorhistogram\Feature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\modules\colorhistogram\FeatureExtractor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\modules\colorhistogram\ModuleFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\modules\colorhistogram\FeatureDeserializer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,5 +1,8 @@
 #include "core/FieldValue.h"
 #include "utils/ContractUtils.h"
+#include "utils/UnicodeUtils.h"
+
+using namespace std;
 
 namespace ImgDetective {
 namespace Core {
@@ -25,12 +28,29 @@ namespace Db {
         if (this->IsNull()) {
             return NULL;
         }
-        else {
-            blob_p_t result = Core::CreateBlobOfSize(this->dataLength);
+
+        blob_p_t result = NULL;
+
+        try {
+            result = Core::CreateBlobOfSize(this->dataLength);
             CopyToBlob(dataPtr, result);
-            
-            return result;
         }
+        catch (...) {
+            Core::SafeFreeBlob(result);
+            throw;
+        }
+        
+        return result;
+    }
+
+    wstring FieldValue::FromUtf8() const {
+        if (this->IsNull()) {
+            return wstring();
+        }
+
+        string utf8val = this->As<string>();
+
+        return Utils::Unicode::Utf8ToUtf16(utf8val);
     }
 
     bool FieldValue::IsNull() const {

@@ -7,10 +7,10 @@
 namespace ImgDetective {
 namespace Core {
 
-    INTERFACE class IFeatureRepository : NONCOPYABLE, HAS_VIRTUAL_DESCTUCTOR {
+    class IFeatureRepository : NONCOPYABLE, HAS_VIRTUAL_DESCTUCTOR {
 	public:
 		virtual imgid_col_t GetSimilarImgs(const REF IFeature::col_p_t& exampleFeatSet, const REF ImgQuery& initialQuery) const = 0;
-        virtual void Save(imgid_t imgId, const REF IFeature::col_p_t& featureSet) = 0;
+        virtual void Save(imgid_t imgId, const REF IFeature::col_p_t& featureSet) const = 0;
 	};
 
 	CONCRETE SEALED class FeatureRepository : public IFeatureRepository {
@@ -19,7 +19,7 @@ namespace Core {
         virtual ~FeatureRepository();
 
         virtual imgid_col_t GetSimilarImgs(const REF Feature::col_p_t& exampleFeatSet, const REF ImgQuery& initialQuery) const;
-        virtual void Save(imgid_t imgId, const REF IFeature::col_p_t& featureSet);
+        virtual void Save(imgid_t imgId, const REF IFeature::col_p_t& featureSet) const;
 	private:
 		IIndexManager* GetIndexManager(Feature::type_id_t featureTypeId) const;
 		double GetWeightCoeff(Feature::type_id_t featureTypeId) const;

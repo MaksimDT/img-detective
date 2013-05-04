@@ -20,8 +20,15 @@
     <ProjectReference Include="..\img-detective.modules.colorhistogram\img-detective.modules.colorhistogram.vcxproj">
       <Project>{e41b94c6-f528-43ca-ab00-275e20fbdef8}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\img-detective.testutils\img-detective.testutils.vcxproj">
+      <Project>{0535ec67-1ad8-4955-a3da-801de6fb9e7a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\img-detective.utils\img-detective.utils.vcxproj">
+      <Project>{32140f8f-34b0-456d-bd6f-3d2dcd21c707}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\tests\m.colorhistogram\extraction_tests.cpp" />
     <ClCompile Include="..\src\tests\m.colorhistogram\serialization_tests.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

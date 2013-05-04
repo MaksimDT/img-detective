@@ -7,7 +7,8 @@ using namespace ImgDetective::Core;
 using namespace std;
 
 namespace ImgDetective {
-namespace Features {
+namespace Modules {
+namespace ColorHistogram {
 
     #pragma region NESTED IMPL
 
@@ -61,6 +62,8 @@ namespace Features {
     }
 
     double ColorHistogramFeat::ChannelHistogram::ComputeDistanceTo(const REF ColorHistogramFeat::ChannelHistogram& other) const {
+        //not such clever way of computing the distance between two histograms
+
         const unsigned long maxDiff = (COLOR_HISTOGRAM_BIN_COUNT) * (NUMBER_OF_BIN_VALUES - 1);
         unsigned long diff = 0;
 
@@ -95,7 +98,7 @@ namespace Features {
         Utils::Memory::SafeDelete(b);
     }
 
-    ColorHistogramFeat* ColorHistogramFeat::Deserialize(const Core::blob_p_t blob) {
+    ColorHistogramFeat* ColorHistogramFeat::Deserialize(const Core::blob_t& blob) {
         ColorHistogramFeat* result = NULL;
         ColorHistogramFeat::ChannelHistogram* r = NULL;
         ColorHistogramFeat::ChannelHistogram* g = NULL;
@@ -103,9 +106,9 @@ namespace Features {
 
         try {
             size_t bufOffset = 0;
-            r = ColorHistogramFeat::ChannelHistogram::Deserialize(*blob, REF bufOffset);
-            g = ColorHistogramFeat::ChannelHistogram::Deserialize(*blob, REF bufOffset);
-            b = ColorHistogramFeat::ChannelHistogram::Deserialize(*blob, REF bufOffset);
+            r = ColorHistogramFeat::ChannelHistogram::Deserialize(blob, REF bufOffset);
+            g = ColorHistogramFeat::ChannelHistogram::Deserialize(blob, REF bufOffset);
+            b = ColorHistogramFeat::ChannelHistogram::Deserialize(blob, REF bufOffset);
             result = new ColorHistogramFeat(r, g, b);
         }
         catch (...) {
@@ -160,5 +163,7 @@ namespace Features {
     }
 
     #pragma endregion
+
+}
 }
 }

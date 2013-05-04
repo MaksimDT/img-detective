@@ -23,10 +23,11 @@ namespace Core {
 
         return blob;
     }
-    
+
     void SafeFreeBlob(REF blob_p_t& blob) {
         if (blob != NULL) {
             delete blob;
+            blob = NULL;
         }
     }
 

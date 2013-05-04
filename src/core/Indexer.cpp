@@ -1,49 +1,120 @@
 #include "core/Indexer.h"
 #include "utils/MemoryUtils.h"
+#include "utils/FileSystemUtils.h"
 
 namespace ImgDetective {
 namespace Core {
 
     CTOR Indexer::Indexer(REF ImgContentStorage& imgContentStorage, REF ImgMetadataStorage& imgMetadataStorage, REF IFeatureExtractor::col_p_t& featureExtractors, REF FeatureRepository& featureRepository) 
-        : imgContentStorage(imgContentStorage), imgMetadataStorage(imgMetadataStorage), featureExtractors(featureExtractors), featureRepo(featureRepo) {
+        : imgContentStorage(imgContentStorage), imgMetadataStorage(imgMetadataStorage), featureExtractors(featureExtractors), featureRepo(featureRepository) {
     }
 
-    UploadImgResult Indexer::UploadImg(const REF ImgShortInfo& img) {
+    Indexer::~Indexer() {
+        Utils::Memory::SafeDeleteCollectionOfPointers(featureExtractors);
+    }
+
+    UploadImgResult Indexer::UploadImg(ImgInfo& img) const {
+        AddToIndex(img);
+        this->imgContentStorage.Write(img);
+
         UploadImgResult result;
-        IFeature::col_p_t features;
-        ImgInfo* parsedImg = NULL;
-
-        try {
-            //parse input image
-            parsedImg = ImgInfo::Create(img);
-            //create record for the new image in the metadata repository to obtain a unique identifier of this image
-            imgMetadataStorage.InitImgRecord(REF *parsedImg);
-            features = ExtractFeatures(*parsedImg);
-            featureRepo.Save(parsedImg->GetId(), features);
-            imgContentStorage.Write(REF *parsedImg);
-            //save additional info in the metadata storage
-            imgMetadataStorage.SaveImgRecord(*parsedImg);
-
-            Utils::Memory::SafeDelete(parsedImg);
-            Utils::Memory::SafeDeleteCollectionOfPointers(features);
-        }
-        catch (...) {
-            Utils::Memory::SafeDelete(parsedImg);
-            Utils::Memory::SafeDeleteCollectionOfPointers(features);
-
-            throw;
-        }
-
         result.opStatus = OPSTATUS_OK;
         return result;
     }
 
-    IFeature::col_p_t Indexer::ExtractFeatures(const REF ImgInfo& imgInfo) {
+    void Indexer::IndexDirectory(const boost::filesystem::path& dirPath) const {
+        CheckDirResult::Enum checkResult = CanIndexDirectory(dirPath);
+        if (checkResult != CheckDirResult::AvailableForIndex) {
+            throw std::exception("The specified directory cannot be indexed");
+        }
+
+        FsRepositoryInfo newRepo = this->imgMetadataStorage.CreateFsRepositoryRecord(dirPath);
+
+        boost::filesystem::recursive_directory_iterator it(newRepo.GetPath());
+        boost::filesystem::recursive_directory_iterator end;
+
+        //recursively visit all files in the directory and its subdirectories
+        while (it != end) {
+            boost::filesystem::path curPath = *it;
+            ImgInfo* curImage = NULL;
+
+            try {
+                //not going to symlinks
+                if (boost::filesystem::is_directory(curPath) && boost::filesystem::is_symlink(curPath)) {
+                    it.no_push();
+                }
+
+                //here we have an image file. Lets read it from file system and upload to our index
+                if (boost::filesystem::is_regular_file(curPath) && IsOfSupportedFormat(curPath)) {
+                    boost::filesystem::path relCurPath = Utils::FileSystem::MakeRelative(newRepo.GetPath(), curPath);
+                    curImage = ImgInfo::Create(newRepo.GetId(), relCurPath);
+                    //no need to upload an image since its contents is already in the directory being indexed, let's just add it to index
+                    AddToIndex(*curImage);
+
+                    Utils::Memory::SafeDelete(curImage);
+                }
+            }
+            catch (const std::exception& ex) {
+                //TODO: logging
+                Utils::Memory::SafeDelete(curImage);
+            }
+        }
+    }
+
+    CheckDirResult::Enum Indexer::CanIndexDirectory(const boost::filesystem::path& dirPath) const {
+        if (!boost::filesystem::exists(dirPath)) {
+            return CheckDirResult::NotExists;
+        }
+
+        if (!boost::filesystem::is_directory(dirPath)) {
+            return CheckDirResult::IsNotDir;
+        }
+
+        if (!dirPath.is_absolute()) {
+            return CheckDirResult::NotAbsolute;
+        }
+
+        FsRepositoryInfo::col_t allRepos = this->imgMetadataStorage.GetAllRepositories();
+        FsRepositoryInfo::col_t::const_iterator it;
+        
+        for (it = allRepos.cbegin(); it != allRepos.cend(); ++it) {
+            boost::filesystem::path p = it->GetPath();
+
+            if (dirPath == p || Utils::FileSystem::HasParentChildRelationship(p, dirPath)) {
+                return CheckDirResult::AlreadyIndexed;
+            }
+
+            if (Utils::FileSystem::HasParentChildRelationship(dirPath, p)) {
+                return CheckDirResult::SubdirIndexed;
+            }
+        }
+
+        return CheckDirResult::AvailableForIndex;
+    }
+
+    void Indexer::AddToIndex(ImgInfo& img) const {
         IFeature::col_p_t features;
 
         try {
-            IFeatureExtractor::col_p_t::iterator it;
-            for (it = featureExtractors.begin(); it != featureExtractors.end(); ++it) {
+            this->imgMetadataStorage.InitImgRecord(img);
+
+            features = this->ExtractFeatures(img);
+            this->featureRepo.Save(img.GetId(), features);
+
+            Utils::Memory::SafeDeleteCollectionOfPointers(features);
+        }
+        catch (...) {
+            Utils::Memory::SafeDeleteCollectionOfPointers(features);
+            throw;
+        }
+    }
+
+    IFeature::col_p_t Indexer::ExtractFeatures(const REF ImgInfo& imgInfo) const {
+        IFeature::col_p_t features;
+
+        try {
+            IFeatureExtractor::col_p_t::const_iterator it;
+            for (it = featureExtractors.cbegin(); it != featureExtractors.cend(); ++it) {
                 IFeatureExtractor* fe = *it;
                 IFeature* extractedFeature = fe->ExtractFrom(imgInfo);
                 features.push_back(extractedFeature);
@@ -55,6 +126,13 @@ namespace Core {
         }
 
         return features;
+    }
+
+    bool Indexer::IsOfSupportedFormat(const boost::filesystem::path& filePath) const {
+        std::string extension = boost::filesystem::extension(filePath);
+
+        //TODO: to config
+        return extension == "jpg" || extension == "jpeg" || extension == "png" || extension == "bmp";
     }
 }
 }

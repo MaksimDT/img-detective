@@ -6,6 +6,10 @@ namespace ImgDetective {
 namespace Core {
 namespace Db {
 
+    DbParamBuffer DbParamBuffer::CreateNull(DbType::Enum dbType) {
+        return DbParamBuffer(NULL, 0, dbType);
+    }
+
     CTOR DbParamBuffer::DbParamBuffer(void* data, size_t length, DbType::Enum dbType) {
         Utils::Contract::Assert(data != NULL || length == 0, "DbParamBuffer ctor: if the data is null the length must be 0 as well");
         Utils::Contract::Assert(length >= 0, "DbParamBuffer ctor: length must be greater or equal 0");

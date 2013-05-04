@@ -18,5 +18,8 @@
     <ClCompile Include="..\src\tests\m.colorhistogram\serialization_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\tests\m.colorhistogram\extraction_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

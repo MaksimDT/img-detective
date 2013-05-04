@@ -19,12 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\modules\colorhistogram\FeatureDeserializer.h" />
+    <ClInclude Include="..\include\modules\colorhistogram\ModuleFactory.h" />
     <ClInclude Include="..\include\modules\colorhistogram\Feature.h" />
     <ClInclude Include="..\include\modules\colorhistogram\FeatureExtractor.h" />
-    <ClInclude Include="..\include\modules\colorhistogram\IndexManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\modules\colorhistogram\FeatureDeserializer.cpp" />
+    <ClCompile Include="..\src\modules\colorhistogram\ModuleFactory.cpp" />
     <ClCompile Include="..\src\modules\colorhistogram\Feature.cpp" />
+    <ClCompile Include="..\src\modules\colorhistogram\FeatureExtractor.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E41B94C6-F528-43CA-AB00-275E20FBDEF8}</ProjectGuid>

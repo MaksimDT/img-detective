@@ -42,6 +42,18 @@ namespace Core {
 		return FuseResults(REF indexResults, REF initialQuery);
 	}
 
+    void FeatureRepository::Save(imgid_t imgId, const REF IFeature::col_p_t& featureSet) const {
+        Utils::Contract::Assert(imgId != IMGID_UNDEFINED);
+        
+        IFeature::col_p_t::const_iterator featIt;
+        for (featIt = featureSet.cbegin(); featIt != featureSet.cend(); ++featIt) {
+            IFeature* curFeat = *featIt;
+            IIndexManager* ixMgr = GetIndexManager(curFeat->GetTypeId());
+
+            ixMgr->AddFeature(*curFeat, imgId);
+        }
+    }
+
 	IIndexManager* FeatureRepository::GetIndexManager(Feature::type_id_t featureTypeId) const {
 		IIndexManager::col_p_t::const_iterator it;
 
@@ -52,7 +64,7 @@ namespace Core {
 			}
 		}
 
-		return NULL;
+        throw std::exception("couldn't find index manager for the specified feature");
 	}
 
 	double FeatureRepository::GetWeightCoeff(Feature::type_id_t featureTypeId) const {

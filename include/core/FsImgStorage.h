@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/ImgContentStorage.h"
-#include <string>
 #include <boost/filesystem.hpp>
 
 namespace ImgDetective {
@@ -9,19 +8,12 @@ namespace Core {
 
     CONCRETE class FsImgStorage : public ImgContentStorage {
     public:
-        CONCRETE NESTED class LookupSession {
-        public:
-            LookupSession(const REF boost::filesystem::directory_iterator& it);
-            ImgInfo* GetNextFile();
-        private:
-            const REF boost::filesystem::directory_iterator& it;
-        };
-
-        FsImgStorage(const REF std::string& baseDirPath);
+        CTOR FsImgStorage(const boost::filesystem::path& uploadDirPath);
         
-        virtual void Write(REF ImgInfo& img);
+        virtual void Write(ImgInfo& img) const;
+        boost::filesystem::path GetImgPath(imgid_t imgId, const std::string& extension) const;
     private:
-        std::string baseDirPath;
+        boost::filesystem::path uploadDirPath;
     };
 
 }
