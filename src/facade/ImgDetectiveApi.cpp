@@ -48,6 +48,8 @@ void UploadImg(RawImg rawImg, UploadImgResult* result) {
     Core::IFeatureExtractor::col_p_t featExtractors;
     Core::IIndexManager::col_p_t indexManagers;
 
+    //TODO: danger of memory leaks
+
     try {
         boost::filesystem::path uploadDirPath = L"H:\\Институт\\Диплом\\img-detective\\upload";
         Core::FsImgStorage fsImgStorage(uploadDirPath);
@@ -70,12 +72,37 @@ void UploadImg(RawImg rawImg, UploadImgResult* result) {
     }
 }
 
-IndexDirectoryResult IndexDirectory(wchar_t* dirPath) {
-    return IndexDirectoryResult();
-}
+void IndexDirectory(wchar_t* dirPath, IndexDirectoryResult* result) {
+    memset(result, 0, sizeof(IndexDirectoryResult));
 
-IndexDirectoryResult IndexDirectoryStub(wchar_t* dirPath) {
-    IndexDirectoryResult result;
-    result.opStatus = OPSTATUS_OK;
-    return result;
+    Core::Db::MySqlConnectionSettings dbConSettings;
+    dbConSettings.dbName = "img_detective";
+    dbConSettings.host = "localhost";
+    dbConSettings.login = "root";
+    dbConSettings.password = "";
+    dbConSettings.port = 3306;
+
+    Core::IFeatureExtractor::col_p_t featExtractors;
+    Core::IIndexManager::col_p_t indexManagers;
+
+    //TODO: danger of memory leaks
+
+    try {
+        boost::filesystem::path uploadDirPath = L"H:\\Институт\\Диплом\\img-detective\\upload";
+        Core::FsImgStorage fsImgStorage(uploadDirPath);
+        Core::Db::MySqlDbWrapper dbWrapper(dbConSettings);
+        Core::RDBMSImgMetadataStorage imgMetadataStorage(dbWrapper);
+        featExtractors.push_back(Modules::ColorHistogram::ModuleFactory::GetFeatureExtractor());
+        indexManagers.push_back(Modules::ColorHistogram::ModuleFactory::GetIndexManager(dbWrapper));
+        Core::FeatureRepository featureRepo(indexManagers);
+        Core::Indexer indexer(fsImgStorage, imgMetadataStorage, featExtractors, featureRepo);
+
+        indexer.IndexDirectory(dirPath);
+
+        result->opStatus = OPSTATUS_OK;
+    }
+    catch (...) {
+        //TODO: logging
+        result->opStatus = OPSTATUS_INTERNAL_ERROR;
+    }
 }

@@ -10,6 +10,4 @@
 
 extern "C" IMG_DETECTIVE_API SearchResult SearchByExample(ImgQuery query);
 extern "C" IMG_DETECTIVE_API void UploadImg(RawImg imgInfo, UploadImgResult* result);
-extern "C" IMG_DETECTIVE_API IndexDirectoryResult IndexDirectory(wchar_t* dirPath);
-extern "C" IMG_DETECTIVE_API IndexDirectoryResult IndexDirectoryStub(wchar_t* dirPath);
-//extern "C" IMG_DETECTIVE_API IndexDirectoryAsyncResult IndexDirectoryAsync(wchar_t* dirPath);
+extern "C" IMG_DETECTIVE_API void IndexDirectory(wchar_t* dirPath, IndexDirectoryResult* result);

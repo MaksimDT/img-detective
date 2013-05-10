@@ -23,7 +23,7 @@
             <Setter Property="ContentTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <TextBlock>Выберите изображение-пример для поиска</TextBlock>
+                        <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" />
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
@@ -46,26 +46,64 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="FontSize" Value="14" />
         </Style>
+        <Style x:Key="ImageBorderStyle" TargetType="{x:Type Border}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="BorderBrush">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Color="White" Offset="0.0" />
+                        <GradientStop Color="Yellow" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="30" />
+            <Setter Property="BitmapEffect">
+                <Setter.Value>
+                    <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="5" Softness="0.5" Opacity="0.5"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="BitmapEffect">
+                        <Setter.Value>
+                            <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="25" Softness="1" Opacity="0.5"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="MagnifierStyle" TargetType="{x:Type Image}">
+            <Setter Property="Source" Value="{StaticResource ResourceKey=ExampleNotSelectedImgSource}" />
+            <Setter Property="Margin" Value="20" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Margin" Value="5" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <!--styles end-->
         <!--control templates begin-->
         <ControlTemplate x:Key="LinkButtonTemplate">
             <TextBlock Style="{StaticResource ResourceKey=LinkTextBlockStyle}" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" />
-        </ControlTemplate>
-        <ControlTemplate x:Key="EnlargedImageTooltipTemplate">
-            <Image Width="400" Height="400" Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Source}" />
         </ControlTemplate>
         <!--control templates end-->
     </Window.Resources>
     <Window.Background>
         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
             <GradientStop Color="#AAA" Offset="0.0" />
-            <GradientStop Color="#222" Offset="1.0" />
+            <GradientStop Color="White" Offset="1.0" />
         </LinearGradientBrush>
     </Window.Background>
     <Window.BorderBrush>
         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-            <GradientStop Color="Gray" Offset="0.0" />
-            <GradientStop Color="Yellow" Offset="1.0" />
+            <GradientStop Color="Yellow" Offset="0.0" />
+            <GradientStop Color="Black" Offset="1.0" />
         </LinearGradientBrush>
     </Window.BorderBrush>
     <Window.BorderThickness>
@@ -78,13 +116,19 @@
             <RowDefinition MinHeight="300"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="Gray" Offset="0.0" />
+                    <GradientStop Color="Black" Offset="1.0" />
+                </LinearGradientBrush>
+            </Grid.Background>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" MinWidth="80"></ColumnDefinition>
                 <ColumnDefinition Width="10*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Source="{StaticResource ResourceKey=ExampleNotSelectedImgSource}" HorizontalAlignment="Left">
+            <Image Grid.Column="0" Style="{StaticResource ResourceKey=MagnifierStyle}">
                 <Image.ToolTip>
-                    <ToolTip Style="{StaticResource ResourceKey=ToolTipStyle}" />
+                    <ToolTip Style="{StaticResource ResourceKey=ToolTipStyle}" Content="Поиск по содержимому" />
                 </Image.ToolTip>
             </Image>
             <Grid Grid.Column="1">
@@ -93,9 +137,11 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Button Content="Индексировать директорию >>" Command="{Binding UploadImage}" Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
+                </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
                     <Button Content="Загрузить изображение >>" Command="{Binding UploadImage}" Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
-                    <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">|</TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                     <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">Показаны изображения&#160;</TextBlock>
@@ -137,15 +183,18 @@
         <ItemsControl Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" ItemsSource="{Binding Path=Images}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid HorizontalAlignment="Stretch" VerticalAlignment="Center" Rows="4" Columns="4" />
+                    <UniformGrid HorizontalAlignment="Stretch" VerticalAlignment="Center" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.OpenImage}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
+                    <Button Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.OpenImage}" 
+                            CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
                         <Button.Template>
                             <ControlTemplate>
-                                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding Path=Source}" />
+                                <Border Style="{StaticResource ResourceKey=ImageBorderStyle}">
+                                    <Image Source="{Binding Path=Source}" />
+                                </Border>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>

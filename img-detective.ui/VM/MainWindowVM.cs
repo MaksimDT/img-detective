@@ -63,7 +63,7 @@ namespace img_detective.ui.VM
             set { SetValue(PageSizeProperty, value); }
         }
         public static readonly DependencyProperty PageSizeProperty =
-            DependencyProperty.Register("PageSize", typeof(int), typeof(MainWindowVM), new PropertyMetadata(16));
+            DependencyProperty.Register("PageSize", typeof(int), typeof(MainWindowVM), new PropertyMetadata(12));
 
         #endregion
 
