@@ -63,6 +63,11 @@ namespace ColorHistogram {
     ColorHistogramFeat::ChannelHistogram* ColorHistogramFE::ConvertToChannelHist(const std::vector<unsigned long>& histAbsVals, unsigned long totalPixelCount) const {
         Utils::Contract::Assert(histAbsVals.size() == COLOR_HISTOGRAM_BIN_COUNT);
 
+        if (totalPixelCount == 0) {
+            //in order to avoid division by zero
+            totalPixelCount = 1;
+        }
+
         ColorHistogramFeat::ChannelHistogram::bins_vector_t* histRelVals = new ColorHistogramFeat::ChannelHistogram::bins_vector_t(COLOR_HISTOGRAM_BIN_COUNT);
 
         unsigned long divisor = (unsigned long)ceil((double)(totalPixelCount / MAX_BIN_VALUE));

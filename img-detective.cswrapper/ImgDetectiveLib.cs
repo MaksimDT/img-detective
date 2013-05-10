@@ -23,6 +23,7 @@ namespace img_detective.cswrapper
             try
             {
                 unmanagedBuffer = Marshal.AllocCoTaskMem(imgContent.Length);
+                Marshal.Copy(imgContent, 0, unmanagedBuffer, imgContent.Length);
                 var rawImg = new RawImg()
                 {
                     content = unmanagedBuffer,
@@ -58,7 +59,7 @@ namespace img_detective.cswrapper
             public string fileExtension;
         }
 
-        [DllImport("img-detective.facade.dll")]
+        [DllImport("img-detective.facade.dll", CallingConvention=CallingConvention.Cdecl)]
         private static extern void UploadImg(RawImg img, out UploadImgResult result);
     }
 }

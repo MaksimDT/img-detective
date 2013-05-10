@@ -10,5 +10,6 @@ namespace img_detective.ui.dal
     public interface IImgDAL
     {
         IEnumerable<image> GetImgs(int pageNum, int pageSize);
+        long GetImgsCount();
     }
 }

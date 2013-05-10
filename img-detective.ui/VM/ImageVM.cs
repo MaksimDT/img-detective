@@ -15,6 +15,13 @@ namespace img_detective.ui.VM
     {
         private readonly ImageFullInfo model;
         public ImageSource Source { get; private set; }
+        public string FilePath
+        {
+            get
+            {
+                return model.FilePath;
+            }
+        }
 
         public ImageVM(ImageFullInfo model)
         {
@@ -23,9 +30,14 @@ namespace img_detective.ui.VM
             InitImageSource();
         }
 
+        public bool FileExists()
+        {
+            return !String.IsNullOrWhiteSpace(model.FilePath) && File.Exists(model.FilePath);
+        }
+
         private void InitImageSource()
         {
-            if (!String.IsNullOrWhiteSpace(model.FilePath) && File.Exists(model.FilePath))
+            if (FileExists())
             {
                 BitmapImage src = new BitmapImage();
                 src.BeginInit();

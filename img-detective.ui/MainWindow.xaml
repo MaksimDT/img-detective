@@ -4,6 +4,7 @@
         Title="MainWindow" MinHeight="500" Height="500" Width="525"
         Initialized="Window_Initialized_1">
     <Window.Resources>
+        <!--styles begin-->
         <Style x:Key="ToolTipStyle" TargetType="{x:Type ToolTip}">
             <Setter Property="HorizontalOffset" Value="10"/>
             <Setter Property="VerticalOffset" Value="10"/>
@@ -26,18 +27,34 @@
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+        <Style x:Key="TextBlockStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="Yellow" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="DelimiterTextBlockStyle" BasedOn="{StaticResource ResourceKey=TextBlockStyle}" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style x:Key="LinkTextBlockStyle" BasedOn="{StaticResource ResourceKey=TextBlockStyle}" TargetType="{x:Type TextBlock}">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="ContentTemplate">
-                        <Setter.Value>
-                            <DataTemplate>
-                                <Image Source="{StaticResource ResourceKey=justkey}" />
-                            </DataTemplate>
-                        </Setter.Value>
-                    </Setter>
+                    <Setter Property="FontWeight" Value="Bold" />
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="NavTextStyle" BasedOn="{StaticResource ResourceKey=LinkTextBlockStyle}" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <!--styles end-->
+        <!--control templates begin-->
+        <ControlTemplate x:Key="LinkButtonTemplate">
+            <TextBlock Style="{StaticResource ResourceKey=LinkTextBlockStyle}" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" />
+        </ControlTemplate>
+        <ControlTemplate x:Key="EnlargedImageTooltipTemplate">
+            <Image Width="400" Height="400" Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Source}" />
+        </ControlTemplate>
+        <!--control templates end-->
     </Window.Resources>
     <Window.Background>
         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
@@ -65,14 +82,48 @@
                 <ColumnDefinition Width="1*" MinWidth="80"></ColumnDefinition>
                 <ColumnDefinition Width="10*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            
             <Image Grid.Column="0" Source="{StaticResource ResourceKey=ExampleNotSelectedImgSource}" HorizontalAlignment="Left">
                 <Image.ToolTip>
                     <ToolTip Style="{StaticResource ResourceKey=ToolTipStyle}" />
                 </Image.ToolTip>
             </Image>
-            
             <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Button Content="Загрузить изображение >>" Command="{Binding UploadImage}" Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
+                    <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">|</TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">Показаны изображения&#160;</TextBlock>
+                    <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}" FontWeight="Bold" Text="{Binding FirstImageNumber}" />
+                    <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">-</TextBlock>
+                    <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}" FontWeight="Bold" Text="{Binding LastImageNumber}" />
+                    <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">&#160;из&#160;</TextBlock>
+                    <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}" FontWeight="Bold" Text="{Binding TotalImagesCount}" />
+                    <ContentControl Width="35" Height="20">
+                        <Button Command="{Binding GoToPrevPage}">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <TextBlock Style="{StaticResource ResourceKey=NavTextStyle}">&lt;&lt;</TextBlock>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </ContentControl>
+                    <TextBlock Style="{StaticResource ResourceKey=DelimiterTextBlockStyle}">|</TextBlock>
+                    <ContentControl Width="35" Height="20">
+                        <Button Command="{Binding GoToNextPage}">
+                            <Button.Template>
+                                <ControlTemplate>
+                                    <TextBlock Style="{StaticResource ResourceKey=NavTextStyle}">&gt;&gt;</TextBlock>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </ContentControl>
+                </StackPanel>
             </Grid>
         </Grid>
         <Border Grid.Row="1" BorderThickness="2">
@@ -91,7 +142,13 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding Path=Source}" />
+                    <Button Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.OpenImage}" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <Image HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding Path=Source}" />
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

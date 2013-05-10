@@ -45,25 +45,29 @@ void UploadImg(RawImg rawImg, UploadImgResult* result) {
     dbConSettings.password = "";
     dbConSettings.port = 3306;
 
-    boost::filesystem::path uploadDirPath = L"H:\\Институт\\Диплом\\img-detective\\upload";
-    Core::FsImgStorage fsImgStorage(uploadDirPath);
-    Core::Db::MySqlDbWrapper dbWrapper(dbConSettings);
-    Core::RDBMSImgMetadataStorage imgMetadataStorage(dbWrapper);
     Core::IFeatureExtractor::col_p_t featExtractors;
-    featExtractors.push_back(Modules::ColorHistogram::ModuleFactory::GetFeatureExtractor());
     Core::IIndexManager::col_p_t indexManagers;
-    indexManagers.push_back(Modules::ColorHistogram::ModuleFactory::GetIndexManager(dbWrapper));
-    Core::FeatureRepository featureRepo(indexManagers);
-    Core::Indexer indexer(fsImgStorage, imgMetadataStorage, featExtractors, featureRepo);
 
-    Core::ImgInfo* parsedImg = Core::ImgInfo::Create(rawImg);
+    try {
+        boost::filesystem::path uploadDirPath = L"H:\\Институт\\Диплом\\img-detective\\upload";
+        Core::FsImgStorage fsImgStorage(uploadDirPath);
+        Core::Db::MySqlDbWrapper dbWrapper(dbConSettings);
+        Core::RDBMSImgMetadataStorage imgMetadataStorage(dbWrapper);
+        featExtractors.push_back(Modules::ColorHistogram::ModuleFactory::GetFeatureExtractor());
+        indexManagers.push_back(Modules::ColorHistogram::ModuleFactory::GetIndexManager(dbWrapper));
+        Core::FeatureRepository featureRepo(indexManagers);
+        Core::Indexer indexer(fsImgStorage, imgMetadataStorage, featExtractors, featureRepo);
 
-    indexer.UploadImg(*parsedImg);
+        Core::ImgInfo* parsedImg = Core::ImgInfo::Create(rawImg);
 
-	result->opStatus = OPSTATUS_INTERNAL_ERROR;
+        indexer.UploadImg(*parsedImg);
 
-    Utils::Memory::SafeDeleteCollectionOfPointers(featExtractors);
-    Utils::Memory::SafeDeleteCollectionOfPointers(indexManagers);
+        result->opStatus = OPSTATUS_OK;
+    }
+    catch (...) {
+        //TODO: logging
+        result->opStatus = OPSTATUS_INTERNAL_ERROR;
+    }
 }
 
 IndexDirectoryResult IndexDirectory(wchar_t* dirPath) {

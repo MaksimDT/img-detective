@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(uploadimg_test) {
     indexManagers.push_back(Modules::ColorHistogram::ModuleFactory::GetIndexManager(*dbWrapper));
     Core::FeatureRepository featureRepo(indexManagers);
     Core::Indexer indexer(fsImgStorage, imgMetadataStorage, featExtractors, featureRepo);
-    Core::ImgInfo* img = TestUtils::ReadImgFromFile("resources\\tests\\jetta.jpg");
+    Core::ImgInfo* img = TestUtils::ReadImgFromFile("resources\\tests\\field.JPG");
 
     //run test
     indexer.UploadImg(*img);

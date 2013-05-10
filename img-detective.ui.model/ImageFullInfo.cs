@@ -13,6 +13,13 @@ namespace img_detective.ui.model
         private readonly image imgEntity;
 
         public string FilePath { get; private set; }
+        public bool Exists
+        {
+            get
+            {
+                return !String.IsNullOrWhiteSpace(FilePath) && File.Exists(FilePath);
+            }
+        }
 
         public ImageFullInfo(image imgEntity)
         {
@@ -42,7 +49,7 @@ namespace img_detective.ui.model
             else
             {
                 FilePath = Path.Combine(
-                    @"H:\Институт\Диплом\img-detective\upload_test",
+                    @"H:\Институт\Диплом\img-detective\upload",
                     imgEntity.Id + "." + imgEntity.Extension);
             }
         }

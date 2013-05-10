@@ -10,5 +10,7 @@ namespace img_detective.ui.services
     public interface IImgService
     {
         IEnumerable<ImageFullInfo> GetImgs(int pageNumber, int pageSize);
+        long GetImgsCount();
+        void UploadImage(string filePath);
     }
 }

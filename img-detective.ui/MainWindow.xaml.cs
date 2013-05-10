@@ -1,5 +1,6 @@
 ﻿using img_detective.ui.dal;
 using img_detective.ui.services;
+using img_detective.ui.Utility;
 using img_detective.ui.VM;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace img_detective.ui
 
         private void Window_Initialized_1(object sender, EventArgs e)
         {
-            this.DataContext = new MainWindowVM(new ImgService(new ImgDAL()));
+            this.DataContext = new MainWindowVM(new ImgService(new ImgDAL()), new WpfUploadImageSelector());
         }
     }
 }
