@@ -64,6 +64,7 @@
     <ClCompile Include="..\src\core\ImgInfo.cpp" />
     <ClCompile Include="..\src\core\Indexer.cpp" />
     <ClCompile Include="..\src\core\IndexManager.cpp" />
+    <ClCompile Include="..\src\core\IndexNode.cpp" />
     <ClCompile Include="..\src\core\IndexSeekResult.cpp" />
     <ClCompile Include="..\src\core\IndexStorage.cpp" />
     <ClCompile Include="..\src\core\LinearSearchIM.cpp" />

@@ -13,46 +13,98 @@ namespace Core {
 
     class RDBMSIndexStorage::LookupSession::Impl {
     public:
-        Impl(const REF IFeatureDeserializer& featureDeserializer, unsigned int packetSize);
+        Impl(const REF IFeatureDeserializer& featureDeserializer, const Db::DbWrapper& dbWrapper, unsigned int packetSize, const std::string& tableName);
         ~Impl();
-        bool GetNextPacket(REF IndexNode::col_p_t& packet);
+        IndexNode::col_t GetNextPacket();
     private:
+        IndexNode GetNextIndexNodeFromReader();
+
         unsigned int packetSize;
-        unsigned int curPacketNumber;
+        const Db::DbWrapper& dbWrapper;
+        Db::DbResultReader* resultReader;
+        const IFeatureDeserializer& featureDeserializer;
     };
 
-    RDBMSIndexStorage::LookupSession::Impl::Impl(const REF IFeatureDeserializer& featureDeserializer, unsigned int packetSize) {
+    RDBMSIndexStorage::LookupSession::Impl::Impl(const REF IFeatureDeserializer& featureDeserializer, const Db::DbWrapper& dbWrapper, unsigned int packetSize, const std::string& tableName) 
+        : featureDeserializer(featureDeserializer), dbWrapper(dbWrapper), resultReader(NULL) {
         Utils::Contract::Assert(packetSize > 0);
 
         this->packetSize = packetSize;
-        this->curPacketNumber = 1;
+
+        string query = "SELECT ImageId, Data FROM ";
+        query.append(tableName);
+
+        resultReader = dbWrapper.ExecuteReader(query);
     }
 
     RDBMSIndexStorage::LookupSession::Impl::~Impl() {
-
+        Utils::Memory::SafeDelete(resultReader);
     }
 
-    bool RDBMSIndexStorage::LookupSession::Impl::GetNextPacket(REF IndexNode::col_p_t& packet) {
-        //todo: implement
-        return true;
+    IndexNode::col_t RDBMSIndexStorage::LookupSession::Impl::GetNextPacket() {
+        IndexNode::col_t packet;
+        packet.reserve(packetSize);
+
+        for (unsigned int i = 0; i < packetSize; ++i) {
+            if (this->resultReader->Next()) {
+                try {
+                    IndexNode nextNode = GetNextIndexNodeFromReader();
+                    packet.push_back(nextNode);
+                }
+                catch (...) {
+                    IndexNode::col_t::iterator it;
+                    for (it = packet.begin(); it != packet.end(); ++it) {
+                        if (it->feature != NULL) {
+                            delete it->feature;
+                        }
+                    }
+                    throw;
+                }
+            }
+            else {
+                break;
+            }
+        }
+
+        return packet;
+    }
+
+    IndexNode RDBMSIndexStorage::LookupSession::Impl::GetNextIndexNodeFromReader() {
+        blob_p_t data = NULL;
+        IFeature* feature = NULL;
+
+        try {
+            imgid_t imgId = this->resultReader->GetField("ImageId").As<imgid_t>();
+            //TODO: optimize memory allocation
+            data = this->resultReader->GetField("Data").CopyToByteArray();
+            feature = this->featureDeserializer.DeserializeFeature(*data);
+
+            Core::SafeFreeBlob(data);
+            return IndexNode(imgId, feature);
+        }
+        catch (...) {
+            Core::SafeFreeBlob(data);
+            Utils::Memory::SafeDelete(feature);
+            throw;
+        }
     }
 
     #pragma endregion
 
     #pragma region RDBMSIndexStorage::LookupSession
 
-    RDBMSIndexStorage::LookupSession::LookupSession(const REF IFeatureDeserializer& featureDeserializer, unsigned int packetSize) 
+    RDBMSIndexStorage::LookupSession::LookupSession(const REF IFeatureDeserializer& featureDeserializer, const Db::DbWrapper& dbWrapper, unsigned int packetSize, const std::string& tableName) 
         : LookupSessionBase(featureDeserializer) {
 
-        pimpl = new Impl(featureDeserializer, packetSize);
+        pimpl = new Impl(featureDeserializer, dbWrapper, packetSize, tableName);
     }
 
     RDBMSIndexStorage::LookupSession::~LookupSession() {
         Utils::Memory::SafeDelete(pimpl);
     }
 
-    bool RDBMSIndexStorage::LookupSession::GetNextPacket(REF IndexNode::col_p_t& packet) {
-        return pimpl->GetNextPacket(REF packet);
+    IndexNode::col_t RDBMSIndexStorage::LookupSession::GetNextPacket() {
+        return pimpl->GetNextPacket();
     }
 
     #pragma endregion
@@ -85,15 +137,14 @@ namespace Core {
 
         addFeatureQuery = "INSERT INTO ";
         addFeatureQuery.append(tableName);
-        addFeatureQuery.append("(ImageId, data) VALUES (?, ?)");
+        addFeatureQuery.append(" (ImageId, data) VALUES (?, ?)");
     }
 
     IIndexStorage::ILookupSession* RDBMSIndexStorage::Impl::StartLookup() const {
-        //TODO: implementation
-        return new RDBMSIndexStorage::LookupSession(REF featureDeserializer, packetSize);
+        return new RDBMSIndexStorage::LookupSession(featureDeserializer, dbWrapper, packetSize, tableName);
     }
 
-    void RDBMSIndexStorage::Impl::AddFeature(const REF IFeature& feature, imgid_t imgId) {
+    void RDBMSIndexStorage::Impl::AddFeature(const IFeature& feature, imgid_t imgId) {
         blob_p_t serializedFeature = NULL;
 
         try {

@@ -11,39 +11,49 @@ namespace Core {
 		IndexSeekResult* result = new IndexSeekResult(this->GetFeatureTypeId());
 
         IIndexStorage::ILookupSession* lookupSession = storage->StartLookup();
+        IndexNode::col_t curPacket;
 
 		try {
-			IndexNode::col_p_t curPacket;
+            while (true) {
+                curPacket = lookupSession->GetNextPacket();
+                bool finished = curPacket.empty();
+                if (finished) {
+                    break;
+                }
 
-			while (lookupSession->GetNextPacket(REF curPacket)) {
-				ProcessPacket(REF f, REF curPacket, REF *result);
-			}
+                ProcessPacket(f, curPacket, REF *result);
+                FreePacket(REF curPacket);
+            }
 
 			Utils::Memory::SafeDelete(lookupSession);
 		}
 		catch (...) {
-			try {
-				Utils::Memory::SafeDelete(lookupSession);
-			}
-			catch (...) {
-				//TODO: logging
-			}
-			throw;
+            Utils::Memory::SafeDelete(lookupSession);
+            FreePacket(curPacket);
 		}
 
 		return result;
 	}
 
-	void LinearSearchIM::ProcessPacket(REF IFeature& exampleFeature, REF IndexNode::col_p_t& packet, REF IndexSeekResult& result) const {
-		IndexNode::col_p_t::const_iterator it;
+	void LinearSearchIM::ProcessPacket(const IFeature& exampleFeature, const IndexNode::col_t& packet, REF IndexSeekResult& result) const {
+		IndexNode::col_t::const_iterator it;
 
 		for (it = packet.begin(); it != packet.end(); ++it) {
-			IndexNode* nodePtr = *it;
-			IFeature* curFeature = nodePtr->feature;
+			IFeature* curFeature = it->feature;
 			FeatureDistance distance = curFeature->ComputeDistanceTo(exampleFeature);
-			result.Insert(nodePtr->imgId, distance);
+			result.Insert(it->imgId, distance);
 		}
 	}
 
+    void LinearSearchIM::FreePacket(REF IndexNode::col_t& packet) const {
+        IndexNode::col_t::iterator it;
+
+        for (it = packet.begin(); it != packet.end(); ++it) {
+            if (it->feature != NULL) {
+                delete it->feature;
+                it->feature = NULL;
+            }
+        }
+    }
 }
 }

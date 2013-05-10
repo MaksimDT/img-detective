@@ -14,7 +14,7 @@ namespace Core {
         class ILookupSession : NONCOPYABLE, HAS_VIRTUAL_DESCTUCTOR {
         public:
             CTOR ILookupSession() {};
-            virtual bool GetNextPacket(REF IndexNode::col_p_t& packet) = 0;
+            virtual IndexNode::col_t GetNextPacket() = 0;
         };
 
         #pragma endregion

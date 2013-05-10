@@ -1,4 +1,7 @@
-﻿using System;
+﻿using img_detective.ui.dal;
+using img_detective.ui.services;
+using img_detective.ui.VM;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +26,11 @@ namespace img_detective.ui
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Initialized_1(object sender, EventArgs e)
+        {
+            this.DataContext = new MainWindowVM(new ImgService(new ImgDAL()));
         }
     }
 }

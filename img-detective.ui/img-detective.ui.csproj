@@ -53,6 +53,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="VM\ImageVM.cs" />
+    <Compile Include="VM\MainWindowVM.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -92,6 +94,29 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\pictures\example_not_selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\pictures\example_not_selected_2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\pictures\example_not_selected_3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\img-detective.ui.dal\img-detective.ui.dal.csproj">
+      <Project>{cf3d77ff-51ed-4663-ac7d-8e7466aabc67}</Project>
+      <Name>img-detective.ui.dal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\img-detective.ui.model\img-detective.ui.model.csproj">
+      <Project>{2f5fbce6-7546-4a32-b0c4-8b6cbe6fd6cc}</Project>
+      <Name>img-detective.ui.model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\img-detective.ui.services\img-detective.ui.services.csproj">
+      <Project>{745a1885-6159-4568-a19a-b94f26186c9f}</Project>
+      <Name>img-detective.ui.services</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

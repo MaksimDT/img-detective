@@ -14,7 +14,8 @@ namespace Core {
 
 		virtual IndexSeekResult* Search(REF IFeature& f, const REF ImgQuery& query) const;
 	private:
-		void ProcessPacket(REF IFeature& exampleFeature, REF IndexNode::col_p_t& packet, REF IndexSeekResult& result) const;
+		void ProcessPacket(const IFeature& exampleFeature, const IndexNode::col_t& packet, REF IndexSeekResult& result) const;
+        void FreePacket(REF IndexNode::col_t& packet) const;
 	};
 
 }

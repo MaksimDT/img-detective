@@ -7,11 +7,16 @@
 namespace ImgDetective {
 namespace Core {
 
-	struct IndexNode {
-		typedef std::vector<IndexNode*> col_p_t;
-		imgid_t imgId;
-		IFeature* feature;
-	};
+    class IndexNode {
+    public:
+        typedef std::vector<IndexNode> col_t;
+
+        CTOR IndexNode();
+        CTOR IndexNode(imgid_t imgId, IFeature* feature);
+
+        imgid_t imgId;
+        IFeature* feature;
+    };
 
 }
 }

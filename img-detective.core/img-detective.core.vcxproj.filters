@@ -194,6 +194,9 @@
     <ClCompile Include="..\src\core\FsRepositoryInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\core\IndexNode.cpp">
+      <Filter>Source Files\FeatureIndexing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\include\core\NonQueryExecResult.h">

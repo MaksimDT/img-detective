@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(uploadimg_test) {
     boost::filesystem::path expectedFilePath = fsImgStorage.GetImgPath(imgId, extension);
     BOOST_CHECK(boost::filesystem::exists(expectedFilePath));
 
-    //ensure that features of image were extracted and stored in persistent storage
+    //ensure that features of image were extracted and stored in the persistent medium
     Core::Db::params_list_t colorHistParams;
     Core::Db::DbParamBuffer imgIdParam(&imgId, sizeof(imgId), Core::Db::DbType::LONGLONG);
     colorHistParams.push_back(imgIdParam);

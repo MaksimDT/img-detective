@@ -36,11 +36,6 @@ typedef struct RawImg {
 	long unsigned int contentSize;
 	char* content;
     const char* fileExtension;
-	/*char* mimeType;
-	imgid_t imgId;
-    const wchar_t* filePath;
-    unsigned int filePathLength;
-    repoid_t repoId;*/
 } RawImg;
 
 typedef struct ImgQuery {

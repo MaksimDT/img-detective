@@ -6,3 +6,5 @@ packages
 ipch
 upload_test
 upload
+*/obj
+*/bin

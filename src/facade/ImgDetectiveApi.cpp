@@ -35,61 +35,38 @@ SearchResult SearchByExample(ImgQuery query) {
 	return result;
 }
 
-UploadImgResult UploadImg(RawImg imgInfo) {
-    /*
+void UploadImg(RawImg rawImg, UploadImgResult* result) {
+    memset(result, 0, sizeof(UploadImgResult));
 
-    Core::FsImgStorage imgContentStorage("img_detective_test");
-    Core::RDBMSImgMetadataStorage imgMetadataStorage;
-    Core::FeatureExtractor::col_p_t featureExtractors;
+    Core::Db::MySqlConnectionSettings dbConSettings;
+    dbConSettings.dbName = "img_detective";
+    dbConSettings.host = "localhost";
+    dbConSettings.login = "root";
+    dbConSettings.password = "";
+    dbConSettings.port = 3306;
 
-    Core::Indexer indexer(REF imgContentStorage, REF imgMetadataStorage, featureExtractors);*/
+    boost::filesystem::path uploadDirPath = L"H:\\Институт\\Диплом\\img-detective\\upload";
+    Core::FsImgStorage fsImgStorage(uploadDirPath);
+    Core::Db::MySqlDbWrapper dbWrapper(dbConSettings);
+    Core::RDBMSImgMetadataStorage imgMetadataStorage(dbWrapper);
+    Core::IFeatureExtractor::col_p_t featExtractors;
+    featExtractors.push_back(Modules::ColorHistogram::ModuleFactory::GetFeatureExtractor());
+    Core::IIndexManager::col_p_t indexManagers;
+    indexManagers.push_back(Modules::ColorHistogram::ModuleFactory::GetIndexManager(dbWrapper));
+    Core::FeatureRepository featureRepo(indexManagers);
+    Core::Indexer indexer(fsImgStorage, imgMetadataStorage, featExtractors, featureRepo);
 
-	UploadImgResult result;// = indexer.UploadImg(imgInfo);
-	result.opStatus = OPSTATUS_INTERNAL_ERROR;
-	return result;
+    Core::ImgInfo* parsedImg = Core::ImgInfo::Create(rawImg);
+
+    indexer.UploadImg(*parsedImg);
+
+	result->opStatus = OPSTATUS_INTERNAL_ERROR;
+
+    Utils::Memory::SafeDeleteCollectionOfPointers(featExtractors);
+    Utils::Memory::SafeDeleteCollectionOfPointers(indexManagers);
 }
 
 IndexDirectoryResult IndexDirectory(wchar_t* dirPath) {
-    //TODO: implement
-
-    //IndexDirectoryResult result;
-    //result.opStatus = OPSTATUS_OK;
-
-    //try {
-
-    //    Core::FsImgStorage fsImgStorage(L"H:\img-detective-upload");
-
-    //    Core::Db::MySqlConnectionSettings conSettings;
-    //    conSettings.dbName = "img_detective";
-    //    conSettings.host = "localhost";
-    //    conSettings.login = "root";
-    //    conSettings.password = "";
-    //    conSettings.port = 3306;
-
-    //    Core::Db::MySqlDbWrapper dbWrapper(conSettings);
-
-    //    Core::RDBMSImgMetadataStorage imgMetadataStorage(dbWrapper);
-
-    //    Core::IFeatureExtractor::col_p_t featExtractors;
-    //    featExtractors.push_back(Modules::ColorHistogram::ModuleFactory::GetFeatureExtractor());
-
-    //    Core::IIndexManager::col_p_t indexManagers;
-    //    indexManagers.push_back(Modules::ColorHistogram::ModuleFactory::GetIndexManager(dbWrapper));
-
-    //    Core::FeatureRepository featureRepo(indexManagers);
-
-    //    Core::Indexer indexer(fsImgStorage, imgMetadataStorage, featExtractors, featureRepo);
-
-    //    indexer.IndexDirectory(dirPath);
-
-    //    return result;
-    //}
-    //catch (...) {
-    //    //TODO: logging
-    //    result.opStatus = OPSTATUS_INTERNAL_ERROR;
-    //    return result;
-    //}
-
     return IndexDirectoryResult();
 }
 

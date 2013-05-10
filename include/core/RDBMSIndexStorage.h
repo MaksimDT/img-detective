@@ -15,9 +15,9 @@ namespace Core {
 
 		CONCRETE SEALED NESTED class LookupSession : public LookupSessionBase {
 		public:
-			LookupSession(const REF IFeatureDeserializer& featureDeserializer, unsigned int packetSize);
+			LookupSession(const REF IFeatureDeserializer& featureDeserializer, const Db::DbWrapper& dbWrapper, unsigned int packetSize, const std::string& tableName);
             ~LookupSession();
-			virtual bool GetNextPacket(REF IndexNode::col_p_t& packet);
+			virtual IndexNode::col_t GetNextPacket();
 		private:
             class Impl;
             Impl* pimpl;
@@ -25,7 +25,7 @@ namespace Core {
 
         #pragma endregion
 
-		CTOR RDBMSIndexStorage(EXCLUSIVE IFeatureDeserializer* featureDeserializer, const REF Db::DbWrapper& dbWrapper, unsigned int packetSize, const std::string& tableName);
+		CTOR RDBMSIndexStorage(EXCLUSIVE IFeatureDeserializer* featureDeserializer, const Db::DbWrapper& dbWrapper, unsigned int packetSize, const std::string& tableName);
         ~RDBMSIndexStorage();
         virtual ILookupSession* StartLookup() const;
         virtual void AddFeature(const REF IFeature& feature, imgid_t imgId) const;

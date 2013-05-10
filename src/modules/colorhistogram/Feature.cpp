@@ -99,6 +99,14 @@ namespace ColorHistogram {
     }
 
     ColorHistogramFeat* ColorHistogramFeat::Deserialize(const Core::blob_t& blob) {
+        const size_t numberOfChannels = 3;
+        const size_t oneBinSizeInBytes = sizeof(ColorHistogramFeat::ChannelHistogram::bin_value_t);
+        size_t requiredBufferSize = numberOfChannels * COLOR_HISTOGRAM_BIN_COUNT * oneBinSizeInBytes;
+
+        if (blob.size() != requiredBufferSize) {
+            throw std::exception("specified blob has an invalid length");
+        }
+
         ColorHistogramFeat* result = NULL;
         ColorHistogramFeat::ChannelHistogram* r = NULL;
         ColorHistogramFeat::ChannelHistogram* g = NULL;
