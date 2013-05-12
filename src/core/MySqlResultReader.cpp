@@ -145,8 +145,10 @@ namespace Db {
 
             bool isVariableLength = (f.buffer_length == 0 && f.length_value > 0);
             bool isConstantLength = (f.buffer != NULL && f.buffer_length > 0);
+            //HACK: quick win
+            bool isNullValue = !isVariableLength && !isConstantLength;
 
-            if (f.is_null_value) {
+            if (f.is_null_value || isNullValue) {
                 currentResult.Add(fieldName, FieldValue::CreateNull());
             }
             else if (isVariableLength) {
@@ -154,7 +156,7 @@ namespace Db {
                 f.buffer = varLengthBufs[fieldIndex].Acquire(f.length_value);
                 f.buffer_length = f.length_value;
 
-                if (mysql_stmt_fetch_column(stmt, fieldBuffers, fieldIndex, 0)) {
+                if (mysql_stmt_fetch_column(stmt, &fieldBuffers[fieldIndex], fieldIndex, 0)) {
                     throw std::exception("mysql_stmt_fetch_column failed");
                 }
 

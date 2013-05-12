@@ -15,7 +15,7 @@ namespace ColorHistogram {
 
 		virtual Core::IFeature* ExtractFrom(const Core::ImgInfo& imgInfo) const;
     private:
-        ColorHistogramFeat::ChannelHistogram* ConvertToChannelHist(const std::vector<unsigned long>& histAbsVals, unsigned long totalPixelCount) const;
+        ColorHistogramFeat::ChannelHistogram* ConvertToChannelHist(const unsigned long* histAbsVals, unsigned long totalPixelCount) const;
 	};
 
 }

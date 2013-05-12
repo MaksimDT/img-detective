@@ -14,7 +14,7 @@ namespace Core {
 	CONCRETE SEALED class ImgInfo : NONCOPYABLE {
 	public:
 		static ImgInfo* Create(const REF RawImg& shortInfo);
-        static ImgInfo* Create(repoid_t repoId, const boost::filesystem::path& filePath);
+        static ImgInfo* Create(repoid_t repoId, const boost::filesystem::path& filePath, const boost::filesystem::path& relativeFilePath);
 
         Magick::Image& GetMagickImage();
         const Magick::Image& GetMagickImage() const;

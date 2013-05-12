@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(parse_jpeg_test_from_rawimg) {
 }
 
 BOOST_AUTO_TEST_CASE(parse_jpeg_test_from_filesystem_path) {
-    Core::ImgInfo* parsedImg = Core::ImgInfo::Create(1, "resources/tests/jetta.jpg");
+    Core::ImgInfo* parsedImg = Core::ImgInfo::Create(1, "resources/tests/jetta.jpg", "resources/tests/jetta.jpg");
 
     unsigned int actualWidth = parsedImg->GetMagickImage().size().width();
     unsigned int actualHeight = parsedImg->GetMagickImage().size().height();

@@ -13,19 +13,19 @@ namespace img_detective.ui.model
         private readonly image imgEntity;
 
         public string FilePath { get; private set; }
-        public bool Exists
-        {
-            get
-            {
-                return !String.IsNullOrWhiteSpace(FilePath) && File.Exists(FilePath);
-            }
-        }
+        public double? Relevance { get; private set; }
 
         public ImageFullInfo(image imgEntity)
         {
             Contract.Requires(imgEntity != null);
             this.imgEntity = imgEntity;
             ComputeFilePath();
+        }
+
+        public ImageFullInfo(image imgEntity, double relevance)
+            : this(imgEntity)
+        {
+            this.Relevance = relevance;
         }
 
         private void ComputeFilePath()
@@ -48,6 +48,7 @@ namespace img_detective.ui.model
             }
             else
             {
+                //TODO: path to config!!!
                 FilePath = Path.Combine(
                     @"H:\Институт\Диплом\img-detective\upload",
                     imgEntity.Id + "." + imgEntity.Extension);

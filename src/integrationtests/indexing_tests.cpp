@@ -84,6 +84,8 @@ BOOST_AUTO_TEST_CASE(uploadimg_test) {
     Utils::Memory::SafeDelete(imagesReader);
     Utils::Memory::SafeDelete(colorHistReader);
     Utils::Memory::SafeDelete(colorHist);
+    Utils::Memory::SafeDeleteCollectionOfPointers(featExtractors);
+    Utils::Memory::SafeDeleteCollectionOfPointers(indexManagers);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

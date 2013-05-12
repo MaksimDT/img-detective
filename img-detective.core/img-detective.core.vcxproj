@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\core\BindInfo.h" />
-    <ClInclude Include="..\include\core\CheckDirResult.h" />
     <ClInclude Include="..\include\core\DbResultReader.h" />
     <ClInclude Include="..\include\core\DbType.h" />
     <ClInclude Include="..\include\core\DbWrapper.h" />
@@ -49,6 +48,7 @@
     <ClInclude Include="..\include\core\RDBMSImgMetadataStorage.h" />
     <ClInclude Include="..\include\core\RDBMSIndexStorage.h" />
     <ClInclude Include="..\include\core\FsRepositoryInfo.h" />
+    <ClInclude Include="..\include\core\SearchResultInternal.h" />
     <ClInclude Include="..\include\core\SearchSystem.h" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +74,7 @@
     <ClCompile Include="..\src\core\RDBMSImgMetadataStorage.cpp" />
     <ClCompile Include="..\src\core\RDBMSIndexStorage.cpp" />
     <ClCompile Include="..\src\core\FsRepositoryInfo.cpp" />
+    <ClCompile Include="..\src\core\SearchResultInternal.cpp" />
     <ClCompile Include="..\src\core\SearchSystem.cpp" />
   </ItemGroup>
   <ItemGroup>

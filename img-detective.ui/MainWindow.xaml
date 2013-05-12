@@ -77,14 +77,22 @@
             </Style.Triggers>
         </Style>
         <Style x:Key="MagnifierStyle" TargetType="{x:Type Image}">
-            <Setter Property="Source" Value="{StaticResource ResourceKey=ExampleNotSelectedImgSource}" />
+            <Setter Property="Source" Value="{Binding SearchExample}" />
             <Setter Property="Margin" Value="20" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="ToolTip">
+                <Setter.Value>
+                    <ToolTip Style="{StaticResource ResourceKey=ToolTipStyle}" Content="Поиск по содержимому" />
+                </Setter.Value>
+            </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Margin" Value="5" />
                 </Trigger>
+                <DataTrigger Binding="{Binding SearchExample}" Value="{x:Null}">
+                    <Setter Property="Source" Value="{StaticResource ResourceKey=ExampleNotSelectedImgSource}" />
+                </DataTrigger>
             </Style.Triggers>
         </Style>
         <!--styles end-->
@@ -125,12 +133,17 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" MinWidth="80"></ColumnDefinition>
                 <ColumnDefinition Width="10*"></ColumnDefinition>
+                <ColumnDefinition Width="20"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Style="{StaticResource ResourceKey=MagnifierStyle}">
-                <Image.ToolTip>
-                    <ToolTip Style="{StaticResource ResourceKey=ToolTipStyle}" Content="Поиск по содержимому" />
-                </Image.ToolTip>
-            </Image>
+            <Button Grid.Column="0" Command="{Binding Search}">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Style="{StaticResource ResourceKey=MagnifierStyle}">
+                            
+                        </Image>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
@@ -138,10 +151,18 @@
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <Button Content="Индексировать директорию >>" Command="{Binding UploadImage}" Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
+                    <Button Content="Настройки >>" 
+                            Command="{Binding OpenSettingsDialog}" 
+                            Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
                     <Button Content="Загрузить изображение >>" Command="{Binding UploadImage}" Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
+                    <Border BorderThickness="1" Margin="10,5">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="Yellow" />
+                        </Border.BorderBrush>
+                    </Border>
+                    <Button Content="Индексировать директорию >>" Command="{Binding IndexDirectory}" Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
                     <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">Показаны изображения&#160;</TextBlock>
@@ -150,27 +171,45 @@
                     <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}" FontWeight="Bold" Text="{Binding LastImageNumber}" />
                     <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">&#160;из&#160;</TextBlock>
                     <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}" FontWeight="Bold" Text="{Binding TotalImagesCount}" />
-                    <ContentControl Width="35" Height="20">
-                        <Button Command="{Binding GoToPrevPage}">
-                            <Button.Template>
-                                <ControlTemplate>
-                                    <TextBlock Style="{StaticResource ResourceKey=NavTextStyle}">&lt;&lt;</TextBlock>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </ContentControl>
-                    <TextBlock Style="{StaticResource ResourceKey=DelimiterTextBlockStyle}">|</TextBlock>
-                    <ContentControl Width="35" Height="20">
-                        <Button Command="{Binding GoToNextPage}">
-                            <Button.Template>
-                                <ControlTemplate>
-                                    <TextBlock Style="{StaticResource ResourceKey=NavTextStyle}">&gt;&gt;</TextBlock>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </ContentControl>
+                    <Border BorderThickness="1" Margin="10,5">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="Yellow" />
+                        </Border.BorderBrush>
+                    </Border>
+                    <Button Command="{Binding GoToPrevPage}">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <TextBlock Style="{StaticResource ResourceKey=NavTextStyle}">&lt;&lt;</TextBlock>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Command="{Binding GoToNextPage}">
+                        <Button.Template>
+                            <ControlTemplate>
+                                <TextBlock Style="{StaticResource ResourceKey=NavTextStyle}">&gt;&gt;</TextBlock>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Border BorderThickness="1" Margin="10,5">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="Yellow" />
+                        </Border.BorderBrush>
+                    </Border>
                 </StackPanel>
             </Grid>
+            <Slider Grid.Column="2" Value="{Binding PageSize, Delay=500}" 
+                            Minimum="1" 
+                            Maximum="16" 
+                            Orientation="Vertical"
+                            VerticalAlignment="Stretch"
+                            IsSnapToTickEnabled="True">
+                <Slider.ToolTip>
+                    <StackPanel>
+                        <TextBlock>Размер страницы:</TextBlock>
+                        <TextBlock Text="{Binding PageSize, Mode=OneWay}" />
+                    </StackPanel>
+                </Slider.ToolTip>
+            </Slider>
         </Grid>
         <Border Grid.Row="1" BorderThickness="2">
             <Border.BorderBrush>
@@ -193,7 +232,11 @@
                         <Button.Template>
                             <ControlTemplate>
                                 <Border Style="{StaticResource ResourceKey=ImageBorderStyle}">
-                                    <Image Source="{Binding Path=Source}" />
+                                    <Image Source="{Binding Path=Source}">
+                                        <Image.ToolTip>
+                                            <ToolTip Content="{Binding Relevance}" />
+                                        </Image.ToolTip>
+                                    </Image>
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>

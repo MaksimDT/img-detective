@@ -123,7 +123,7 @@
     <ClInclude Include="..\include\core\FsRepositoryInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\core\CheckDirResult.h">
+    <ClInclude Include="..\include\core\SearchResultInternal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -196,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="..\src\core\IndexNode.cpp">
       <Filter>Source Files\FeatureIndexing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\SearchResultInternal.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

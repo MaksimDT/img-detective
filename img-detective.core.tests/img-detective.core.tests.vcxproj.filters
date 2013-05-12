@@ -18,9 +18,6 @@
     <ClCompile Include="..\src\tests\core\index_seek_result_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\tests\core\common_tests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\tests\core\memory_utils_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,6 +31,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\tests\core\mysqldbwrapper_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tests\core\misc_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

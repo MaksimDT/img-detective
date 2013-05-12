@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\tests\core\common_tests.cpp" />
     <ClCompile Include="..\src\tests\core\filesystem_utils_tests.cpp" />
     <ClCompile Include="..\src\tests\core\image_parsing_tests.cpp" />
+    <ClCompile Include="..\src\tests\core\misc_tests.cpp" />
     <ClCompile Include="..\src\tests\core\mysqldbwrapper_tests.cpp" />
     <ClCompile Include="..\src\tests\core\rdbmsimgmetatadastorage_tests.cpp" />
     <ClCompile Include="..\src\tests\core\index_seek_result_tests.cpp" />

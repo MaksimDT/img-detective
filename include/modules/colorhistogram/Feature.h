@@ -4,7 +4,7 @@
 #include "utils/MathUtils.h"
 
 #define COLOR_HISTOGRAM_BIN_COUNT 256
-#define NUMBER_OF_BIN_VALUES 256
+#define NUMBER_OF_BIN_VALUES 65536
 #define MAX_BIN_VALUE (NUMBER_OF_BIN_VALUES - 1)
 #define COLOR_HISTOGRAM_FTYPE_ID 1 /*Feature type ID of color histogram feature*/
 
@@ -18,7 +18,7 @@ namespace ColorHistogram {
 
         CONCRETE NESTED class ChannelHistogram : NONCOPYABLE {
         public:
-            typedef Core::byte_t bin_value_t;
+            typedef unsigned short bin_value_t;
             typedef std::vector<bin_value_t> bins_vector_t;
 
             CTOR ChannelHistogram(bins_vector_t* bins);

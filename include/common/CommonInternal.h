@@ -57,7 +57,7 @@ namespace Core {
     typedef std::vector<byte_t> blob_t;
     typedef std::vector<byte_t>* blob_p_t;
 
-    void ConvertToSearchResult(const REF imgid_col_t& imgIds, REF SearchResult& result);
+    void ConvertToSearchResult(const REF imgid_col_t& imgIds, REF SearchResult& result, void* (*memoryAllocFunc)(size_t));
 
     #pragma region working with BLOBs
 
@@ -65,6 +65,23 @@ namespace Core {
     void SafeFreeBlob(REF blob_p_t& blob);
     char* BlobToCharArray(blob_p_t blob);
     void CopyToBlob(void* data, blob_p_t blob);
+    
+    template <typename T>
+    T ReadFromBlob(const blob_t& blob, size_t offset) {
+        Core::byte_t* dataPtr = (Core::byte_t*)blob.data();
+        Core::byte_t* offsetPtr = &dataPtr[offset];
+
+        return *((T*)offsetPtr);
+    }
+
+    template <typename T>
+    void WriteToBlob(blob_t& blob, size_t offset, T value) {
+        Core::byte_t* dataPtr = (Core::byte_t*)blob.data();
+        Core::byte_t* offsetPtr = &dataPtr[offset];
+
+        T* castOffsetPtr = (T*)offsetPtr;
+        *castOffsetPtr = value;
+    }
 
     #pragma endregion
 

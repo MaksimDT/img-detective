@@ -10,6 +10,7 @@ namespace Core {
 	public:
 		CTOR FeatureDistance(double val);
 		double GetValue() const;
+        double GetRelevanceValue() const;
 
 		/*multiplies the distance value by the specified 
 		  coefficient. Coefficient must be in range [0..1]*/

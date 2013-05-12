@@ -33,6 +33,7 @@ namespace Core {
 
         string query = "SELECT ImageId, Data FROM ";
         query.append(tableName);
+        query.append(" ORDER BY ImageId");
 
         resultReader = dbWrapper.ExecuteReader(query);
     }
@@ -50,6 +51,9 @@ namespace Core {
                 try {
                     IndexNode nextNode = GetNextIndexNodeFromReader();
                     packet.push_back(nextNode);
+                }
+                catch (const FeatureDeserializationException& ex) {
+                    continue;
                 }
                 catch (...) {
                     IndexNode::col_t::iterator it;

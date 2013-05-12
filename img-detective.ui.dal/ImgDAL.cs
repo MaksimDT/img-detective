@@ -22,6 +22,14 @@ namespace img_detective.ui.dal
             }
         }
 
+        public IEnumerable<image> GetImgs()
+        {
+            using (var ctx = new ImgMetadataDbCon())
+            {
+                return ctx.images.Include("repository").ToList();
+            }
+        }
+
         public long GetImgsCount()
         {
             using (var ctx = new ImgMetadataDbCon())

@@ -6,11 +6,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace img_detective.ui.VM
 {
@@ -19,7 +22,10 @@ namespace img_detective.ui.VM
         #region fields
 
         private readonly IImgService imgService;
-        private readonly IUploadImageSelector uploadImageSelector;
+        private readonly IImageFileSelector imageFileSelector;
+        private readonly IDirectorySelector directorySelector;
+        private readonly IAlertPresenter alertPresenter;
+        private SearchResult currentSearchResult;
 
         #endregion
 
@@ -63,7 +69,24 @@ namespace img_detective.ui.VM
             set { SetValue(PageSizeProperty, value); }
         }
         public static readonly DependencyProperty PageSizeProperty =
-            DependencyProperty.Register("PageSize", typeof(int), typeof(MainWindowVM), new PropertyMetadata(12));
+            DependencyProperty.Register("PageSize", typeof(int), typeof(MainWindowVM), new PropertyMetadata(12, OnPageSizeChanged));
+        private static void OnPageSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            MainWindowVM vm = d as MainWindowVM;
+            if (vm != null)
+            {
+                vm.PageNumber = 1;
+                vm.ReloadImages();
+            }
+        }
+
+        public ImageSource SearchExample
+        {
+            get { return (ImageSource)GetValue(SearchExampleProperty); }
+            set { SetValue(SearchExampleProperty, value); }
+        }
+        public static readonly DependencyProperty SearchExampleProperty =
+            DependencyProperty.Register("SearchExample", typeof(ImageSource), typeof(MainWindowVM), new PropertyMetadata(null));
 
         #endregion
 
@@ -123,13 +146,12 @@ namespace img_detective.ui.VM
                 {
                     _uploadImage = new Command(param =>
                     {
-                        string selectedFilePath = uploadImageSelector.GetFilePath();
+                        string selectedFilePath = imageFileSelector.GetFilePath();
 
                         if (!String.IsNullOrWhiteSpace(selectedFilePath))
                         {
                             imgService.UploadImage(selectedFilePath);
-                            PageNumber = 1;
-                            ReloadImages();
+                            ResetToInitialState();
                         }
                     });
                 }
@@ -162,16 +184,100 @@ namespace img_detective.ui.VM
             }
         }
 
+        private ICommand _indexDirectory = null;
+        public ICommand IndexDirectory
+        {
+            get
+            {
+                if (_indexDirectory == null)
+                {
+                    _indexDirectory = new Command(param =>
+                    {
+                        string selectedDirPath = directorySelector.GetDirectoryPath();
+                        if (String.IsNullOrWhiteSpace(selectedDirPath))
+                        {
+                            return;
+                        }
+
+                        string checkMessage;
+                        bool canIndex = imgService.CanIndexDirectory(selectedDirPath, out checkMessage);
+
+                        if (canIndex)
+                        {
+                            imgService.IndexDirectory(selectedDirPath);
+                            ResetToInitialState();
+                        }
+                        else
+                        {
+                            if (!String.IsNullOrWhiteSpace(checkMessage))
+                            {
+                                alertPresenter.ShowAlert(checkMessage);
+                            }
+                            else
+                            {
+                                alertPresenter.ShowAlert("Индексация выбранной директории невозможна");
+                            }
+                        }
+                    });
+                }
+
+                return _indexDirectory;
+            }
+        }
+
+        private ICommand _search = null;
+        public ICommand Search
+        {
+            get
+            {
+                if (_search == null)
+                {
+                    _search = new Command(param =>
+                    {
+                        string selectedFilePath = imageFileSelector.GetFilePath();
+                        if (String.IsNullOrWhiteSpace(selectedFilePath))
+                        {
+                            return;
+                        }
+
+                        try {
+                            var exampleImgSource = new BitmapImage();
+                            exampleImgSource.BeginInit();
+                            exampleImgSource.UriSource = new Uri("file://" + selectedFilePath);
+                            exampleImgSource.EndInit();
+
+                            SearchExample = exampleImgSource;
+
+                            currentSearchResult = imgService.SearchByExample(selectedFilePath);
+                            PageNumber = 1;
+                            ReloadImages();
+                        }
+                        catch (Exception ex) {
+                            alertPresenter.ShowAlert("Не удалось произвести поиск (неизвестная ошибка)");
+                        }
+                    });
+                }
+
+                return _search;
+            }
+        }
+
         #endregion
 
         #region Ctor
 
-        public MainWindowVM(IImgService imgService, IUploadImageSelector uploadImageSelector)
+        public MainWindowVM(IImgService imgService, IImageFileSelector imageFileSelector, IDirectorySelector directorySelector, IAlertPresenter alertPresenter)
         {
             Contract.Requires(imgService != null);
-            Contract.Requires(uploadImageSelector != null);
+            Contract.Requires(imageFileSelector != null);
+            Contract.Requires(directorySelector != null);
+            Contract.Requires(alertPresenter != null);
+
             this.imgService = imgService;
-            this.uploadImageSelector = uploadImageSelector;
+            this.imageFileSelector = imageFileSelector;
+            this.directorySelector = directorySelector;
+            this.alertPresenter = alertPresenter;
+
             Images = new ObservableCollection<ImageVM>();
             ReloadImages();
         }
@@ -182,7 +288,17 @@ namespace img_detective.ui.VM
 
         private void ReloadImages()
         {
-            IEnumerable<ImageFullInfo> imgs = imgService.GetImgs(PageNumber, PageSize);
+            IEnumerable<ImageFullInfo> imgs = null;
+
+            if (currentSearchResult != null)
+            {
+                imgs = imgService.GetImgs(currentSearchResult, PageNumber, PageSize);
+            }
+            else
+            {
+                imgs = imgService.GetImgs(PageNumber, PageSize);
+            }
+
             List<ImageVM> imgVMs = imgs.Select(im => new ImageVM(im)).ToList();
 
             Images.Clear();
@@ -205,6 +321,14 @@ namespace img_detective.ui.VM
             {
                 LastImageNumber = calculatedLastImageNumber;
             }
+        }
+
+        private void ResetToInitialState()
+        {
+            currentSearchResult = null;
+            PageNumber = 1;
+            SearchExample = null;
+            ReloadImages();
         }
 
         #endregion

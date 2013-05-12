@@ -30,6 +30,13 @@ namespace img_detective.ui.VM
                 return model.FilePath;
             }
         }
+        public double Relevance
+        {
+            get
+            {
+                return model.Relevance ?? 0.0;
+            }
+        }
 
         #endregion
 

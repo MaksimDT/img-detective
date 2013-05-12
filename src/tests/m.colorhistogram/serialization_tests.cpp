@@ -17,9 +17,9 @@ ColorHistogramFeat* CreateRandomHistogram() {
     ColorHistogramFeat::ChannelHistogram::bins_vector_t* binsB = new ColorHistogramFeat::ChannelHistogram::bins_vector_t(COLOR_HISTOGRAM_BIN_COUNT);
 
     for (int i = 0; i < COLOR_HISTOGRAM_BIN_COUNT; ++i) {
-        (*binsR)[i] = rand() % NUMBER_OF_BIN_VALUES;
-        (*binsG)[i] = rand() % NUMBER_OF_BIN_VALUES;
-        (*binsB)[i] = rand() % NUMBER_OF_BIN_VALUES;
+        (*binsR)[i] = i * 1000 % NUMBER_OF_BIN_VALUES;
+        (*binsG)[i] = i * 1120 % NUMBER_OF_BIN_VALUES;
+        (*binsB)[i] = i * 1230 % NUMBER_OF_BIN_VALUES;
     }
 
     ColorHistogramFeat::ChannelHistogram* chR = new ColorHistogramFeat::ChannelHistogram(binsR);

@@ -3,10 +3,10 @@
 namespace ImgDetective  {
 namespace Core {
 
-	void ConvertToSearchResult(const REF imgid_col_t& imgIds, REF SearchResult& result) {
+	void ConvertToSearchResult(const REF imgid_col_t& imgIds, REF SearchResult& result, void* (*memoryAllocFunc)(size_t)) {
 		result.arraySize = imgIds.size();
 		if (imgIds.size() != 0) {
-			result.items = new imgid_t[imgIds.size()];
+            result.items = (imgid_t*)memoryAllocFunc(imgIds.size() * sizeof(imgid_t));
 			
 			size_t resultIndex = 0;
 			imgid_col_t::const_iterator it;

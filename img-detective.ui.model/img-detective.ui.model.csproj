@@ -71,6 +71,7 @@
     <Compile Include="repository.cs">
       <DependentUpon>ImgMetadataDb.tt</DependentUpon>
     </Compile>
+    <Compile Include="SearchResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

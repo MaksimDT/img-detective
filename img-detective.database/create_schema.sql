@@ -1,10 +1,10 @@
-DROP DATABASE IF EXISTS `img_detective_test`;
+DROP DATABASE IF EXISTS `img_detective`;
 
-CREATE DATABASE `img_detective_test`
+CREATE DATABASE `img_detective`
     DEFAULT CHARACTER SET utf8
     DEFAULT COLLATE utf8_general_ci;
 
-USE `img_detective_test`;
+USE `img_detective`;
 
 CREATE TABLE `Images` (
     `Id` BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,

@@ -6,7 +6,6 @@
 #include "core/ImgMetadataStorage.h"
 #include "core/FeatureExtractor.h"
 #include "core/FsRepositoryInfo.h"
-#include "core/CheckDirResult.h"
 #include <boost/filesystem.hpp>
 
 namespace ImgDetective {
@@ -18,13 +17,12 @@ namespace Core {
             REF ImgContentStorage& imgContentStorage, 
             REF ImgMetadataStorage& imgMetadataStorage, 
             REF IFeatureExtractor::col_p_t& featureExtractors, 
-            REF FeatureRepository& featureRepository);
-        ~Indexer();
+            REF IFeatureRepository& featureRepository);
 
         UploadImgResult UploadImg(ImgInfo& img) const;
 
         void IndexDirectory(const boost::filesystem::path& dirPath) const;
-        CheckDirResult::Enum CanIndexDirectory(const boost::filesystem::path& dirPath) const;
+        CanIndexDirectoryResult::Enum CanIndexDirectory(const boost::filesystem::path& dirPath) const;
     private:
         void AddToIndex(ImgInfo& img) const;
 
@@ -34,7 +32,7 @@ namespace Core {
         REF ImgContentStorage& imgContentStorage;
         REF ImgMetadataStorage& imgMetadataStorage;
         IFeatureExtractor::col_p_t featureExtractors;
-        REF FeatureRepository& featureRepo;
+        REF IFeatureRepository& featureRepo;
     };
 
 }

@@ -14,6 +14,10 @@ namespace Core {
 		return value;
 	}
 
+    double FeatureDistance::GetRelevanceValue() const {
+        return 1.0 - value;
+    }
+
 	void FeatureDistance::Multiply(double coeff) {
 		Utils::Contract::Assert(0.0 <= coeff && coeff <= 1.0);
 

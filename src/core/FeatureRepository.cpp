@@ -13,15 +13,9 @@ namespace Core {
 		this->indexManagers = indexManagers;
 	}
 
-	FeatureRepository::~FeatureRepository() {
-		Utils::Memory::SafeDeleteCollectionOfPointers(indexManagers);
-	}
-
-	imgid_col_t FeatureRepository::GetSimilarImgs(const REF Feature::col_p_t& exampleFeatSet, const REF ImgQuery& initialQuery) const {
+	SearchResultInternal FeatureRepository::GetSimilarImgs(const REF Feature::col_p_t& exampleFeatSet, const REF ImgQuery& initialQuery) const {
 		//user input validation must be done in other modules
 		Utils::Contract::AssertNotEmpty(exampleFeatSet);
-		Utils::Contract::Assert(initialQuery.pageSize > 0);
-		Utils::Contract::Assert(initialQuery.pageNumber > 0);
 
 		std::vector<IndexSeekResult*> indexResults;
 		indexResults.reserve(exampleFeatSet.size());
@@ -32,14 +26,28 @@ namespace Core {
 			Feature::type_id_t featTypeId = pFeature->GetTypeId();
 			IIndexManager* im = GetIndexManager(featTypeId);
 
-			if (im != NULL) {
-				IndexSeekResult* seekResult = im->Search(*pFeature, initialQuery);
-				seekResult->ApplyWeightCoeff(GetWeightCoeff(featTypeId));
-				indexResults.push_back(seekResult);
-			}
+            if (im == NULL) {
+                continue;
+            }
+
+            IndexSeekResult* seekResult = NULL;
+            try {
+                seekResult = im->Search(*pFeature, initialQuery);
+            }
+            catch (...) {
+                //TODO: logging
+                Utils::Memory::SafeDelete(seekResult);
+                continue;
+            }
+			
+            indexResults.push_back(seekResult);
 		}
 
-		return FuseResults(REF indexResults, REF initialQuery);
+		SearchResultInternal fusedResult = FuseResults(REF indexResults, REF initialQuery);
+
+        Utils::Memory::SafeDeleteCollectionOfPointers(indexResults);
+
+        return fusedResult;
 	}
 
     void FeatureRepository::Save(imgid_t imgId, const REF IFeature::col_p_t& featureSet) const {
@@ -78,18 +86,21 @@ namespace Core {
 		}
 	}
 
-	imgid_col_t FeatureRepository::FuseResults(const REF vector<IndexSeekResult*>& indexResults, const REF ImgQuery& initialQuery) const {
+	SearchResultInternal FeatureRepository::FuseResults(const REF vector<IndexSeekResult*>& indexResults, const REF ImgQuery& initialQuery) const {
 		//TODO: implement
 
 		if (indexResults.size() == 0) {
-			return imgid_col_t();
+			return SearchResultInternal();
 		}
 
-		imgid_col_t result;
+		SearchResultInternal result;
 		IndexSeekResult::entry_col_t::const_iterator it;
 
 		for (it = indexResults[0]->GetEntries().cbegin(); it != indexResults[0]->GetEntries().cend(); ++it) {
-			result.push_back(it->imgId);
+            SearchResultInternal::Node node;
+            node.imgId = it->imgId;
+            node.relevance = it->distance.GetRelevanceValue();
+            result.AddNode(node);
 		}
 
 		return result;

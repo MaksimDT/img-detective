@@ -1,16 +1,13 @@
 #include "core/Indexer.h"
 #include "utils/MemoryUtils.h"
 #include "utils/FileSystemUtils.h"
+#include <algorithm>
 
 namespace ImgDetective {
 namespace Core {
 
-    CTOR Indexer::Indexer(REF ImgContentStorage& imgContentStorage, REF ImgMetadataStorage& imgMetadataStorage, REF IFeatureExtractor::col_p_t& featureExtractors, REF FeatureRepository& featureRepository) 
+    CTOR Indexer::Indexer(REF ImgContentStorage& imgContentStorage, REF ImgMetadataStorage& imgMetadataStorage, REF IFeatureExtractor::col_p_t& featureExtractors, REF IFeatureRepository& featureRepository) 
         : imgContentStorage(imgContentStorage), imgMetadataStorage(imgMetadataStorage), featureExtractors(featureExtractors), featureRepo(featureRepository) {
-    }
-
-    Indexer::~Indexer() {
-        Utils::Memory::SafeDeleteCollectionOfPointers(featureExtractors);
     }
 
     UploadImgResult Indexer::UploadImg(ImgInfo& img) const {
@@ -23,8 +20,8 @@ namespace Core {
     }
 
     void Indexer::IndexDirectory(const boost::filesystem::path& dirPath) const {
-        CheckDirResult::Enum checkResult = CanIndexDirectory(dirPath);
-        if (checkResult != CheckDirResult::AvailableForIndex) {
+        CanIndexDirectoryResult::Enum checkResult = CanIndexDirectory(dirPath);
+        if (checkResult != CanIndexDirectoryResult::AvailableForIndex) {
             throw std::exception("The specified directory cannot be indexed");
         }
 
@@ -36,6 +33,7 @@ namespace Core {
         //recursively visit all files in the directory and its subdirectories
         while (it != end) {
             boost::filesystem::path curPath = *it;
+            ++it;
             ImgInfo* curImage = NULL;
 
             try {
@@ -47,7 +45,7 @@ namespace Core {
                 //here we have an image file. Lets read it from file system and upload to our index
                 if (boost::filesystem::is_regular_file(curPath) && IsOfSupportedFormat(curPath)) {
                     boost::filesystem::path relCurPath = Utils::FileSystem::MakeRelative(newRepo.GetPath(), curPath);
-                    curImage = ImgInfo::Create(newRepo.GetId(), relCurPath);
+                    curImage = ImgInfo::Create(newRepo.GetId(), curPath, relCurPath);
                     //no need to upload an image since its contents is already in the directory being indexed, let's just add it to index
                     AddToIndex(*curImage);
 
@@ -61,17 +59,17 @@ namespace Core {
         }
     }
 
-    CheckDirResult::Enum Indexer::CanIndexDirectory(const boost::filesystem::path& dirPath) const {
+    CanIndexDirectoryResult::Enum Indexer::CanIndexDirectory(const boost::filesystem::path& dirPath) const {
         if (!boost::filesystem::exists(dirPath)) {
-            return CheckDirResult::NotExists;
+            return CanIndexDirectoryResult::NotExists;
         }
 
         if (!boost::filesystem::is_directory(dirPath)) {
-            return CheckDirResult::IsNotDir;
+            return CanIndexDirectoryResult::IsNotDir;
         }
 
         if (!dirPath.is_absolute()) {
-            return CheckDirResult::NotAbsolute;
+            return CanIndexDirectoryResult::NotAbsolute;
         }
 
         FsRepositoryInfo::col_t allRepos = this->imgMetadataStorage.GetAllRepositories();
@@ -81,15 +79,15 @@ namespace Core {
             boost::filesystem::path p = it->GetPath();
 
             if (dirPath == p || Utils::FileSystem::HasParentChildRelationship(p, dirPath)) {
-                return CheckDirResult::AlreadyIndexed;
+                return CanIndexDirectoryResult::AlreadyIndexed;
             }
 
             if (Utils::FileSystem::HasParentChildRelationship(dirPath, p)) {
-                return CheckDirResult::SubdirIndexed;
+                return CanIndexDirectoryResult::SubdirIndexed;
             }
         }
 
-        return CheckDirResult::AvailableForIndex;
+        return CanIndexDirectoryResult::AvailableForIndex;
     }
 
     void Indexer::AddToIndex(ImgInfo& img) const {
@@ -131,8 +129,10 @@ namespace Core {
     bool Indexer::IsOfSupportedFormat(const boost::filesystem::path& filePath) const {
         std::string extension = boost::filesystem::extension(filePath);
 
+        std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
+
         //TODO: to config
-        return extension == "jpg" || extension == "jpeg" || extension == "png" || extension == "bmp";
+        return extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".bmp";
     }
 }
 }

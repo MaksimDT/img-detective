@@ -32,8 +32,11 @@ namespace ColorHistogram {
             bins = new bins_vector_t(COLOR_HISTOGRAM_BIN_COUNT);
             bins_vector_t& binsRef = *bins;
 
-            for (size_t i = 0; i < COLOR_HISTOGRAM_BIN_COUNT; ++i, ++offset) {
-                binsRef[i] = buffer[offset];
+            size_t binIndex = 0;
+            while (binIndex < COLOR_HISTOGRAM_BIN_COUNT) {
+                binsRef[binIndex] = Core::ReadFromBlob<bin_value_t>(buffer, offset);
+                ++binIndex;
+                offset += sizeof(bin_value_t);
             }
 
             result = new ChannelHistogram(bins);
@@ -52,19 +55,24 @@ namespace ColorHistogram {
     }
 
     void ColorHistogramFeat::ChannelHistogram::SerializeToBuffer(REF Core::blob_t& buffer, REF size_t& offset) const {
-        Utils::Contract::Assert(buffer.size() >= offset + bins->size());
+        Utils::Contract::Assert(buffer.size() >= offset + bins->size() * sizeof(bin_value_t));
 
         bins_vector_t& binsRef = *bins;
 
-        for (size_t i = 0; i < binsRef.size(); ++i, ++offset) {
-            buffer[offset] = binsRef[i];
+        size_t binIndex = 0;
+        while (binIndex < binsRef.size()) {
+            Core::WriteToBlob(buffer, offset, binsRef[binIndex]);
+
+            ++binIndex;
+            offset += sizeof(bin_value_t);
         }
     }
 
     double ColorHistogramFeat::ChannelHistogram::ComputeDistanceTo(const REF ColorHistogramFeat::ChannelHistogram& other) const {
         //not such clever way of computing the distance between two histograms
 
-        const unsigned long maxDiff = (COLOR_HISTOGRAM_BIN_COUNT) * (NUMBER_OF_BIN_VALUES - 1);
+        //the sum of all bins of the histogram equals to maximum bin value, hence max difference is this number doubled
+        const unsigned long maxDiff = MAX_BIN_VALUE * 2;
         unsigned long diff = 0;
 
         bins_vector_t& thisBins = *(this->bins);

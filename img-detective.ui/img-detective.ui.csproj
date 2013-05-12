@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -54,8 +55,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Utility\Command.cs" />
-    <Compile Include="Utility\IUploadImageSelector.cs" />
-    <Compile Include="Utility\WpfUploadImageSelector.cs" />
+    <Compile Include="Utility\IAlertPresenter.cs" />
+    <Compile Include="Utility\IDirectorySelector.cs" />
+    <Compile Include="Utility\IImageFileSelector.cs" />
+    <Compile Include="Utility\WpfAlertPresenter.cs" />
+    <Compile Include="Utility\WpfDirectorySelector.cs" />
+    <Compile Include="Utility\WpfExtensions.cs" />
+    <Compile Include="Utility\WpfImageFileSelector.cs" />
     <Compile Include="VM\ImageVM.cs" />
     <Compile Include="VM\MainWindowVM.cs" />
     <Page Include="MainWindow.xaml">

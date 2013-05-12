@@ -2,6 +2,7 @@
 #include "utils/ContractUtils.h"
 #include "utils/FileSystemUtils.h"
 #include "utils/MemoryUtils.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -11,7 +12,6 @@ namespace Core {
 	ImgInfo* ImgInfo::Create(const RawImg& rawImg) {
         Utils::Contract::Assert(rawImg.contentSize > 0);
         Utils::Contract::AssertNotNull(rawImg.content);
-        Utils::Contract::AssertNotNull(rawImg.fileExtension);
 
 		ImgInfo* parsedImg = NULL;
 
@@ -20,7 +20,9 @@ namespace Core {
 			Magick::Image magickImg(imgContentBlob);
 
             parsedImg = new ImgInfo(magickImg, "", REPO_ID_UNDEFINED);
-            parsedImg->SetFileExtension(rawImg.fileExtension);
+            if (rawImg.fileExtension != NULL) {
+                parsedImg->SetFileExtension(rawImg.fileExtension);
+            }
 		}
 		catch (std::exception ex) {
             Utils::Memory::SafeDelete(parsedImg);
@@ -31,14 +33,14 @@ namespace Core {
 		return parsedImg;
 	}
 
-    ImgInfo* ImgInfo::Create(repoid_t repoId, const boost::filesystem::path& filePath) {
+    ImgInfo* ImgInfo::Create(repoid_t repoId, const boost::filesystem::path& filePath, const boost::filesystem::path& relativeFilePath) {
         blob_p_t fileContents = NULL;
         try {
             fileContents = Utils::FileSystem::ReadAllBytes(filePath);
 
             Magick::Blob magickBlob(Core::BlobToCharArray(fileContents), fileContents->size());
             Magick::Image magickImg(magickBlob);
-            ImgInfo* parsedImg = new ImgInfo(magickImg, filePath, repoId);
+            ImgInfo* parsedImg = new ImgInfo(magickImg, relativeFilePath, repoId);
             
             Core::SafeFreeBlob(fileContents);
             return parsedImg;
@@ -104,6 +106,8 @@ namespace Core {
         else {
             cleanExt = ext;
         }
+
+        std::transform(cleanExt.begin(), cleanExt.end(), cleanExt.begin(), ::tolower);
 
         this->fileExtension = cleanExt;
     }

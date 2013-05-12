@@ -31,7 +31,7 @@ namespace img_detective.ui
 
         private void Window_Initialized_1(object sender, EventArgs e)
         {
-            this.DataContext = new MainWindowVM(new ImgService(new ImgDAL()), new WpfUploadImageSelector());
+            this.DataContext = new MainWindowVM(new ImgService(new ImgDAL()), new WpfImageFileSelector(), new WpfDirectorySelector(this), new WpfAlertPresenter());
         }
     }
 }

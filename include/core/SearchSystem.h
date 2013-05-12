@@ -3,6 +3,7 @@
 #include "common/CommonInternal.h"
 #include "core/FeatureExtractor.h"
 #include "core/FeatureRepository.h"
+#include "core/SearchResultInternal.h"
 
 #include <vector>
 
@@ -13,13 +14,12 @@ namespace Core {
 	of other subsystems*/
 	CONCRETE SEALED class SearchSystem : NONCOPYABLE {
 	public:
-		SearchSystem(IFeatureRepository* featureRepo, FeatureExtractor::col_p_t featureExtractors);
-		virtual ~SearchSystem();
-		imgid_col_t GetSimilarImgs(ImgQuery query);
+		SearchSystem(IFeatureRepository& featureRepo, FeatureExtractor::col_p_t featureExtractors);
+        SearchResultInternal GetSimilarImgs(ImgInfo& imgInfo, ImgQuery query);
 	private:
 		IFeature::col_p_t ExtractFeatures(ImgInfo& imgInfo, ImgQuery query);
 
-		IFeatureRepository* featureRepo;
+		IFeatureRepository& featureRepo;
 		FeatureExtractor::col_p_t featureExtractors;
 	};
 

@@ -18,5 +18,8 @@
     <ClCompile Include="..\src\integrationtests\indexing_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\integrationtests\search_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

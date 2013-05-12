@@ -23,11 +23,33 @@ BOOST_AUTO_TEST_CASE(extract_histograms_from_the_same_images_and_compare_them) {
 
     Core::FeatureDistance distance = hist1->ComputeDistanceTo(*hist2);
 
-    BOOST_CHECK(abs(distance.GetValue()) < 0.0001);
+    BOOST_CHECK(distance.GetValue() >= 0);
+    BOOST_CHECK(distance.GetValue() <= 1);
+    BOOST_CHECK(distance.GetValue() < 0.0001);
 
     Utils::Memory::SafeDelete(img);
     Utils::Memory::SafeDelete(hist1);
     Utils::Memory::SafeDelete(hist2);
+}
+
+BOOST_AUTO_TEST_CASE(compare_absolute_white_and_black_images_histograms) {
+    Modules::ColorHistogram::ColorHistogramFE fe;
+
+    Core::ImgInfo* black = TestUtils::ReadImgFromFile("resources\\tests\\absolute_black.jpg");
+    Core::ImgInfo* white = TestUtils::ReadImgFromFile("resources\\tests\\absolute_white.jpg");
+
+    Core::IFeature* blackHist = fe.ExtractFrom(*black);
+    Core::IFeature* whiteHist = fe.ExtractFrom(*white);
+
+    Core::FeatureDistance distance = blackHist->ComputeDistanceTo(*whiteHist);
+
+    BOOST_CHECK(distance.GetValue() >= 0);
+    BOOST_CHECK(distance.GetValue() <= 1);
+
+    Utils::Memory::SafeDelete(black);
+    Utils::Memory::SafeDelete(white);
+    Utils::Memory::SafeDelete(blackHist);
+    Utils::Memory::SafeDelete(whiteHist);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

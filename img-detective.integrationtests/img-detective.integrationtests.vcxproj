@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\integrationtests\indexing_tests.cpp" />
+    <ClCompile Include="..\src\integrationtests\search_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\img-detective.common\img-detective.common.vcxproj">
