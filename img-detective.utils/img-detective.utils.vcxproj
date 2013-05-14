@@ -132,12 +132,14 @@
   <ItemGroup>
     <ClInclude Include="..\include\utils\ContractUtils.h" />
     <ClInclude Include="..\include\utils\FileSystemUtils.h" />
+    <ClInclude Include="..\include\utils\GraphicsUtils.h" />
     <ClInclude Include="..\include\utils\MathUtils.h" />
     <ClInclude Include="..\include\utils\MemoryUtils.h" />
     <ClInclude Include="..\include\utils\UnicodeUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\utils\FileSystemUtils.cpp" />
+    <ClCompile Include="..\src\utils\GraphicsUtils.cpp" />
     <ClCompile Include="..\src\utils\UnicodeUtils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

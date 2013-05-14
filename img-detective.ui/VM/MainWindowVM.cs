@@ -244,6 +244,7 @@ namespace img_detective.ui.VM
                             var exampleImgSource = new BitmapImage();
                             exampleImgSource.BeginInit();
                             exampleImgSource.UriSource = new Uri("file://" + selectedFilePath);
+                            exampleImgSource.DecodePixelWidth = 500;
                             exampleImgSource.EndInit();
 
                             SearchExample = exampleImgSource;

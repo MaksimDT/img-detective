@@ -9,3 +9,5 @@ upload
 */obj
 */bin
 TestResults
+*.psess
+*.vsp

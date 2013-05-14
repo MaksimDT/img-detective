@@ -117,11 +117,17 @@ namespace img_detective.ui.VM
 
         private void InitImageSource()
         {
+            //AssignNotFoundIconToSource();
+            //return;
+
+
             if (FileExists())
             {
                 BitmapImage src = new BitmapImage();
                 src.BeginInit();
                 src.UriSource = new Uri("file://" + model.FilePath);
+                src.DecodePixelWidth = 500;
+                src.CacheOption = BitmapCacheOption.None;
                 src.EndInit();
                 Source = src;
             }

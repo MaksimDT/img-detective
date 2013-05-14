@@ -150,6 +150,9 @@
     <ProjectReference Include="..\img-detective.core\img-detective.core.vcxproj">
       <Project>{e3092fb6-4f3d-4c22-8ab8-32808330f221}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\img-detective.modules.cld\img-detective.modules.cld.vcxproj">
+      <Project>{5c8785af-4c00-47b2-bb6d-3a938ff18a8c}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\img-detective.modules.colorhistogram\img-detective.modules.colorhistogram.vcxproj">
       <Project>{e41b94c6-f528-43ca-ab00-275e20fbdef8}</Project>
     </ProjectReference>

@@ -15,18 +15,30 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\common\Common.h">
+    <ClInclude Include="..\include\modules\cld\Feature.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\common\CommonInternal.h">
+    <ClInclude Include="..\include\modules\cld\FeatureDeserializer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\common\Matrix.h">
+    <ClInclude Include="..\include\modules\cld\FeatureExtractor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\modules\cld\ModuleFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\common\CommonInternal.cpp">
+    <ClCompile Include="..\src\modules\cld\Feature.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\modules\cld\FeatureExtractor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\modules\cld\FeatureDeserializer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\modules\cld\ModuleFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

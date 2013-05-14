@@ -57,6 +57,12 @@ namespace Core {
     typedef std::vector<byte_t> blob_t;
     typedef std::vector<byte_t>* blob_p_t;
 
+    typedef struct YCbCrColor {
+        unsigned char y;
+        unsigned char cb;
+        unsigned char cr;
+    } YCbCrColor;
+
     void ConvertToSearchResult(const REF imgid_col_t& imgIds, REF SearchResult& result, void* (*memoryAllocFunc)(size_t));
 
     #pragma region working with BLOBs

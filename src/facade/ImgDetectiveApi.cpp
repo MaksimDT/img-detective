@@ -10,6 +10,7 @@
 #include "core/MySqlDbWrapper.h"
 #include "core/RDBMSIndexStorage.h"
 #include "modules/colorhistogram/ModuleFactory.h"
+#include "modules/cld/ModuleFactory.h"
 
 #include <Windows.h>
 
@@ -49,8 +50,10 @@ void InitVars() {
         imgContentStorage = new Core::FsImgStorage(uploadDirPath);
         dbWrapper = new Core::Db::MySqlDbWrapper(dbConSettings);
         imgMetadataStorage = new Core::RDBMSImgMetadataStorage(*dbWrapper);
-        featExtractors.push_back(Modules::ColorHistogram::ModuleFactory::GetFeatureExtractor());
-        indexManagers.push_back(Modules::ColorHistogram::ModuleFactory::GetIndexManager(*dbWrapper));
+        /*featExtractors.push_back(Modules::ColorHistogram::ModuleFactory::GetFeatureExtractor());
+        indexManagers.push_back(Modules::ColorHistogram::ModuleFactory::GetIndexManager(*dbWrapper));*/
+        featExtractors.push_back(Modules::CLD::ModuleFactory::GetFeatureExtractor());
+        indexManagers.push_back(Modules::CLD::ModuleFactory::GetIndexManager(*dbWrapper));
         featureRepo = new Core::FeatureRepository(indexManagers);
         indexer = new Core::Indexer(*imgContentStorage, *imgMetadataStorage, featExtractors, *featureRepo);
         searchSystem = new Core::SearchSystem(*featureRepo, featExtractors);
@@ -115,14 +118,22 @@ void Search(ImgQuery query, SearchResult* result) {
         result->arraySize = convertedResult.arraySize;
         result->items = convertedResult.items;
         result->itemsRelevance = convertedResult.itemsRelevance;
+
+        Utils::Memory::SafeDelete(img);
 	}
 	catch (std::exception ex) {
         Utils::Memory::SafeDelete(img);
         //TODO: logging
         if (result->items != NULL) {
-            delete [] result->items;
+            CoTaskMemFree(result->items);
             result->items = NULL;
         }
+
+        if (result->itemsRelevance != NULL) {
+            CoTaskMemFree(result->itemsRelevance);
+            result->itemsRelevance = NULL;
+        }
+
         result->arraySize = 0;
         result->opStatus = OPSTATUS_INTERNAL_ERROR;
 	}

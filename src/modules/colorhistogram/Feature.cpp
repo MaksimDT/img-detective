@@ -175,6 +175,8 @@ namespace ColorHistogram {
 
         double distanceValue = (rDistance + gDistance + bDistance) / 3;
 
+        //TODO: make sure that distanceValue is in the interval [0, 1]
+
         return FeatureDistance(distanceValue);
     }
 

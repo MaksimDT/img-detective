@@ -14,7 +14,7 @@ namespace ColorHistogram {
 
     Core::IIndexManager* ModuleFactory::GetIndexManager(const Core::Db::DbWrapper& dbWrapper) {
         Core::IFeatureDeserializer* fd = new ColorHistogram::ColorHistogramFD();
-        RDBMSIndexStorage* ixStorage = new RDBMSIndexStorage(fd, dbWrapper, 1000, "ColorHistograms");
+        RDBMSIndexStorage* ixStorage = new RDBMSIndexStorage(fd, dbWrapper, 500, "ColorHistograms");
         Core::LinearSearchIM* ixMgr = new Core::LinearSearchIM(ixStorage, COLOR_HISTOGRAM_FTYPE_ID);
 
         return ixMgr;

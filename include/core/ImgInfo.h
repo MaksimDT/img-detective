@@ -3,7 +3,7 @@
 #include "common/CommonInternal.h"
 #include <boost/filesystem.hpp>
 #include <string>
-#pragma warning(push, 0)        
+#pragma warning(push, 0)
 #include <Magick++.h>
 #pragma warning(pop)
 
