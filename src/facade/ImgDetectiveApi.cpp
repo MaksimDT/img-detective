@@ -11,6 +11,7 @@
 #include "core/RDBMSIndexStorage.h"
 #include "modules/colorhistogram/ModuleFactory.h"
 #include "modules/cld/ModuleFactory.h"
+#include "modules/ehd/ModuleFactory.h"
 
 #include <Windows.h>
 
@@ -50,10 +51,12 @@ void InitVars() {
         imgContentStorage = new Core::FsImgStorage(uploadDirPath);
         dbWrapper = new Core::Db::MySqlDbWrapper(dbConSettings);
         imgMetadataStorage = new Core::RDBMSImgMetadataStorage(*dbWrapper);
-        /*featExtractors.push_back(Modules::ColorHistogram::ModuleFactory::GetFeatureExtractor());
-        indexManagers.push_back(Modules::ColorHistogram::ModuleFactory::GetIndexManager(*dbWrapper));*/
+        featExtractors.push_back(Modules::ColorHistogram::ModuleFactory::GetFeatureExtractor());
+        indexManagers.push_back(Modules::ColorHistogram::ModuleFactory::GetIndexManager(*dbWrapper));
         featExtractors.push_back(Modules::CLD::ModuleFactory::GetFeatureExtractor());
         indexManagers.push_back(Modules::CLD::ModuleFactory::GetIndexManager(*dbWrapper));
+        featExtractors.push_back(Modules::EHD::ModuleFactory::GetFeatureExtractor());
+        indexManagers.push_back(Modules::EHD::ModuleFactory::GetIndexManager(*dbWrapper));
         featureRepo = new Core::FeatureRepository(indexManagers);
         indexer = new Core::Indexer(*imgContentStorage, *imgMetadataStorage, featExtractors, *featureRepo);
         searchSystem = new Core::SearchSystem(*featureRepo, featExtractors);

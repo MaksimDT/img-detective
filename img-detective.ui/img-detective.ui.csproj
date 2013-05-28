@@ -54,6 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SearchSettings.xaml.cs">
+      <DependentUpon>SearchSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utility\Command.cs" />
     <Compile Include="Utility\IAlertPresenter.cs" />
     <Compile Include="Utility\IDirectorySelector.cs" />
@@ -76,6 +79,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="SearchSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

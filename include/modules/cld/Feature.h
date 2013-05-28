@@ -33,7 +33,7 @@ namespace CLD {
         static void ReadDctCoeffsFromBuffer(const Core::blob_t& buffer, REF size_t& offset, REF dct_coeff_vect_t& dctCoeffs);
         static void WriteDctCoeffsToBuffer(REF Core::blob_t& buffer, REF size_t& offset, const dct_coeff_vect_t& dctCoeffs);
 
-        static double ComputeDistanceBtwChannelCoefs(const dct_coeff_vect_t& c1, const dct_coeff_vect_t& c2);
+        static double ComputeDistanceBtwChannelCoefs(const dct_coeff_vect_t& c1, const dct_coeff_vect_t& c2, unsigned int usedCoefsNumber);
     };
 
 }

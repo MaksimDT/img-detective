@@ -80,4 +80,50 @@ CYCLE_END:
         std::exception);
 }
 
+BOOST_AUTO_TEST_CASE(matrix_zigzag_scanning_test) {
+    const size_t N = 8;
+
+    Matrix<int> A(N, N);
+
+    for (unsigned int i = 0; i < N; ++i) {
+        for (unsigned int j = 0; j < N; ++j) {
+            A(i, j) = i * N + j + 1;
+        }
+    }
+
+    int expectedResult[] = 
+    { 
+        1, 
+        2, 9, 
+        17, 10, 3, 
+        4, 11, 18, 25, 
+        33, 26, 19, 12, 5, 
+        6, 13, 20, 27, 34, 41, 
+        49, 42, 35, 28, 21, 14, 7,
+        8, 15, 22, 29, 36, 43, 50, 57,
+        58, 51, 44, 37, 30, 23, 16,
+        24, 31, 38, 45, 52, 59,
+        60, 53, 46, 39, 32,
+        40, 47, 54, 61,
+        62, 55, 48,
+        56, 63,
+        64
+    };
+
+    std::vector<int> scanned;
+    scanned.resize(N * N);
+
+    A.ZigzagScan(REF scanned);
+
+    bool ok = true;
+    for (unsigned int i = 0; i < N * N; ++i) {
+        if (scanned[i] != expectedResult[i]) {
+            ok = false;
+            break;
+        }
+    }
+
+    BOOST_CHECK(ok);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

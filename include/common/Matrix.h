@@ -81,51 +81,57 @@ namespace Core {
     template <typename T>
     template <typename TResultCol>
     void Matrix<T>::ZigzagScan(REF TResultCol& result) const {
+        Utils::Contract::Assert(this->rows == this->columns, "Zigzag scan algorithm is implemented only for square matrices");
+
         if (result.size() != this->rows * this->columns) {
             throw std::runtime_error("wrong size of the container to write the result to");
         }
 
-        const size_t maxI = this->rows - 1;
-        const size_t maxJ = this->columns - 1;
-        size_t i = 0;
-        size_t j = 0;
+        unsigned int N = this->rows - 1;
+        unsigned int resultItemIndex = 0;
 
-       /* while (true) {
-            result.push_back((*this)[i, j]);
+        //Sum of element's indexes (i + j) on the given matrix diagonal is a const value
+        //c variable stands for (i + j).
+        for (int c = 0; c <= 2 * N; ++c) {
+            int i;
+            int j;
+            int di;
+            int dj;
 
-            if (j != maxJ) {
-                ++j;
+            if (c % 2 == 0) {
+                //i + j is even
+                if (c > N) {
+                    i = N;
+                    j = c - N;
+                }
+                else {
+                    i = c;
+                    j = 0;
+                }
+                //go to the right and up
+                di = -1;
+                dj = 1;
             }
             else {
-                ++i;
+                //i + j is odd
+                if (c > N) {
+                    i = c - N;
+                    j = N;
+                }
+                else {
+                    i = 0;
+                    j = c;
+                }
+                //go to the left and down
+                di = 1;
+                dj = -1;
             }
 
-            if (i == maxI && j == maxJ) {
-                break;
-            }
-
-            
-
-            result.push_back((*this)[i, j]);
-            ++j;
-            result.push_back((*this)[i, j]);
-
-            while (i != 0 && j != 0) {
-                ++i;
-                --j;
-                result.push_back((*this)[i, j]);
-            }
-
-            if (i )
-        }*/
-
-        //TODO: implement
-
-        unsigned int resultIndex = 0;
-        for (size_t i = 0; i < this->rows; ++i) {
-            for (size_t j = 0; j < this->columns; ++j) {
-                result[resultIndex] =(*this)(i, j);
-                ++resultIndex;
+            while (0 <= i && i <= N && 0 <= j && j <= N) {
+                result[resultItemIndex] = (*this)(i, j);
+                ++resultItemIndex;
+                i += di;
+                j += dj;
             }
         }
     }

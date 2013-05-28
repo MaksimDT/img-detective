@@ -28,14 +28,15 @@ namespace CLD {
 
     Core::FeatureDistance CLDFeat::ComputeDistanceInternal(const REF IFeature& feature) const {
         Utils::Contract::Assert(feature.GetTypeId() == this->GetTypeId());
+        const unsigned int numberOfDctCoeffsUsed = 12;
 
         CLDFeat& other = (CLDFeat&)feature;
 
-        const double normFactor = 18 * sqrt(NUMBER_OF_DCT_COEFS);  //computed analytically
+        const double normFactor = 18 * sqrt(numberOfDctCoeffsUsed);  //computed analytically
 
-        double yDistance = ComputeDistanceBtwChannelCoefs(*(this->dctY), *(other.dctY));
-        double cbDistance = ComputeDistanceBtwChannelCoefs(*(this->dctCb), *(other.dctCb));
-        double crDistance = ComputeDistanceBtwChannelCoefs(*(this->dctCr), *(other.dctCr));
+        double yDistance = ComputeDistanceBtwChannelCoefs(*(this->dctY), *(other.dctY), numberOfDctCoeffsUsed);
+        double cbDistance = ComputeDistanceBtwChannelCoefs(*(this->dctCb), *(other.dctCb), 6);
+        double crDistance = ComputeDistanceBtwChannelCoefs(*(this->dctCr), *(other.dctCr), 6);
 
         double featureDistance = (yDistance + cbDistance + crDistance) / normFactor;
 
@@ -117,14 +118,15 @@ namespace CLD {
         }
     }
 
-    double CLDFeat::ComputeDistanceBtwChannelCoefs(const dct_coeff_vect_t& c1, const dct_coeff_vect_t& c2) {
-        Utils::Contract::Assert(c1.size() == c2.size());
+    double CLDFeat::ComputeDistanceBtwChannelCoefs(const dct_coeff_vect_t& c1, const dct_coeff_vect_t& c2, unsigned int usedCoefsNumber) {
+        Utils::Contract::Assert(c1.size() >= usedCoefsNumber);
+        Utils::Contract::Assert(c2.size() >= usedCoefsNumber);
         
         const dct_coeff_t* c1raw = c1.data();
         const dct_coeff_t* c2raw = c2.data();
 
         double sum = 0.0;
-        for (unsigned int i = 0; i < c1.size(); ++i) {
+        for (unsigned int i = 0; i < usedCoefsNumber; ++i) {
             double diff = c1raw[i] - c2raw[i];
             sum += diff * diff;
         }

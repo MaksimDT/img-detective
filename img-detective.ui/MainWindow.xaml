@@ -1,7 +1,7 @@
 ﻿<Window x:Class="img_detective.ui.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" MinHeight="500" Height="500" Width="525"
+        Title="img-detective" MinHeight="500" Height="500" Width="525"
         Initialized="Window_Initialized_1">
     <Window.Resources>
         <!--styles begin-->
@@ -233,9 +233,9 @@
                             <ControlTemplate>
                                 <Border Style="{StaticResource ResourceKey=ImageBorderStyle}">
                                     <Image Source="{Binding Path=Source}">
-                                        <Image.ToolTip>
+                                        <!--<Image.ToolTip>
                                             <ToolTip Content="{Binding Relevance}" />
-                                        </Image.ToolTip>
+                                        </Image.ToolTip>-->
                                     </Image>
                                 </Border>
                             </ControlTemplate>
