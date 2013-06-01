@@ -31,12 +31,13 @@ BOOST_AUTO_TEST_CASE(search_throws_no_exceptions_test) {
 
     Core::ImgInfo* img = TestUtils::ReadImgFromFile("resources\\tests\\field.JPG");
 
-    Core::SearchResultInternal searchResultInternal = ss.GetSimilarImgs(*img, query);
+    Core::SearchResultInternal* searchResultInternal = ss.GetSimilarImgs(*img, query);
 
     Utils::Memory::SafeDelete(dbWrapper);
     Utils::Memory::SafeDeleteCollectionOfPointers(featExtractors);
     Utils::Memory::SafeDeleteCollectionOfPointers(indexManagers);
     Utils::Memory::SafeDelete(img);
+    Utils::Memory::SafeDelete(searchResultInternal);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
