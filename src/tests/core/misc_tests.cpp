@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_CASE(convert) {
     for (size_t i = 0; i < numberOfNodes; ++i) {
         SearchResultInternal::Node node;
         node.imgId = (i + 1);
-        node.relevance = 1.0 / (i + 1);
+        node.position = (i + 1);
         resultInternal.AddNode(node);
     }
 
@@ -30,12 +30,12 @@ BOOST_AUTO_TEST_CASE(convert) {
 
     BOOST_ASSERT(result.arraySize == numberOfNodes);
     BOOST_ASSERT(result.items != NULL);
-    BOOST_ASSERT(result.itemsRelevance != NULL);
+    BOOST_ASSERT(result.itemsPositions != NULL);
 
     bool ok = true;
 
     for (size_t i = 0; i < numberOfNodes; ++i) {
-        if (result.items[i] != (i + 1) || result.itemsRelevance[i] != 1.0 / (i + 1)) {
+        if (result.items[i] != (i + 1) || result.itemsPositions[i] != (i + 1)) {
             ok = false;
             break;
         }
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(convert) {
     BOOST_CHECK(ok);
 
     Utils::Memory::SafeDeleteArray(result.items);
-    Utils::Memory::SafeDeleteArray(result.itemsRelevance);
+    Utils::Memory::SafeDeleteArray(result.itemsPositions);
 }
 
 BOOST_AUTO_TEST_CASE(matrix_test) {

@@ -13,7 +13,7 @@ namespace Core {
 		this->indexManagers = indexManagers;
 	}
 
-	SearchResultInternal FeatureRepository::GetSimilarImgs(const REF Feature::col_p_t& exampleFeatSet, const REF ImgQuery& initialQuery) const {
+	SearchResultInternal* FeatureRepository::GetSimilarImgs(const REF Feature::col_p_t& exampleFeatSet, const REF ImgQuery& initialQuery) const {
 		//user input validation must be done in other modules
 		Utils::Contract::AssertNotEmpty(exampleFeatSet);
 
@@ -43,11 +43,11 @@ namespace Core {
             indexResults.push_back(seekResult);
 		}
 
-		SearchResultInternal fusedResult = FuseResults(REF indexResults, REF initialQuery);
+        SearchResultInternal* result = ixResultsCombiner.CombineIndexResults(indexResults, initialQuery);
 
         Utils::Memory::SafeDeleteCollectionOfPointers(indexResults);
 
-        return fusedResult;
+        return result;
 	}
 
     void FeatureRepository::Save(imgid_t imgId, const REF IFeature::col_p_t& featureSet) const {
@@ -84,26 +84,6 @@ namespace Core {
 		else {
 			return 1.0;
 		}
-	}
-
-	SearchResultInternal FeatureRepository::FuseResults(const REF vector<IndexSeekResult*>& indexResults, const REF ImgQuery& initialQuery) const {
-		//TODO: implement
-
-		if (indexResults.size() == 0) {
-			return SearchResultInternal();
-		}
-
-		SearchResultInternal result;
-		IndexSeekResult::entry_col_t::const_iterator it;
-
-		for (it = indexResults[0]->GetEntries().cbegin(); it != indexResults[0]->GetEntries().cend(); ++it) {
-            SearchResultInternal::Node node;
-            node.imgId = it->imgId;
-            node.relevance = it->distance.GetRelevanceValue();
-            result.AddNode(node);
-		}
-
-		return result;
 	}
 
 }

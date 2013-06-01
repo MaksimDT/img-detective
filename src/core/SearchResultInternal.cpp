@@ -26,11 +26,11 @@ namespace Core {
 
         try {
             converted.items = (imgid_t*)arrayMemAllocator(arraySize * sizeof(imgid_t));
-            converted.itemsRelevance = (double*)arrayMemAllocator(arraySize * sizeof(double));
+            converted.itemsPositions = (double*)arrayMemAllocator(arraySize * sizeof(double));
 
             for (size_t i = 0; i < arraySize; ++i) {
                 converted.items[i] = this->nodes[i].imgId;
-                converted.itemsRelevance[i] = this->nodes[i].relevance;
+                converted.itemsPositions[i] = this->nodes[i].position;
             }
 
             return converted;
@@ -40,9 +40,9 @@ namespace Core {
                 arrayMemDeallocator(converted.items);
                 converted.items = NULL;
             }
-            if (converted.itemsRelevance != NULL) {
-                arrayMemDeallocator(converted.itemsRelevance);
-                converted.itemsRelevance = NULL;
+            if (converted.itemsPositions != NULL) {
+                arrayMemDeallocator(converted.itemsPositions);
+                converted.itemsPositions = NULL;
             }
 
             throw;

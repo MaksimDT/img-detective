@@ -126,6 +126,9 @@
     <ClInclude Include="..\include\core\SearchResultInternal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\core\IndexResultsCombiner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\core\IndexManager.cpp">
@@ -198,6 +201,9 @@
       <Filter>Source Files\FeatureIndexing</Filter>
     </ClCompile>
     <ClCompile Include="..\src\core\SearchResultInternal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\core\IndexResultsCombiner.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

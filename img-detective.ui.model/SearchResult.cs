@@ -14,7 +14,7 @@ namespace img_detective.ui.model
         public struct Node
         {
             public long ImageId { get; set; }
-            public double Relevance { get; set; }
+            public double Position { get; set; }
         }
 
         #endregion
@@ -32,12 +32,12 @@ namespace img_detective.ui.model
             Nodes = new List<Node>();
         }
 
-        public SearchResult(long[] imageIds, double[] relevances)
+        public SearchResult(long[] imageIds, double[] positions)
             : this()
         {
             Contract.Requires(imageIds != null);
-            Contract.Requires(relevances != null);
-            Contract.Requires(imageIds.Length == relevances.Length);
+            Contract.Requires(positions != null);
+            Contract.Requires(imageIds.Length == positions.Length);
 
             Nodes.Capacity = imageIds.Length;
 
@@ -46,7 +46,7 @@ namespace img_detective.ui.model
                 Nodes.Add(new Node()
                 {
                     ImageId = imageIds[i],
-                    Relevance = relevances[i]
+                    Position = positions[i]
                 });
             }
         }

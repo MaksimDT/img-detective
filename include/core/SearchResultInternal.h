@@ -1,16 +1,17 @@
 #pragma once
 
 #include "common/Common.h"
+#include "common/CommonInternal.h"
 #include <vector>
 
 namespace ImgDetective {
 namespace Core {
 
-    class SearchResultInternal {
+    class SearchResultInternal : NONCOPYABLE {
     public:
         typedef struct Node {
             imgid_t imgId;
-            double relevance;
+            double position;
         };
 
         SearchResultInternal();

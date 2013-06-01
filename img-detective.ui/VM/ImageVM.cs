@@ -34,7 +34,7 @@ namespace img_detective.ui.VM
         {
             get
             {
-                return model.Relevance ?? 0.0;
+                return model.Position ?? 0.0;
             }
         }
 

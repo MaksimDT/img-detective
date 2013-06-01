@@ -99,6 +99,7 @@ void Search(ImgQuery query, SearchResult* result) {
     memset(result, 0, sizeof(SearchResult));
 
     Core::ImgInfo* img = NULL;
+    Core::SearchResultInternal* searchResultInternal = NULL;
 
 	try {
         RawImg exampleRawImg;
@@ -108,9 +109,9 @@ void Search(ImgQuery query, SearchResult* result) {
         exampleRawImg.fileExtension = NULL;
 
         img = Core::ImgInfo::Create(exampleRawImg);
-        Core::SearchResultInternal searchResultInternal = searchSystem->GetSimilarImgs(*img, query);
+        searchResultInternal = searchSystem->GetSimilarImgs(*img, query);
 
-        SearchResult convertedResult = searchResultInternal.ConvertToSearchResult(
+        SearchResult convertedResult = searchResultInternal->ConvertToSearchResult(
             [] (size_t bytesCount) {
                 return (void*)CoTaskMemAlloc(bytesCount);
             },
@@ -120,21 +121,24 @@ void Search(ImgQuery query, SearchResult* result) {
         result->opStatus = OPSTATUS_OK;
         result->arraySize = convertedResult.arraySize;
         result->items = convertedResult.items;
-        result->itemsRelevance = convertedResult.itemsRelevance;
+        result->itemsPositions = convertedResult.itemsPositions;
 
         Utils::Memory::SafeDelete(img);
+        Utils::Memory::SafeDelete(searchResultInternal);
 	}
-	catch (std::exception ex) {
-        Utils::Memory::SafeDelete(img);
+	catch (...) {
         //TODO: logging
+
+        Utils::Memory::SafeDelete(img);
+        Utils::Memory::SafeDelete(searchResultInternal);
         if (result->items != NULL) {
             CoTaskMemFree(result->items);
             result->items = NULL;
         }
 
-        if (result->itemsRelevance != NULL) {
-            CoTaskMemFree(result->itemsRelevance);
-            result->itemsRelevance = NULL;
+        if (result->itemsPositions != NULL) {
+            CoTaskMemFree(result->itemsPositions);
+            result->itemsPositions = NULL;
         }
 
         result->arraySize = 0;

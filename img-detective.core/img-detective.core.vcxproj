@@ -37,6 +37,7 @@
     <ClInclude Include="..\include\core\Indexer.h" />
     <ClInclude Include="..\include\core\IndexManager.h" />
     <ClInclude Include="..\include\core\IndexNode.h" />
+    <ClInclude Include="..\include\core\IndexResultsCombiner.h" />
     <ClInclude Include="..\include\core\IndexSeekResult.h" />
     <ClInclude Include="..\include\core\IndexStorage.h" />
     <ClInclude Include="..\include\core\LinearSearchIM.h" />
@@ -65,6 +66,7 @@
     <ClCompile Include="..\src\core\Indexer.cpp" />
     <ClCompile Include="..\src\core\IndexManager.cpp" />
     <ClCompile Include="..\src\core\IndexNode.cpp" />
+    <ClCompile Include="..\src\core\IndexResultsCombiner.cpp" />
     <ClCompile Include="..\src\core\IndexSeekResult.cpp" />
     <ClCompile Include="..\src\core\IndexStorage.cpp" />
     <ClCompile Include="..\src\core\LinearSearchIM.cpp" />

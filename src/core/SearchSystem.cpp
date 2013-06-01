@@ -14,12 +14,12 @@ namespace Core {
 		this->featureExtractors = featureExtractors;
 	}
 
-	SearchResultInternal SearchSystem::GetSimilarImgs(ImgInfo& img, ImgQuery query) {
+	SearchResultInternal* SearchSystem::GetSimilarImgs(ImgInfo& img, ImgQuery query) {
         Feature::col_p_t extractedFeatures;
 
 		try {
             extractedFeatures = ExtractFeatures(img, query);
-			SearchResultInternal result = featureRepo.GetSimilarImgs(extractedFeatures, query);
+			SearchResultInternal* result = featureRepo.GetSimilarImgs(extractedFeatures, query);
 
             Utils::Memory::SafeDeleteCollectionOfPointers(extractedFeatures);
 			return result;

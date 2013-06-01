@@ -15,7 +15,7 @@ namespace Core {
 	CONCRETE SEALED class SearchSystem : NONCOPYABLE {
 	public:
 		SearchSystem(IFeatureRepository& featureRepo, FeatureExtractor::col_p_t featureExtractors);
-        SearchResultInternal GetSimilarImgs(ImgInfo& imgInfo, ImgQuery query);
+        SearchResultInternal* GetSimilarImgs(ImgInfo& imgInfo, ImgQuery query);
 	private:
 		IFeature::col_p_t ExtractFeatures(ImgInfo& imgInfo, ImgQuery query);
 

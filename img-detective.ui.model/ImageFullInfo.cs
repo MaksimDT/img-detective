@@ -13,7 +13,7 @@ namespace img_detective.ui.model
         private readonly image imgEntity;
 
         public string FilePath { get; private set; }
-        public double? Relevance { get; private set; }
+        public double? Position { get; private set; }
 
         public ImageFullInfo(image imgEntity)
         {
@@ -22,10 +22,10 @@ namespace img_detective.ui.model
             ComputeFilePath();
         }
 
-        public ImageFullInfo(image imgEntity, double relevance)
+        public ImageFullInfo(image imgEntity, double position)
             : this(imgEntity)
         {
-            this.Relevance = relevance;
+            this.Position = position;
         }
 
         private void ComputeFilePath()

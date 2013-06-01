@@ -17,7 +17,7 @@ typedef struct SearchResult {
 	opstatus_t opStatus;
 	long unsigned int arraySize;
 	imgid_t* items;
-    double* itemsRelevance;
+    double* itemsPositions;
 } SearchResult;
 
 typedef struct UploadImgResult {

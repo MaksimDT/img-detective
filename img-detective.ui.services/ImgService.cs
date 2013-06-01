@@ -40,7 +40,7 @@ namespace img_detective.ui.services
 
                 if (im != null)
                 {
-                    result.Add(new ImageFullInfo(im, resultNode.Relevance));
+                    result.Add(new ImageFullInfo(im, resultNode.Position));
                 }
             }
 
@@ -49,7 +49,7 @@ namespace img_detective.ui.services
             {
                 toSkip = (pageNumber - 1) * pageSize;
             }
-            return result.OrderByDescending(im => im.Relevance.Value).Skip(toSkip).Take(pageSize).ToList();
+            return result.OrderBy(im => im.Position.Value).Skip(toSkip).Take(pageSize).ToList();
         }
 
         public long GetImgsCount()
@@ -72,14 +72,14 @@ namespace img_detective.ui.services
 
             switch (result)
             {
-                case ImgDetectiveLib.CanIndexDirectoryResult.ResultEnum.AvailableForIndex:
+                case cswrapper.structs.CanIndexDirectoryResult.ResultEnum.AvailableForIndex:
                     return true;
-                case ImgDetectiveLib.CanIndexDirectoryResult.ResultEnum.Unknown:
-                case ImgDetectiveLib.CanIndexDirectoryResult.ResultEnum.AlreadyIndexed:
-                case ImgDetectiveLib.CanIndexDirectoryResult.ResultEnum.NotAbsolute:
-                case ImgDetectiveLib.CanIndexDirectoryResult.ResultEnum.NotExists:
-                case ImgDetectiveLib.CanIndexDirectoryResult.ResultEnum.SubdirIndexed:
-                case ImgDetectiveLib.CanIndexDirectoryResult.ResultEnum.IsNotDir:
+                case cswrapper.structs.CanIndexDirectoryResult.ResultEnum.Unknown:
+                case cswrapper.structs.CanIndexDirectoryResult.ResultEnum.AlreadyIndexed:
+                case cswrapper.structs.CanIndexDirectoryResult.ResultEnum.NotAbsolute:
+                case cswrapper.structs.CanIndexDirectoryResult.ResultEnum.NotExists:
+                case cswrapper.structs.CanIndexDirectoryResult.ResultEnum.SubdirIndexed:
+                case cswrapper.structs.CanIndexDirectoryResult.ResultEnum.IsNotDir:
                     return false;
                 default:
                     throw new InvalidOperationException("Unknown value of the enum CanIndexDirectoryResult.ResultEnum: " + result.ToString());

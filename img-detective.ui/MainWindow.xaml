@@ -133,7 +133,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" MinWidth="80"></ColumnDefinition>
                 <ColumnDefinition Width="10*"></ColumnDefinition>
-                <ColumnDefinition Width="20"></ColumnDefinition>
+                <ColumnDefinition Width="60"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Command="{Binding Search}">
                 <Button.Template>
@@ -149,33 +149,58 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <Button Content="Настройки >>" 
+                    <Button Content="Настройки" 
                             Command="{Binding OpenSettingsDialog}" 
                             Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <Button Content="Загрузить изображение >>" Command="{Binding UploadImage}" Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
+                    <!--<Border BorderThickness="1" Margin="10,5">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="Yellow" />
+                        </Border.BorderBrush>
+                    </Border>-->
+                    <Button Content="Индексировать директорию" Command="{Binding IndexDirectory}" Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
+                </StackPanel>
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">Загрузить изображение: </TextBlock>
+                    <Button Content="из файловой системы" 
+                            Command="{Binding UploadImage}" 
+                            Template="{StaticResource ResourceKey=LinkButtonTemplate}"
+                            Margin="10, 0, 0, 0"/>
                     <Border BorderThickness="1" Margin="10,5">
                         <Border.BorderBrush>
                             <SolidColorBrush Color="Yellow" />
                         </Border.BorderBrush>
                     </Border>
-                    <Button Content="Индексировать директорию >>" Command="{Binding IndexDirectory}" Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
+                    <Button Content="по URL" 
+                            Command="{Binding UploadImage}" 
+                            Template="{StaticResource ResourceKey=LinkButtonTemplate}" />
                 </StackPanel>
-                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
                     <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">Показаны изображения&#160;</TextBlock>
                     <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}" FontWeight="Bold" Text="{Binding FirstImageNumber}" />
                     <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">-</TextBlock>
                     <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}" FontWeight="Bold" Text="{Binding LastImageNumber}" />
                     <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}">&#160;из&#160;</TextBlock>
                     <TextBlock Style="{StaticResource ResourceKey=TextBlockStyle}" FontWeight="Bold" Text="{Binding TotalImagesCount}" />
-                    <Border BorderThickness="1" Margin="10,5">
+                    <!--<Border BorderThickness="1" Margin="10,5">
                         <Border.BorderBrush>
                             <SolidColorBrush Color="Yellow" />
                         </Border.BorderBrush>
-                    </Border>
+                    </Border>-->
+                </StackPanel>
+            </Grid>
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="3*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Навигация" Style="{StaticResource ResourceKey=TextBlockStyle}" />
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Command="{Binding GoToPrevPage}">
                         <Button.Template>
                             <ControlTemplate>
@@ -190,26 +215,20 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <Border BorderThickness="1" Margin="10,5">
-                        <Border.BorderBrush>
-                            <SolidColorBrush Color="Yellow" />
-                        </Border.BorderBrush>
-                    </Border>
                 </StackPanel>
-            </Grid>
-            <Slider Grid.Column="2" Value="{Binding PageSize, Delay=500}" 
-                            Minimum="1" 
-                            Maximum="16" 
-                            Orientation="Vertical"
-                            VerticalAlignment="Stretch"
-                            IsSnapToTickEnabled="True">
-                <Slider.ToolTip>
-                    <StackPanel>
+                <Slider Grid.Row="2" Value="{Binding PageSize, Delay=500}" 
+                        Minimum="1" 
+                        Maximum="16" 
+                        Orientation="Vertical"
+                        VerticalAlignment="Stretch"
+                        HorizontalAlignment="Center"
+                        IsSnapToTickEnabled="True">
+                    <Slider.ToolTip>
                         <TextBlock>Размер страницы:</TextBlock>
-                        <TextBlock Text="{Binding PageSize, Mode=OneWay}" />
-                    </StackPanel>
-                </Slider.ToolTip>
-            </Slider>
+                    </Slider.ToolTip>
+                </Slider>
+            </Grid>
+            
         </Grid>
         <Border Grid.Row="1" BorderThickness="2">
             <Border.BorderBrush>
@@ -233,9 +252,14 @@
                             <ControlTemplate>
                                 <Border Style="{StaticResource ResourceKey=ImageBorderStyle}">
                                     <Image Source="{Binding Path=Source}">
-                                        <!--<Image.ToolTip>
-                                            <ToolTip Content="{Binding Relevance}" />
-                                        </Image.ToolTip>-->
+                                        <Image.ContextMenu>
+                                            <ContextMenu>
+                                                <Menu>
+                                                    <MenuItem Header="Найти похожие">
+                                                    </MenuItem>
+                                                </Menu>
+                                            </ContextMenu>
+                                        </Image.ContextMenu>
                                     </Image>
                                 </Border>
                             </ControlTemplate>

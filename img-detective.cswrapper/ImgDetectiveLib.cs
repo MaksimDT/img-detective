@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 
 namespace img_detective.cswrapper
 {
-    
-
     public static class ImgDetectiveLib
     {
         public static bool UploadImg(byte[] imgContent, string fileExtension)
@@ -25,13 +23,13 @@ namespace img_detective.cswrapper
             {
                 unmanagedBuffer = Marshal.AllocCoTaskMem(imgContent.Length);
                 Marshal.Copy(imgContent, 0, unmanagedBuffer, imgContent.Length);
-                var rawImg = new RawImg()
+                var rawImg = new structs.RawImg()
                 {
                     content = unmanagedBuffer,
                     contentSize = (UInt32)imgContent.Length,
                     fileExtension = fileExtension
                 };
-                var result = new UploadImgResult();
+                var result = new structs.UploadImgResult();
                 UploadImg(rawImg, out result);
 
                 return result.opStatus == 0;
@@ -45,12 +43,12 @@ namespace img_detective.cswrapper
             }
         }
 
-        public static CanIndexDirectoryResult.ResultEnum CanIndexDirectory(string dirPath)
+        public static structs.CanIndexDirectoryResult.ResultEnum CanIndexDirectory(string dirPath)
         {
-            CanIndexDirectoryResult result = new CanIndexDirectoryResult();
+            structs.CanIndexDirectoryResult result = new structs.CanIndexDirectoryResult();
             CanIndexDirectory(dirPath, out result);
 
-            if (result.opStatus != 0 || result.resultCode == CanIndexDirectoryResult.ResultEnum.Unknown)
+            if (result.opStatus != 0 || result.resultCode == structs.CanIndexDirectoryResult.ResultEnum.Unknown)
             {
                 throw new Exception("Couldn't check the specified directory. Call to the umanaged DLL failed");
             }
@@ -60,7 +58,7 @@ namespace img_detective.cswrapper
 
         public static void IndexDirectory(string dirPath)
         {
-            IndexDirectoryResult result = new IndexDirectoryResult();
+            structs.IndexDirectoryResult result = new structs.IndexDirectoryResult();
             IndexDirectory(dirPath, out result);
 
             if (result.opStatus != 0)
@@ -75,10 +73,10 @@ namespace img_detective.cswrapper
             Contract.Requires(imgContent.Length != 0);
 
             IntPtr imgContentUnmanagedBuf = IntPtr.Zero;
-            var result = new SearchResult()
+            var result = new structs.SearchResult()
             {
                 items = IntPtr.Zero,
-                itemsRelevance = IntPtr.Zero
+                itemsPositions = IntPtr.Zero
             };
 
             try
@@ -86,7 +84,7 @@ namespace img_detective.cswrapper
                 imgContentUnmanagedBuf = Marshal.AllocCoTaskMem(imgContent.Length);
                 Marshal.Copy(imgContent, 0, imgContentUnmanagedBuf, imgContent.Length);
 
-                var query = new ImgQuery()
+                var query = new structs.ImgQuery()
                 {
                     exampleContent = imgContentUnmanagedBuf,
                     exampleContentSize = (UInt32)imgContent.Length,
@@ -100,18 +98,18 @@ namespace img_detective.cswrapper
                     throw new Exception("Call to the unmanaged DLL failed. Search cannot be performed");
                 }
 
-                if (result.items == IntPtr.Zero || result.itemsRelevance == IntPtr.Zero || result.arraySize == 0)
+                if (result.items == IntPtr.Zero || result.itemsPositions == IntPtr.Zero || result.arraySize == 0)
                 {
                     //no images found
                     return new ui.model.SearchResult();
                 }
 
                 long[] imgIds = new long[result.arraySize];
-                double[] relevances = new double[result.arraySize];
+                double[] positions = new double[result.arraySize];
                 Marshal.Copy(result.items, imgIds, 0, (int)result.arraySize);
-                Marshal.Copy(result.itemsRelevance, relevances, 0, (int)result.arraySize);
+                Marshal.Copy(result.itemsPositions, positions, 0, (int)result.arraySize);
 
-                return new ui.model.SearchResult(imgIds, relevances);
+                return new ui.model.SearchResult(imgIds, positions);
             }
             finally
             {
@@ -125,81 +123,28 @@ namespace img_detective.cswrapper
                     Marshal.FreeCoTaskMem(result.items);
                 }
 
-                if (result.itemsRelevance != IntPtr.Zero)
+                if (result.itemsPositions != IntPtr.Zero)
                 {
-                    Marshal.FreeCoTaskMem(result.itemsRelevance);
+                    Marshal.FreeCoTaskMem(result.itemsPositions);
                 }
             }
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct UploadImgResult
-        {
-            public Int32 opStatus;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct RawImg
-        {
-            public UInt32 contentSize;
-            public IntPtr content;
-            [MarshalAs(UnmanagedType.LPStr)]
-            public string fileExtension;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct CanIndexDirectoryResult
-        {
-            public enum ResultEnum
-            {
-                Unknown = 0,
-                AvailableForIndex = 1,
-                AlreadyIndexed = 2,
-                NotAbsolute = 3,
-                NotExists = 4,
-                SubdirIndexed = 5,
-                IsNotDir = 6
-            }
-
-            public ResultEnum resultCode;
-            public Int32 opStatus;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct IndexDirectoryResult
-        {
-            public Int32 opStatus;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct ImgQuery {
-            public UInt32 exampleContentSize;
-            public IntPtr exampleContent;
-            public double tolerance;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        struct SearchResult
-        {
-            public Int32 opStatus;
-            public UInt32 arraySize;
-            public IntPtr items;
-            public IntPtr itemsRelevance;
-        }
+        
 
         [DllImport("img-detective.facade.dll", CallingConvention=CallingConvention.Cdecl)]
-        private static extern void UploadImg(RawImg img, out UploadImgResult result);
+        private static extern void UploadImg(structs.RawImg img, out structs.UploadImgResult result);
 
         [DllImport("img-detective.facade.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void CanIndexDirectory([MarshalAs(UnmanagedType.LPWStr)]string dirPath, out CanIndexDirectoryResult result);
+        private static extern void CanIndexDirectory([MarshalAs(UnmanagedType.LPWStr)]string dirPath, out structs.CanIndexDirectoryResult result);
 
         [DllImport("img-detective.facade.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void IndexDirectory([MarshalAs(UnmanagedType.LPWStr)]string dirPath, out IndexDirectoryResult result);
+        private static extern void IndexDirectory([MarshalAs(UnmanagedType.LPWStr)]string dirPath, out structs.IndexDirectoryResult result);
 
         [DllImport("img-detective.facade.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Search(ImgQuery query, out SearchResult result);
+        private static extern void Search(structs.ImgQuery query, out structs.SearchResult result);
 
         [DllImport("img-detective.facade.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Search1(ImgQuery query);
+        private static extern void Search1(structs.ImgQuery query);
     }
 }
